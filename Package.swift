@@ -1,23 +1,37 @@
-// swift-tools-version: 5.10
-// The swift-tools-version declares the minimum version of Swift required to build this package.
-
+// swift-tools-version:5.3
 import PackageDescription
 
 let package = Package(
     name: "SCEPKit",
+    platforms: [
+        .iOS("15.0"),
+    ],
     products: [
-        // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "SCEPKit",
-            targets: ["SCEPKit"]),
+            targets: ["SCEPKit"]
+        ),
+    ],
+    dependencies: [
+        .package(name: "Amplitude", url: "https://github.com/amplitude/Amplitude-iOS", .exact("8.18.3")),
+        .package(name: "Adapty", url: "https://github.com/adaptyteam/AdaptySDK-iOS", .exact("3.0.0-beta.2")),
+        .package(name: "Firebase", url: "https://github.com/firebase/firebase-ios-sdk", .exact("10.23.0"))        
     ],
     targets: [
-        // Targets are the basic building blocks of a package, defining a module or a test suite.
-        // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "SCEPKit"),
-        .testTarget(
-            name: "SCEPKitTests",
-            dependencies: ["SCEPKit"]),
+            name: "SCEPKit",
+            dependencies: [
+                .product(name: "AdaptyUI", package: "Adapty", condition: .when(platforms: [.iOS])),
+                .product(name: "Adapty", package: "Adapty", condition: .when(platforms: [.iOS])),
+                "Amplitude",
+                .product(name: "FirebaseRemoteConfig", package: "Firebase", condition: .when(platforms: [.iOS])),
+                .product(name: "FirebaseAnalytics", package: "Firebase", condition: .when(platforms: [.iOS])),
+                .product(name: "FirebaseAppCheck", package: "Firebase", condition: .when(platforms: [.iOS])),
+                .product(name: "FirebaseCrashlytics", package: "Firebase")
+            ],
+            resources: [
+                .process("Resources")
+            ]
+        )
     ]
 )

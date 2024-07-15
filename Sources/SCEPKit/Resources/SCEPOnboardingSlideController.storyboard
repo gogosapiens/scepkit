@@ -1,30 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17150" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17122"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Onboarding Slide Controller-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
-                <viewController id="Y6W-OH-hqX" sceneMemberID="viewController">
+                <viewController id="Y6W-OH-hqX" customClass="SCEPOnboardingSlideController" customModule="SCEPKit" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NF3-9p-NmK">
+                                <rect key="frame" x="20" y="690" width="353" height="64"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="f2F-q1-ygO"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MNC-Ku-PSb">
+                                <rect key="frame" x="20" y="645.66666666666663" width="353" height="20.333333333333371"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" name="SCEPTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NH5-qA-igJ">
+                                <rect key="frame" x="0.0" y="59" width="393" height="524"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="NH5-qA-igJ" secondAttribute="height" multiplier="3:4" id="G56-fK-x09"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" name="SCEPBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="NF3-9p-NmK" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="3zU-s3-c41"/>
+                            <constraint firstItem="NH5-qA-igJ" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="6dh-yL-MEa"/>
+                            <constraint firstItem="NH5-qA-igJ" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="CPb-Ws-ueT"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="MNC-Ku-PSb" secondAttribute="trailing" constant="20" id="Gur-OJ-aJk"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="NF3-9p-NmK" secondAttribute="trailing" constant="20" id="II9-vA-Z6L"/>
+                            <constraint firstItem="NH5-qA-igJ" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="SGA-ZC-CTS"/>
+                            <constraint firstItem="MNC-Ku-PSb" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="WBG-lS-hce"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="NF3-9p-NmK" secondAttribute="bottom" constant="64" id="XIS-nT-gKy"/>
+                            <constraint firstItem="NF3-9p-NmK" firstAttribute="top" secondItem="MNC-Ku-PSb" secondAttribute="bottom" constant="24" id="lhT-9R-dhU"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="imageView" destination="NH5-qA-igJ" id="dLj-hH-xYB"/>
+                        <outlet property="titleLabel" destination="MNC-Ku-PSb" id="99U-1x-XpY"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="6" y="-2"/>
         </scene>
     </scenes>
     <resources>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
+        <namedColor name="SCEPBackgroundColor">
+            <color red="0.18008207070707072" green="0.039560585443465121" blue="0.027746033067674071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="SCEPTextColor">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
     </resources>
 </document>

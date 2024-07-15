@@ -1,29 +1,16 @@
-//
-//  SCEPSplashController.swift
-//  
-//
-//  Created by Illia Harkavy on 08/07/2024.
-//
-
 import UIKit
 
 class SCEPSplashController: UIViewController {
 
+    @IBOutlet weak var iconImageView: UIImageView!
+    @IBOutlet weak var appNameLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        iconImageView.image = .init(named: "SCEPAppIcon")
+        appNameLabel.font = .main(ofSize: 20, weight: .bold)
+        appNameLabel.text = Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ?? ""
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+    
 }

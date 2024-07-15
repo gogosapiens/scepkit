@@ -1,10 +1,3 @@
-//
-//  Downloader.swift
-//  LinkBio
-//
-//  Created by Illia Harkavy on 14/09/2023.
-//
-
 import UIKit
 
 fileprivate protocol DataConvertible {

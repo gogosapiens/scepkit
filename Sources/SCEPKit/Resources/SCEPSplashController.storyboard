@@ -4,8 +4,8 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -17,21 +17,29 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SCEP Splash" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q66-yO-oW6">
-                                <rect key="frame" x="20" y="415.66666666666669" width="353" height="21"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SCEPAppIcon" translatesAutoresizingMaskIntoConstraints="NO" id="4P0-0D-O9t">
+                                <rect key="frame" x="148.66666666666666" y="378" width="96" height="96"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GA2-qq-8o8">
+                                <rect key="frame" x="175.66666666666666" y="494" width="42" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" name="SCEPTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" name="SCEPBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="q66-yO-oW6" secondAttribute="trailing" constant="20" id="1QN-Gz-Scm"/>
-                            <constraint firstItem="q66-yO-oW6" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="fDY-7f-IvI"/>
-                            <constraint firstItem="q66-yO-oW6" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" id="t2M-Yn-VEF"/>
+                            <constraint firstItem="GA2-qq-8o8" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="3pD-Jl-uBR"/>
+                            <constraint firstItem="GA2-qq-8o8" firstAttribute="top" secondItem="4P0-0D-O9t" secondAttribute="bottom" constant="20" id="HUO-5o-JbS"/>
+                            <constraint firstItem="4P0-0D-O9t" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" id="ZeD-h6-9rp"/>
+                            <constraint firstItem="4P0-0D-O9t" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="eHU-qI-x0g"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="appNameLabel" destination="GA2-qq-8o8" id="OmD-OZ-qef"/>
+                        <outlet property="iconImageView" destination="4P0-0D-O9t" id="uAP-3t-wl4"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -39,8 +47,12 @@
         </scene>
     </scenes>
     <resources>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
+        <image name="SCEPAppIcon" width="96" height="96"/>
+        <namedColor name="SCEPBackgroundColor">
+            <color red="0.17647058823529413" green="0.039215686274509803" blue="0.027450980392156862" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="SCEPTextColor">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
     </resources>
 </document>

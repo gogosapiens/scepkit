@@ -1,29 +1,34 @@
-//
-//  SCEPSettingsController.swift
-//  
-//
-//  Created by Illia Harkavy on 15/07/2024.
-//
-
 import UIKit
 
-class SCEPSettingsController: UIViewController {
+public class SCEPSettingsController: UIViewController {
 
-    override func viewDidLoad() {
+    @IBOutlet weak var closeButton: UIButton!
+    @IBOutlet weak var titleLabel: UILabel!
+    
+    public override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        titleLabel.font = .main(ofSize: 16, weight: .semibold)
+        closeButton.setImage(.init(named: "SCEPClose"), for: .normal)
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    @IBAction func closeTapped(_ sender: UIButton) {
+        dismiss(animated: true)
     }
-    */
-
+    
+    @IBAction func termsTapped(_ sender: SCEPSecondaryButton) {
+        openURL(SCEPKitInternal.shared.termsURL)
+    }
+    
+    @IBAction func privacyTapped(_ sender: SCEPSecondaryButton) {
+        openURL(SCEPKitInternal.shared.privacyURL)
+    }
+    
+    @IBAction func reviewTapped(_ sender: SCEPSecondaryButton) {
+        openURL(SCEPKitInternal.shared.reviewURL)
+    }
+    
+    @IBAction func contactTapped(_ sender: SCEPSecondaryButton) {
+        openURL(SCEPKitInternal.shared.contactURL)
+    }
 }

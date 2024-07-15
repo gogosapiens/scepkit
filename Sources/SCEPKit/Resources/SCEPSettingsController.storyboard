@@ -1,30 +1,144 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17150" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17122"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Settings Controller-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
-                <viewController id="Y6W-OH-hqX" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="fullScreen" id="Y6W-OH-hqX" customClass="SCEPSettingsController" customModule="SCEPKit" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="hfS-GE-RfX">
+                                <rect key="frame" x="20" y="115" width="353" height="292"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dwf-cG-EhM" customClass="SCEPSecondaryButton" customModule="SCEPKit">
+                                        <rect key="frame" x="0.0" y="0.0" width="353" height="64"/>
+                                        <color key="backgroundColor" name="SCEPSecondaryButtonBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="64" id="sGS-Rb-XwS"/>
+                                        </constraints>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Terms">
+                                            <color key="titleColor" name="SCEPTextColor"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="termsTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="iyB-Fk-VbJ"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VrA-dt-W3I" customClass="SCEPSecondaryButton" customModule="SCEPKit">
+                                        <rect key="frame" x="0.0" y="76" width="353" height="64"/>
+                                        <color key="backgroundColor" name="SCEPSecondaryButtonBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="64" id="F4y-06-oBN"/>
+                                        </constraints>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Privacy">
+                                            <color key="titleColor" name="SCEPTextColor"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="privacyTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="FYd-Wf-eH0"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b6k-xO-hrC" customClass="SCEPSecondaryButton" customModule="SCEPKit">
+                                        <rect key="frame" x="0.0" y="152" width="353" height="64"/>
+                                        <color key="backgroundColor" name="SCEPSecondaryButtonBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="64" id="3Ou-m8-hgp"/>
+                                        </constraints>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Review">
+                                            <color key="titleColor" name="SCEPTextColor"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="reviewTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="EQN-Ch-a5K"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ElM-IF-K1d" customClass="SCEPSecondaryButton" customModule="SCEPKit">
+                                        <rect key="frame" x="0.0" y="228" width="353" height="64"/>
+                                        <color key="backgroundColor" name="SCEPSecondaryButtonBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="64" id="bvG-lP-wgW"/>
+                                        </constraints>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Contact">
+                                            <color key="titleColor" name="SCEPTextColor"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="contactTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="MlW-MP-aah"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eLK-Pt-CnV">
+                                <rect key="frame" x="0.0" y="59" width="393" height="56"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="guc-TB-jp8">
+                                        <rect key="frame" x="165" y="18" width="63" height="20.333333333333329"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" name="SCEPTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WIv-v0-HML">
+                                        <rect key="frame" x="329" y="0.0" width="64" height="56"/>
+                                        <inset key="contentEdgeInsets" minX="20" minY="0.0" maxX="20" maxY="0.0"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" image="SCEPClose"/>
+                                        <connections>
+                                            <action selector="closeTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="JzB-Mi-H4S"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="WIv-v0-HML" secondAttribute="bottom" id="2l6-n6-cf3"/>
+                                    <constraint firstItem="WIv-v0-HML" firstAttribute="top" secondItem="eLK-Pt-CnV" secondAttribute="top" id="TU0-F4-WzY"/>
+                                    <constraint firstAttribute="height" constant="56" id="dgK-sh-08v"/>
+                                    <constraint firstAttribute="trailing" secondItem="WIv-v0-HML" secondAttribute="trailing" id="keS-35-n17"/>
+                                    <constraint firstItem="guc-TB-jp8" firstAttribute="centerX" secondItem="eLK-Pt-CnV" secondAttribute="centerX" id="lPE-k3-NxO"/>
+                                    <constraint firstItem="guc-TB-jp8" firstAttribute="centerY" secondItem="eLK-Pt-CnV" secondAttribute="centerY" id="xkz-zd-mqv"/>
+                                </constraints>
+                            </view>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" name="SCEPBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="hfS-GE-RfX" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="D8l-sb-UTd"/>
+                            <constraint firstItem="eLK-Pt-CnV" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="RME-dz-pOl"/>
+                            <constraint firstItem="hfS-GE-RfX" firstAttribute="top" secondItem="eLK-Pt-CnV" secondAttribute="bottom" id="Tlo-ya-Wlq"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="eLK-Pt-CnV" secondAttribute="trailing" id="Umr-2Z-7YK"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="hfS-GE-RfX" secondAttribute="trailing" constant="20" id="XbY-Mb-IU5"/>
+                            <constraint firstItem="eLK-Pt-CnV" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="xpB-hc-12p"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="closeButton" destination="WIv-v0-HML" id="2pQ-xa-c3h"/>
+                        <outlet property="titleLabel" destination="guc-TB-jp8" id="mlH-gV-TKO"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="51" y="-2"/>
         </scene>
     </scenes>
     <resources>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
+        <image name="SCEPClose" width="24" height="24"/>
+        <namedColor name="SCEPBackgroundColor">
+            <color red="0.17647058823529413" green="0.039215686274509803" blue="0.027450980392156862" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="SCEPSecondaryButtonBackgroundColor">
+            <color red="0.51372549019607838" green="0.10980392156862745" blue="0.078431372549019607" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="SCEPTextColor">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
     </resources>
 </document>

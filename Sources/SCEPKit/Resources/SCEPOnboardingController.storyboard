@@ -1,30 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17150" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17122"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Onboarding Controller-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
-                <viewController id="Y6W-OH-hqX" sceneMemberID="viewController">
+                <viewController id="Y6W-OH-hqX" customClass="SCEPOnboardingController" customModule="SCEPKit" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VTJ-z2-LZI">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                            </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tQw-7J-5cv" customClass="SCEPMainButton" customModule="SCEPKit">
+                                <rect key="frame" x="20" y="690" width="353" height="64"/>
+                                <color key="backgroundColor" name="SCEPMainButtonBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="Gwi-c4-RBf"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleColor" name="SCEPTextColor"/>
+                                </state>
+                                <connections>
+                                    <action selector="continueTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="dfc-8k-pGJ"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" name="SCEPBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="VTJ-z2-LZI" secondAttribute="trailing" priority="250" id="70Z-ZR-BKk"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="tQw-7J-5cv" secondAttribute="trailing" constant="20" id="H5f-m0-bmu"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="tQw-7J-5cv" secondAttribute="bottom" constant="64" id="HSH-sv-Dof"/>
+                            <constraint firstAttribute="bottom" secondItem="VTJ-z2-LZI" secondAttribute="bottom" id="IQS-h5-Rg5"/>
+                            <constraint firstItem="VTJ-z2-LZI" firstAttribute="top" secondItem="5EZ-qb-Rvc" secondAttribute="top" id="YdM-Cj-BfG"/>
+                            <constraint firstAttribute="leading" secondItem="VTJ-z2-LZI" secondAttribute="leading" id="iJy-S8-X4j"/>
+                            <constraint firstItem="tQw-7J-5cv" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="nxd-iW-ht6"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="continueButton" destination="tQw-7J-5cv" id="6VT-YW-4tv"/>
+                        <outlet property="slidesLeadingConstraint" destination="iJy-S8-X4j" id="5BC-GY-fc3"/>
+                        <outlet property="slidesStackView" destination="VTJ-z2-LZI" id="hjY-Vs-XvV"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="6.8702290076335872" y="3.5211267605633805"/>
         </scene>
     </scenes>
     <resources>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
+        <namedColor name="SCEPBackgroundColor">
+            <color red="0.18008207070707072" green="0.039560585443465121" blue="0.027746033067674071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="SCEPMainButtonBackgroundColor">
+            <color red="1" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="SCEPTextColor">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
     </resources>
 </document>

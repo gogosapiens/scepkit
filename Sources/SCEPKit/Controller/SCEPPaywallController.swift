@@ -1,29 +1,29 @@
-//
-//  SCEPPaywallController.swift
-//  
-//
-//  Created by Illia Harkavy on 14/07/2024.
-//
-
 import UIKit
+import Adapty
 
-class SCEPPaywallController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+public class SCEPPaywallController: UIViewController {
+    
+    enum Config: Codable {
+        case single(config: SCEPPaywallSingleController.Config)
     }
     
+    var paywall: AdaptyPaywall!
+    var placement: SCEPPaywallPlacement!
+    var source: String = ""
+    var products: [AdaptyPaywallProduct]!
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    public override func viewDidLoad() {
+        super.viewDidLoad()
+        
     }
-    */
-
+    
+    func showContinueButton() {}
+    
+    func close() {
+        if parent is SCEPOnboardingController {
+            SCEPKitInternal.shared.completeOnboarding()
+        } else {
+            dismiss(animated: true)
+        }
+    }
 }

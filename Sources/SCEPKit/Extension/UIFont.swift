@@ -1,10 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by Illia Harkavy on 14/07/2024.
-//
-
 import UIKit
 
 extension UIFont {
@@ -13,14 +6,14 @@ extension UIFont {
         let name: String
         switch weight {
         case .medium:
-            name = SCEPKitInternal.shared.plistString(for: .adaptyApiKey)
+            name = SCEPKitInternal.shared.plistString(for: .mainFont, .bold)
         case .semibold:
-            suffix = "_SemiBold"
+            name = SCEPKitInternal.shared.plistString(for: .mainFont, .bold)
         case .bold:
-            suffix = "_Bold"
+            name = SCEPKitInternal.shared.plistString(for: .mainFont, .bold)
         default:
-            suffix = ""
+            fatalError("Font weight \(weight) not supported")
         }
-        return UIFont(name: "InstrumentSans-Regular\(suffix)", size: fontSize) ?? .systemFont(ofSize: fontSize, weight: weight)
+        return UIFont(name: name, size: fontSize) ?? .systemFont(ofSize: fontSize, weight: weight)
     }
 }

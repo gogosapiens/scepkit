@@ -1,29 +1,18 @@
-//
-//  SCEPOnboardingSlideController.swift
-//  
-//
-//  Created by Illia Harkavy on 14/07/2024.
-//
-
 import UIKit
 
 class SCEPOnboardingSlideController: UIViewController {
-
+    
+    var config: SCEPKitInternal.OnboardingConfig.Slide!
+    
+    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var titleLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        titleLabel.font = .main(ofSize: SCEPKitInternal.shared.plistValue(for: .onboardingTitleFontSize), weight: .semibold)
+        titleLabel.text = config.title
+        Downloader.downloadImage(from: config.imageURL) { [weak self] image in
+            self?.imageView.image = image
+        }
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
