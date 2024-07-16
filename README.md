@@ -17,14 +17,14 @@ To install SCEPKit using Swift Package Manager, add the following dependency to 
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/yourusername/SCEPKit.git", from: "1.0.0")
+    .package(url: "https://github.com/gogosapiens/scepkit", from: "1.0.0")
 ]
 ```
 
 Alternatively, you can add SCEPKit directly through Xcode:
 1. Open your project in Xcode.
 2. Go to `File > Add Packages...`.
-3. Enter the URL `https://github.com/yourusername/SCEPKit.git`.
+3. Enter the URL `https://github.com/gogosapiens/scepkit`.
 4. Choose the version and click `Add Package`.
 
 ## Configuration
