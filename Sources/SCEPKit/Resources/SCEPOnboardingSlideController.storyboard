@@ -17,38 +17,66 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NF3-9p-NmK">
-                                <rect key="frame" x="20" y="690" width="353" height="64"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Headline about something important" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MNC-Ku-PSb">
+                                <rect key="frame" x="20" y="579" width="353" height="84"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="64" id="f2F-q1-ygO"/>
+                                    <constraint firstAttribute="height" constant="84" id="plb-7C-Fmj"/>
                                 </constraints>
-                            </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MNC-Ku-PSb">
-                                <rect key="frame" x="20" y="645.66666666666663" width="353" height="20.333333333333371"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="32"/>
                                 <color key="textColor" name="SCEPTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NH5-qA-igJ">
-                                <rect key="frame" x="0.0" y="59" width="393" height="524"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nqc-6d-eDF">
+                                <rect key="frame" x="0.0" y="55" width="393" height="524"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NH5-qA-igJ">
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="524"/>
+                                    </imageView>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SCEPOnboardingOverlay" translatesAutoresizingMaskIntoConstraints="NO" id="P3k-fa-M4R">
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="524"/>
+                                        <color key="tintColor" name="SCEPShade4Color"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" name="SCEPShade3Color"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="NH5-qA-igJ" secondAttribute="height" multiplier="3:4" id="G56-fK-x09"/>
+                                    <constraint firstAttribute="bottom" secondItem="P3k-fa-M4R" secondAttribute="bottom" id="BO6-gQ-hZx"/>
+                                    <constraint firstAttribute="trailing" secondItem="NH5-qA-igJ" secondAttribute="trailing" id="XYx-tb-kQG"/>
+                                    <constraint firstItem="NH5-qA-igJ" firstAttribute="leading" secondItem="Nqc-6d-eDF" secondAttribute="leading" id="Y6T-C4-As0"/>
+                                    <constraint firstItem="P3k-fa-M4R" firstAttribute="top" secondItem="Nqc-6d-eDF" secondAttribute="top" id="agD-v5-k5H"/>
+                                    <constraint firstAttribute="trailing" secondItem="P3k-fa-M4R" secondAttribute="trailing" id="byE-0S-noG"/>
+                                    <constraint firstAttribute="bottom" secondItem="NH5-qA-igJ" secondAttribute="bottom" id="cKh-ex-HW6"/>
+                                    <constraint firstItem="NH5-qA-igJ" firstAttribute="top" secondItem="Nqc-6d-eDF" secondAttribute="top" id="mQs-SH-NgF"/>
+                                    <constraint firstItem="P3k-fa-M4R" firstAttribute="leading" secondItem="Nqc-6d-eDF" secondAttribute="leading" id="pSZ-VV-5sa"/>
+                                    <constraint firstAttribute="width" secondItem="Nqc-6d-eDF" secondAttribute="height" multiplier="3:4" id="t9Y-PS-AiA"/>
                                 </constraints>
-                            </imageView>
+                            </view>
+                            <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="btg-un-Xe2" customClass="SCEPMainButton" customModule="SCEPKit">
+                                <rect key="frame" x="16" y="719" width="361" height="35"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                            </button>
+                            <pageControl opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="fty-CG-8Ch">
+                                <rect key="frame" x="16" y="671" width="361" height="48"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="48" id="KRh-TF-ktt"/>
+                                </constraints>
+                            </pageControl>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
-                        <color key="backgroundColor" name="SCEPBackgroundColor"/>
+                        <color key="backgroundColor" name="SCEPShade4Color"/>
                         <constraints>
-                            <constraint firstItem="NF3-9p-NmK" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="3zU-s3-c41"/>
-                            <constraint firstItem="NH5-qA-igJ" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="6dh-yL-MEa"/>
-                            <constraint firstItem="NH5-qA-igJ" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="CPb-Ws-ueT"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="fty-CG-8Ch" secondAttribute="trailing" constant="16" id="2HN-t2-xyN"/>
+                            <constraint firstItem="MNC-Ku-PSb" firstAttribute="top" secondItem="Nqc-6d-eDF" secondAttribute="bottom" id="5iX-XX-pJn"/>
+                            <constraint firstItem="btg-un-Xe2" firstAttribute="top" secondItem="fty-CG-8Ch" secondAttribute="bottom" id="C02-qS-fBR"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="MNC-Ku-PSb" secondAttribute="trailing" constant="20" id="Gur-OJ-aJk"/>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="NF3-9p-NmK" secondAttribute="trailing" constant="20" id="II9-vA-Z6L"/>
-                            <constraint firstItem="NH5-qA-igJ" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="SGA-ZC-CTS"/>
+                            <constraint firstItem="fty-CG-8Ch" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="OHY-LY-RMh"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="btg-un-Xe2" secondAttribute="bottom" constant="64" id="OXZ-Yt-UZg"/>
                             <constraint firstItem="MNC-Ku-PSb" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="WBG-lS-hce"/>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="NF3-9p-NmK" secondAttribute="bottom" constant="64" id="XIS-nT-gKy"/>
-                            <constraint firstItem="NF3-9p-NmK" firstAttribute="top" secondItem="MNC-Ku-PSb" secondAttribute="bottom" constant="24" id="lhT-9R-dhU"/>
+                            <constraint firstItem="btg-un-Xe2" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="WWy-Q2-75M"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="btg-un-Xe2" secondAttribute="trailing" constant="16" id="hB8-Mz-i72"/>
+                            <constraint firstItem="Nqc-6d-eDF" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="hOo-VB-oup"/>
+                            <constraint firstItem="Nqc-6d-eDF" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="tSg-2Y-YJa"/>
+                            <constraint firstItem="fty-CG-8Ch" firstAttribute="top" secondItem="MNC-Ku-PSb" secondAttribute="bottom" constant="8" id="wcf-Pd-Au7"/>
                         </constraints>
                     </view>
                     <connections>
@@ -62,11 +90,15 @@
         </scene>
     </scenes>
     <resources>
-        <namedColor name="SCEPBackgroundColor">
-            <color red="0.18008207070707072" green="0.039560585443465121" blue="0.027746033067674071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        <image name="SCEPOnboardingOverlay" width="128" height="128"/>
+        <namedColor name="SCEPShade3Color">
+            <color red="0.14999999999999999" green="0.13500000000000001" blue="0.13525000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="SCEPShade4Color">
+            <color red="0.050000000000000003" green="0.045000000000000005" blue="0.045083333333333336" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="SCEPTextColor">
-            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

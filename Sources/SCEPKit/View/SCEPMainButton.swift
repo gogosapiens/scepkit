@@ -11,9 +11,27 @@ class SCEPMainButton: UIButton {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        let config = SCEPKitInternal.shared.appConfig.interface.mainButton
+        
+        backgroundColor = .scepAccent
         clipsToBounds = true
-        layer.cornerRadius = SCEPKitInternal.shared.plistValue(for: .mainButton, .cornerRadius)
-        titleLabel?.font = .main(ofSize: SCEPKitInternal.shared.plistValue(for: .mainButton, .fontSize), weight: .bold)
-        print(1)
+        layer.cornerRadius = config.cornerRadius
+        heightAnchor.constraint(equalToConstant: 56).isActive = true
+        
+        titleLabel?.textColor = .scepText
+        titleLabel?.font = SCEPKitInternal.shared.appConfig.interface.font(ofSize: config.fontSize, weight: .bold)
+    }
+    
+    var title: String? {
+        get {
+            title(for: .normal)
+        }
+        set {
+            UIView.performWithoutAnimation {
+                setTitle(newValue, for: .normal)
+                layoutIfNeeded()
+            }
+        }
     }
 }

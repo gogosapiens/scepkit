@@ -4,6 +4,7 @@ import AdaptyUI
 
 class SCEPPaywallAdaptyController: SCEPPaywallController {
     
+    var paywall: AdaptyPaywall!
     var viewConfiguration: AdaptyUI.LocalizedViewConfiguration!
 
     override func viewDidLoad() {

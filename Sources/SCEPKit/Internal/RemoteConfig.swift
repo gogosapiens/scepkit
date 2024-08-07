@@ -9,6 +9,16 @@ extension SCEPKitInternal {
         return value
     }
     
+    func defaultRemoteConfigValue<Type: Decodable>(for key: String) -> Type? {
+        guard 
+            let data = RemoteConfig.remoteConfig().defaultValue(forKey: key)?.dataValue,
+            let value = try? JSONDecoder().decode(Type.self, from: data)
+        else {
+            return nil
+        }
+        return value
+    }
+    
     struct OnboardingConfig: Codable {
         
         let buttonTitle: String

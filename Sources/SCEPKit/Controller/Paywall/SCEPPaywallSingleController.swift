@@ -1,4 +1,5 @@
 import UIKit
+import StoreKit
 import Adapty
 
 class SCEPPaywallSingleController: SCEPPaywallController {
@@ -7,6 +8,8 @@ class SCEPPaywallSingleController: SCEPPaywallController {
         let title: String
         let subtitle: String
         let buttonTitle: String
+        let productId: String
+        var product: AdaptyPaywallProduct? { SCEPKitInternal.shared.product(with: productId) }
     }
     var config: Config!
     
@@ -26,17 +29,14 @@ class SCEPPaywallSingleController: SCEPPaywallController {
         }
         closeButton.setImage(.init(named: "SCEPClose"), for: .normal)
         
-        titleLabel.font = .main(ofSize: 32, weight: .bold)
-        subtitleLabel.font = .main(ofSize: 16, weight: .semibold)
-        
-        let product = products.first?.skProduct
-        titleLabel.text = config.title.insertingPrice(for: product)
-        subtitleLabel.text = config.subtitle.insertingPrice(for: product)
-        continueButton.setTitle(config.buttonTitle.insertingPrice(for: product), for: .normal)
+        titleLabel.text = config.title.insertingPrice(for: config.product?.skProduct)
+        subtitleLabel.text = config.subtitle.insertingPrice(for: config.product?.skProduct)
+        continueButton.setTitle(config.buttonTitle.insertingPrice(for: config.product?.skProduct), for: .normal)
     }
     
     @IBAction func continueTapped(_ sender: SCEPMainButton) {
-        Adapty.makePurchase(product: products.first!) { [weak self] result in
+        guard let product = config.product else { return }
+        Adapty.makePurchase(product: product) { [weak self] result in
             switch result {
             case .success(let info):
 //                logger.debug("Purchase success \(info)")
@@ -48,11 +48,11 @@ class SCEPPaywallSingleController: SCEPPaywallController {
     }
     
     @IBAction func termsTapped(_ sender: UIButton) {
-        openURL(SCEPKitInternal.shared.termsURL)
+        openURL(SCEPKitInternal.shared.appConfig.termsURL)
     }
     
     @IBAction func privacyTapped(_ sender: UIButton) {
-        openURL(SCEPKitInternal.shared.privacyURL)
+        openURL(SCEPKitInternal.shared.appConfig.privacyURL)
     }
     
     @IBAction func restoreTapped(_ sender: UIButton) {

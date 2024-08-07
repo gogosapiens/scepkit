@@ -1,4 +1,5 @@
 import UIKit
+import StoreKit
 import Adapty
 import AdaptyUI
 import OSLog
@@ -16,9 +17,11 @@ class SCEPKitInternal: NSObject {
     var window: UIWindow!
     var onboardingWindow: UIWindow?
     var plistDict: [String: Any]!
-    var paywalls: [SCEPPaywallPlacement: AdaptyPaywall] = [:]
-    var viewConfigurations: [SCEPPaywallPlacement: AdaptyUI.LocalizedViewConfiguration] = [:]
-    var products: [SCEPPaywallPlacement: [AdaptyPaywallProduct]] = [:]
+    var adaptyPaywalls: [String: AdaptyPaywall] = [:]
+    var adaptyViewConfigurations: [String: AdaptyUI.LocalizedViewConfiguration] = [:]
+    var adaptyProducts: [String: [AdaptyPaywallProduct]] = [:]
+    private var isOnboardingResourcesLoadFailed: Bool = false
+    private var isOnboardingPaywallResourcesLoadFailed: Bool = false
     
     @UserDefaultsValue(key: "SCEPKitInternal.isOnboardingCompleted", defaultValue: false)
     var isOnboardingCompleted: Bool
@@ -33,120 +36,175 @@ class SCEPKitInternal: NSObject {
         
         let group = DispatchGroup()
         
-        loadPlist()
+        FirebaseApp.configure()
+        let config = RemoteConfig.remoteConfig()
+        config.setDefaults(fromPlist: "remote_config_defaults")
+        config.activate()
+        group.enter()
+        config.fetch(withExpirationDuration: 0) { status, error in
+            group.leave()
+        }
+        
         Adapty.delegate = self
         group.enter()
-        Adapty.activate(with: .init(withAPIKey: plistString(for: .adaptyApiKey))) { error in
-            self.loadPaywalls(group: group)
+        Adapty.activate(with: .init(withAPIKey: appConfig.adaptyApiKey)) { error in
             group.leave()
         }
         AdaptyUI.activate()
         
-        FirebaseApp.configure()
-        let config = RemoteConfig.remoteConfig()
-        group.enter()
-        config.fetch(withExpirationDuration: 0) { status, error in
-            config.activate()
-            group.leave()
-        }
-        
         window = UIWindow(frame: UIScreen.main.bounds)
+        window.overrideUserInterfaceStyle = appConfig.interface.style.uiUserInterfaceStyle
         let splashController = SCEPSplashController.instantiate(bundle: .module)
         window.rootViewController = splashController
         window.makeKeyAndVisible()
         self.rootViewController = rootViewController
         
         DispatchQueue.global().async {
-            let result = group.wait(timeout: .now() + 1)
-            DispatchQueue.main.async {
-                if result == .success {
-                    logger.debug("All tasks completed within timeout, application shown")
-                } else {
-                    logger.error("Timeout occurred, application shown")
+            let result = group.wait(timeout: .now() + 5)
+            if result == .success {
+                logger.debug("All tasks completed within timeout, application shown")
+            } else {
+                logger.error("Timeout occurred, application shown")
+            }
+            
+            self.loadResources {
+                DispatchQueue.main.async {
+                    self.showApplication()
                 }
-                if config.lastFetchStatus == .noFetchYet {
-                    config.setDefaults(fromPlist: "remote_config_defaults")
-                    config.activate()
-                }
-                self.showApplication()
             }
         }
     }
     
-    func loadPaywalls(group: DispatchGroup? = nil) {
-        SCEPPaywallPlacement.allCases.forEach { placement in
-            guard !paywalls.keys.contains(placement) else { return }
-            group?.enter()
-            Adapty.getPaywall(placementId: placement.id) { result in
+    func loadResources(completion: @escaping () -> Void) {
+        let group = DispatchGroup()
+        let adaptyPlacementIds = Set(SCEPPaywallPlacement.allCases.map { paywallConfig(for: $0).adaptyPlacementId })
+        adaptyPlacementIds.forEach { placementId in
+            guard !adaptyPaywalls.keys.contains(placementId) else { return }
+            group.enter()
+            Adapty.getPaywall(placementId: placementId) { result in
                 switch result {
                 case .success(let paywall):
                     DispatchQueue.main.async {
-                        self.paywalls[placement] = paywall
-                        print("PAYWALL:", placement.id, paywall)
+                        self.adaptyPaywalls[placementId] = paywall
+                        print("PAYWALL:", placementId, paywall)
                     }
                     if paywall.hasViewConfiguration {
                         AdaptyUI.getViewConfiguration(forPaywall: paywall) { result in
                             switch result {
                             case .success(let viewConfiguration):
                                 DispatchQueue.main.async {
-                                    self.viewConfigurations[placement] = viewConfiguration
+                                    self.adaptyViewConfigurations[placementId] = viewConfiguration
                                 }
                             case .failure(let error):
                                 logger.debug("Paywall load error: \(error)")
                             }
-                            group?.leave()
+                            group.leave()
                         }
                     } else {
                         Adapty.getPaywallProducts(paywall: paywall) { result in
                             switch result {
                             case .success(let products):
                                 DispatchQueue.main.async {
-                                    self.products[placement] = products
+                                    self.adaptyProducts[placementId] = products
                                 }
                             case .failure(let error):
                                 logger.debug("Paywall load error: \(error)")
                             }
-                            group?.leave()
+                            group.leave()
                         }
                     }
                 case .failure(let error):
                     logger.debug("Paywall load error: \(error)")
-                    group?.leave()
+                    group.leave()
                 }
             }
         }
+        if !isOnboardingCompleted {
+            for imageURL in remoteOnboardingConfig.slides.map(\.imageURL) {
+                group.enter()
+                Downloader.downloadImage(from: imageURL) { image in
+                    if image == nil {
+                        self.isOnboardingResourcesLoadFailed = true
+                    }
+                    group.leave()
+                }
+            }
+            for imageURL in remotePaywallConfig(for: .onboarding).imageURLs {
+                group.enter()
+                Downloader.downloadImage(from: imageURL) { image in
+                    if image == nil {
+                        self.isOnboardingPaywallResourcesLoadFailed = true
+                    }
+                    group.leave()
+                }
+            }
+        }
+        DispatchQueue.global().async {
+            let result = group.wait(timeout: .now() + 5)
+            if result == .timedOut {
+                logger.log("Adapty apywall load timed out")
+            }
+            completion()
+        }
     }
     
-    func getPaywall(for placement: SCEPPaywallPlacement) -> AdaptyPaywall? {
-        return paywalls[placement]
+    var appConfig: SCEPAppConfig { remoteConfigValue(for: "scepkit_app")! }
+    
+    private var remoteOnboardingConfig: OnboardingConfig { remoteConfigValue(for: "scepkit_onboarding")! }
+    private var defaultOnboardingConfig: OnboardingConfig { defaultRemoteConfigValue(for: "scepkit_onboarding")! }
+    var onboardingConfig: OnboardingConfig {
+        if isOnboardingResourcesLoadFailed {
+            return defaultOnboardingConfig
+        } else {
+            return remoteOnboardingConfig
+        }
+    }
+    
+    private func remotePaywallConfig(for placement: SCEPPaywallPlacement) -> SCEPPaywallController.Config {
+        remoteConfigValue(for: "scepkit_paywall_" + placement.id)!
+    }
+    private func defaultPaywallConfig(for placement: SCEPPaywallPlacement) -> SCEPPaywallController.Config {
+        defaultRemoteConfigValue(for: "scepkit_paywall_" + placement.id)!
+    }
+    func paywallConfig(for placement: SCEPPaywallPlacement) -> SCEPPaywallController.Config {
+        if placement == .onboarding, isOnboardingPaywallResourcesLoadFailed {
+            return defaultPaywallConfig(for: placement)
+        } else {
+            return remotePaywallConfig(for: placement)
+        }
+    }
+    
+    func product(with id: String) -> AdaptyPaywallProduct? {
+        adaptyProducts["custom"]?.first(where: { $0.vendorProductId == id })
     }
     
     func paywallController(for placement: SCEPPaywallPlacement, source: String) -> SCEPPaywallController {
-        let paywall = SCEPKitInternal.shared.getPaywall(for: placement)
+        let paywallConfig = SCEPKitInternal.shared.paywallConfig(for: placement)
         let paywallController: SCEPPaywallController
-        if let paywall {
-            if paywall.hasViewConfiguration, let viewConfiguration = SCEPKitInternal.shared.viewConfigurations[placement] {
+        
+        switch paywallConfig {
+        case .adapty(let placementId):
+            if let paywall = adaptyPaywalls[placementId],
+               paywall.hasViewConfiguration,
+               let viewConfiguration = SCEPKitInternal.shared.adaptyViewConfigurations[placementId] {
                 let controller = SCEPPaywallAdaptyController.instantiate(bundle: .module)
+                controller.paywall = paywall
                 controller.viewConfiguration = viewConfiguration
-                controller.products = []
                 paywallController = controller
-            } else if let data = paywall.remoteConfig?.jsonString.data(using: .utf8), let config = try? JSONDecoder().decode(SCEPPaywallController.Config.self, from: data), let products = self.products[placement] {
-                switch config {
-                case .single(let config):
-                    let controller = SCEPPaywallSingleController.instantiate(bundle: .module)
-                    controller.config = config
-                    controller.products = products
-                    paywallController = controller
-                }
             } else {
                 fatalError()
             }
-        } else {
-            fatalError()
+        case .single(let config):
+            let controller = SCEPPaywallSingleController.instantiate(bundle: .module)
+            controller.config = config
+            paywallController = controller
+        case .verticalTrial(let config):
+            let controller = SCEPPaywallVerticalTrialController.instantiate(bundle: .module)
+            controller.config = config
+            paywallController = controller
         }
         paywallController.placement = placement
         paywallController.source = source
-        paywallController.paywall = paywall
         return paywallController
     }
     
@@ -166,6 +224,7 @@ class SCEPKitInternal: NSObject {
     func showOnboarding() {
         let onboardingPageController = SCEPOnboardingController.instantiate(bundle: .module)
         onboardingWindow = UIWindow(frame: UIScreen.main.bounds)
+        onboardingWindow?.overrideUserInterfaceStyle = appConfig.interface.style.uiUserInterfaceStyle
         onboardingWindow?.rootViewController = onboardingPageController
         onboardingWindow?.makeKeyAndVisible()
 //        KinderCode.shared.trackEvent("OnboardingStarted")
@@ -185,11 +244,16 @@ class SCEPKitInternal: NSObject {
         NotificationCenter.default.post(name: onboardingCompletedNotification, object: nil)
     }
     
-    var termsURL: URL { .init(string: plistValue(for: .termsURL))! }
-    var privacyURL: URL { .init(string: plistValue(for: .privacyURL))! }
-    var contactURL: URL { .init(string: plistValue(for: .contactURL))! }
-    var appleId: String { plistValue(for: .appleId) }
-    var reviewURL: URL { .init(string: "itms-apps://itunes.apple.com/app/id\(appleId)?mt=8&action=write-review")! }
+    enum InterfaceStyle: String, Codable {
+        case light, dark
+        
+        var uiUserInterfaceStyle: UIUserInterfaceStyle {
+            switch self {
+            case .light: return .light
+            case .dark:  return .dark
+            }
+        }
+    }
 }
 
 extension SCEPKitInternal: AdaptyDelegate {

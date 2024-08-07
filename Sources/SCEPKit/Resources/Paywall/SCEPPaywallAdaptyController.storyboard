@@ -16,20 +16,8 @@
                     <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Adapty Paywall" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="18W-DR-G1d">
-                                <rect key="frame" x="139" y="415.66666666666669" width="115" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" name="SCEPTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
-                        <color key="backgroundColor" name="SCEPBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="18W-DR-G1d" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="4b2-na-82A"/>
-                            <constraint firstItem="18W-DR-G1d" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" id="hJn-uO-9nh"/>
-                        </constraints>
+                        <color key="backgroundColor" name="SCEPShade4Color"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -38,11 +26,8 @@
         </scene>
     </scenes>
     <resources>
-        <namedColor name="SCEPBackgroundColor">
-            <color red="0.18008207070707072" green="0.039560585443465121" blue="0.027746033067674071" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
-        <namedColor name="SCEPTextColor">
-            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        <namedColor name="SCEPShade4Color">
+            <color red="0.050000000000000003" green="0.045000000000000005" blue="0.045083333333333336" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
