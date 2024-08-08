@@ -47,6 +47,7 @@ public class SCEPSettingsController: UIViewController {
                 stackView.isHidden = stackView.arrangedSubviews.allSatisfy(\.isHidden)
             }
         }
+        bannerButton.title = config.buttonTitle
         Downloader.downloadImage(from: config.imageURL) { [weak self] image in
             self?.bannerImageView.image = image
         }

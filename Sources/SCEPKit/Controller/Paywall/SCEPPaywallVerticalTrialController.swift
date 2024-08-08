@@ -57,12 +57,8 @@ class SCEPPaywallVerticalTrialController: SCEPPaywallController {
         trialSwitch.isOn = config.isTrialSelected
         trialView.layer.borderColor = UIColor.scepShade2.cgColor
         setupTexts()
-        if placement == .onboarding {
-            imageView.image = Downloader.getSavedImage(from: config.imageURL) ?? .init(named: "SCEPOnboardingPaywall")
-        } else {
-            Downloader.downloadImage(from: config.imageURL) { [weak self] image in
-                self?.imageView.image = image
-            }
+        Downloader.downloadImage(from: config.imageURL) { [weak self] image in
+            self?.imageView.image = image
         }
     }
     

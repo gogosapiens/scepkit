@@ -27,17 +27,16 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nqc-6d-eDF">
-                                <rect key="frame" x="0.0" y="55" width="393" height="524"/>
+                                <rect key="frame" x="0.0" y="28.666666666666686" width="393" height="550.33333333333326"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NH5-qA-igJ">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="524"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="550.33333333333337"/>
                                     </imageView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SCEPOnboardingOverlay" translatesAutoresizingMaskIntoConstraints="NO" id="P3k-fa-M4R">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="524"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="550.33333333333337"/>
                                         <color key="tintColor" name="SCEPShade4Color"/>
                                     </imageView>
                                 </subviews>
-                                <color key="backgroundColor" name="SCEPShade3Color"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="P3k-fa-M4R" secondAttribute="bottom" id="BO6-gQ-hZx"/>
                                     <constraint firstAttribute="trailing" secondItem="NH5-qA-igJ" secondAttribute="trailing" id="XYx-tb-kQG"/>
@@ -47,7 +46,7 @@
                                     <constraint firstAttribute="bottom" secondItem="NH5-qA-igJ" secondAttribute="bottom" id="cKh-ex-HW6"/>
                                     <constraint firstItem="NH5-qA-igJ" firstAttribute="top" secondItem="Nqc-6d-eDF" secondAttribute="top" id="mQs-SH-NgF"/>
                                     <constraint firstItem="P3k-fa-M4R" firstAttribute="leading" secondItem="Nqc-6d-eDF" secondAttribute="leading" id="pSZ-VV-5sa"/>
-                                    <constraint firstAttribute="width" secondItem="Nqc-6d-eDF" secondAttribute="height" multiplier="3:4" id="t9Y-PS-AiA"/>
+                                    <constraint firstAttribute="width" secondItem="Nqc-6d-eDF" secondAttribute="height" multiplier="5:7" id="t9Y-PS-AiA"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="btg-un-Xe2" customClass="SCEPMainButton" customModule="SCEPKit">
@@ -90,12 +89,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="SCEPOnboardingOverlay" width="128" height="128"/>
-        <namedColor name="SCEPShade3Color">
-            <color red="0.14999999999999999" green="0.13500000000000001" blue="0.13525000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
+        <image name="SCEPOnboardingOverlay" width="375" height="531"/>
         <namedColor name="SCEPShade4Color">
-            <color red="0.050000000000000003" green="0.045000000000000005" blue="0.045083333333333336" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.047058823529411764" green="0.043137254901960784" blue="0.043137254901960784" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="SCEPTextColor">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

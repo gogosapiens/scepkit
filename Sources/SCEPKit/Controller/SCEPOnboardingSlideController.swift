@@ -11,6 +11,8 @@ class SCEPOnboardingSlideController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         titleLabel.text = config.title
-        imageView.image = Downloader.getSavedImage(from: config.imageURL) ?? .init(named: "SCEPOnboarding\(index!)")
+        Downloader.downloadImage(from: config.imageURL) { [weak self] image in
+            self?.imageView.image = image
+        }
     }
 }
