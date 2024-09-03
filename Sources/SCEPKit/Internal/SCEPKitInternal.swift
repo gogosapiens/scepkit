@@ -53,7 +53,7 @@ class SCEPKitInternal: NSObject {
         AdaptyUI.activate()
         
         window = UIWindow(frame: UIScreen.main.bounds)
-        window.overrideUserInterfaceStyle = config.app.interface.style.uiUserInterfaceStyle
+        window.overrideUserInterfaceStyle = config.app.style.uiUserInterfaceStyle
         let splashController = SCEPSplashController.instantiate(bundle: .module)
         window.rootViewController = splashController
         window.makeKeyAndVisible()
@@ -153,7 +153,7 @@ class SCEPKitInternal: NSObject {
         return variations[remoteConfigValue(for: "scepkit_variation_id")!]!
     }
     var defaultConfig: SCEPConfig {
-        let variations: [String: SCEPConfig] = defaultRemoteConfigValue(for: "scepkitt_config")!
+        let variations: [String: SCEPConfig] = defaultRemoteConfigValue(for: "scepkit_config")!
         return variations[defaultRemoteConfigValue(for: "scepkit_variation_id")!]!
     }
     
@@ -186,8 +186,12 @@ class SCEPKitInternal: NSObject {
             } else {
                 fatalError()
             }
-        case .verticalTrial(let config):
-            let controller = SCEPPaywallVerticalTrialController.instantiate(bundle: .module)
+        case .vertical(let config):
+            let controller = SCEPPaywallVerticalController.instantiate(bundle: .module)
+            controller.config = config
+            paywallController = controller
+        case .single(let config):
+            let controller = SCEPPaywallSingleController.instantiate(bundle: .module)
             controller.config = config
             paywallController = controller
         }
@@ -212,7 +216,7 @@ class SCEPKitInternal: NSObject {
     func showOnboarding() {
         let onboardingPageController = SCEPOnboardingController.instantiate(bundle: .module)
         onboardingWindow = UIWindow(frame: UIScreen.main.bounds)
-        onboardingWindow?.overrideUserInterfaceStyle = config.app.interface.style.uiUserInterfaceStyle
+        onboardingWindow?.overrideUserInterfaceStyle = config.app.style.uiUserInterfaceStyle
         onboardingWindow?.rootViewController = onboardingPageController
         onboardingWindow?.makeKeyAndVisible()
 //        KinderCode.shared.trackEvent("OnboardingStarted")
@@ -230,17 +234,6 @@ class SCEPKitInternal: NSObject {
         }
         animator.startAnimation()
         NotificationCenter.default.post(name: onboardingCompletedNotification, object: nil)
-    }
-    
-    enum InterfaceStyle: String, Codable {
-        case light, dark
-        
-        var uiUserInterfaceStyle: UIUserInterfaceStyle {
-            switch self {
-            case .light: return .light
-            case .dark:  return .dark
-            }
-        }
     }
 }
 

@@ -8,16 +8,13 @@
 import UIKit
 import Adapty
 
-class SCEPPaywallVerticalTrialController: SCEPPaywallController {
+class SCEPPaywallVerticalController: SCEPPaywallController {
     
     struct Config: Codable {
         let imageURL: URL
         let title: String
         let titleAccents: [String]
         let features: [String]
-        let buttonTitle: String
-        let selectedIndex: Int
-        let isTrialSelected: Bool
     }
     var config: Config!
     
@@ -50,9 +47,13 @@ class SCEPPaywallVerticalTrialController: SCEPPaywallController {
         if placement == .onboarding {
             continueButton.alpha = 0
         }
-        selectedProductIndex = config.selectedIndex
-        trialSwitch.isOn = config.isTrialSelected
+        selectedProductIndex = 0
+        trialSwitch.isOn = false
         trialView.layer.borderColor = UIColor.scepShade2.cgColor
+        trialView.layer.borderWidth = 2
+        trialView.layer.cornerRadius = SCEPKitInternal.shared.config.app.style.paywallTrialSwitchCornerRadius
+        trialView.isHidden = trialProducts.allSatisfy { $0 == nil }
+        
         setupTexts()
         Downloader.downloadImage(from: config.imageURL) { [weak self] image in
             self?.imageView.image = image
@@ -60,7 +61,6 @@ class SCEPPaywallVerticalTrialController: SCEPPaywallController {
     }
     
     func setupTexts() {
-        continueButton.title = config.buttonTitle
         titleLabel.text = config.title
         let attributedTitle = NSMutableAttributedString(attributedString: titleLabel.attributedText!)
         for accent in config.titleAccents {
@@ -129,14 +129,14 @@ class SCEPPaywallVerticalTrialController: SCEPPaywallController {
     }
 }
 
-extension SCEPPaywallVerticalTrialController: UITableViewDataSource {
+extension SCEPPaywallVerticalController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return displayProducts.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(of: SCEPPaywallVerticalTrialProductCell.self, for: indexPath)
+        let cell = tableView.dequeueReusableCell(of: SCEPPaywallVerticalProductCell.self, for: indexPath)
         let product = displayProducts[indexPath.row]
         let isSelected = indexPath.row == selectedProductIndex
         
@@ -148,7 +148,7 @@ extension SCEPPaywallVerticalTrialController: UITableViewDataSource {
         cell.outlineView.layer.borderColor = isSelected ? UIColor.scepAccent.cgColor : UIColor.scepShade2.cgColor
         
         if indexPath.row == 0 {
-            cell.badgeShadowImageView.isHidden = isSelected
+            cell.badgeShadowView.isHidden = isSelected
             cell.badgeView.isHidden = false
             cell.badgeLabel.text = "BEST OFFER"
             cell.leftTitleLabel.text = "\(period.displayUnitString.uppercased())LY ACCESS"
@@ -159,7 +159,7 @@ extension SCEPPaywallVerticalTrialController: UITableViewDataSource {
             cell.rightSubtitleLabel.isHidden = false
         } else {
             
-            cell.badgeShadowImageView.isHidden = true
+            cell.badgeShadowView.isHidden = true
             cell.badgeView.isHidden = true
             if let introductoryPeriod {
                 cell.leftTitleLabel.text = "\(introductoryPeriod.displayNumberOfUnits)-\(introductoryPeriod.displayUnitString.uppercased()) FREE TRIAL"
@@ -176,7 +176,7 @@ extension SCEPPaywallVerticalTrialController: UITableViewDataSource {
     }
 }
 
-extension SCEPPaywallVerticalTrialController: UITableViewDelegate {
+extension SCEPPaywallVerticalController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         UIImpactFeedbackGenerator(style: .heavy).impactOccurred()

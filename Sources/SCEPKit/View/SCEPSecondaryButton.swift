@@ -4,16 +4,14 @@ class SCEPSecondaryButton: UIButton {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        let config = SCEPKitInternal.shared.config.app.interface.mainButton
-        
+                
         backgroundColor = .scepShade3
         clipsToBounds = true
-        layer.cornerRadius = config.cornerRadius
+        layer.cornerRadius = SCEPKitInternal.shared.config.app.style.mainButtonCornerRadius
         heightAnchor.constraint(equalToConstant: 56).isActive = true
         
         titleLabel?.textColor = .scepText
-        titleLabel?.font = SCEPKitInternal.shared.config.app.interface.font(ofSize: config.fontSize, weight: .bold)
+        titleLabel?.font = SCEPKitInternal.shared.config.app.font(ofSize: 18, weight: .bold)
     }
     
     var title: String? {

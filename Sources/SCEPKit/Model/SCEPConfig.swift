@@ -32,41 +32,31 @@ struct SCEPConfig: Codable {
         let appleAppId: String
         let adaptyApiKey: String
         
-        let interface: Interface
+        let style: InterfaceStyle
+        let fontNames: [String: String]
+        
+        func font(ofSize size: CGFloat, weight: UIFont.Weight) -> UIFont {
+            var fontName: String?
+            switch weight {
+            case .medium:
+                fontName = fontNames["medium"]
+            case .semibold:
+                fontName = fontNames["semibold"]
+            case .bold:
+                fontName = fontNames["bold"]
+            default:
+                fontName = nil
+            }
+            if let fontName, let font = UIFont(name: fontName, size: size) {
+                return font
+            } else {
+                return .systemFont(ofSize: size, weight: weight)
+            }
+        }
         
         var reviewURL: URL { .init(string: "https://itunes.apple.com/app/id\(appleAppId)?action=write-review")! }
         
         let productsIds: [String: String]
-        
-        struct Interface: Codable {
-            let style: SCEPKitInternal.InterfaceStyle
-            let fontNames: [String: String]
-            let mainButton: MainButton
-            
-            func font(ofSize size: CGFloat, weight: UIFont.Weight) -> UIFont {
-                var fontName: String?
-                switch weight {
-                case .medium:
-                    fontName = fontNames["medium"]
-                case .semibold:
-                    fontName = fontNames["semibold"]
-                case .bold:
-                    fontName = fontNames["bold"]
-                default:
-                    fontName = nil
-                }
-                if let fontName, let font = UIFont(name: fontName, size: size) {
-                    return font
-                } else {
-                    return .systemFont(ofSize: size, weight: weight)
-                }
-            }
-            
-            struct MainButton: Codable {
-                let cornerRadius: CGFloat
-                let fontSize: CGFloat
-            }
-        }
     }
     
     struct Onboarding: Codable {
@@ -81,7 +71,8 @@ struct SCEPConfig: Codable {
     }
     
     enum Paywall: Codable {
-        case verticalTrial(config: SCEPPaywallVerticalTrialController.Config)
+        case vertical(config: SCEPPaywallVerticalController.Config)
+        case single(config: SCEPPaywallSingleController.Config)
         case adapty(placementId: String)
         
         var adaptyPlacementId: String {
@@ -94,9 +85,11 @@ struct SCEPConfig: Codable {
         
         var imageURLs: [URL] {
             switch self {
-            case .verticalTrial(let config):
+            case .vertical(let config):
                 return [config.imageURL]
-            case .adapty(let placementId):
+            case .single(let config):
+                return [config.imageURL]
+            case .adapty:
                 return []
             }
         }
@@ -109,5 +102,59 @@ struct SCEPConfig: Codable {
         let features: [String]
         let buttonTitle: String
         let imageURL: URL
+    }
+    
+    enum InterfaceStyle: String, Codable {
+        case screensOneDark, screensOneLight, screensTwoDark, screensThreeDark, screensFourDark
+        
+        var uiUserInterfaceStyle: UIUserInterfaceStyle {
+            switch self {
+            case .screensOneDark: return .dark
+            case .screensOneLight:  return .light
+            case .screensTwoDark: return .dark
+            case .screensThreeDark: return .dark
+            case .screensFourDark: return .dark
+            }
+        }
+        
+        var paywallTrialSwitchCornerRadius: CGFloat {
+            switch self {
+            case .screensOneDark: return 12
+            case .screensOneLight:  return 12
+            case .screensTwoDark: return 24
+            case .screensThreeDark: return 8
+            case .screensFourDark: return 12
+            }
+        }
+        
+        var paywallProductCornerRadius: CGFloat {
+            switch self {
+            case .screensOneDark: return 16
+            case .screensOneLight:  return 16
+            case .screensTwoDark: return 33
+            case .screensThreeDark: return 8
+            case .screensFourDark: return 12
+            }
+        }
+        
+        var paywallProductLeftPadding: CGFloat {
+            switch self {
+            case .screensOneDark: return 16
+            case .screensOneLight:  return 16
+            case .screensTwoDark: return 24
+            case .screensThreeDark: return 16
+            case .screensFourDark: return 16
+            }
+        }
+        
+        var mainButtonCornerRadius: CGFloat {
+            switch self {
+            case .screensOneDark: return 16
+            case .screensOneLight:  return 16
+            case .screensTwoDark: return 28
+            case .screensThreeDark: return 8
+            case .screensFourDark: return 12
+            }
+        }
     }
 }
