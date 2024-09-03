@@ -18,15 +18,4 @@ extension SCEPKitInternal {
         }
         return value
     }
-    
-    struct OnboardingConfig: Codable {
-        
-        let buttonTitle: String
-        let slides: [Slide]
-        
-        struct Slide: Codable {
-            let imageURL: URL
-            let title: String
-        }
-    }
 }

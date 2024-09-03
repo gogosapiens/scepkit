@@ -45,6 +45,10 @@ extension SKProduct {
         }
     }
     
+    func localizedPrice(for period: SKProductSubscriptionPeriod) -> String {
+        localizedPriceForPeriod(unit: period.unit, numberOfUnits: period.numberOfUnits)
+    }
+    
     func localizedPriceForPeriod(unit: SKProduct.PeriodUnit, numberOfUnits: Int) -> String {
         if let price = priceForPeriod(unit: unit, numberOfUnits: numberOfUnits) {
             let formatter = NumberFormatter()
@@ -85,40 +89,28 @@ extension SKProduct {
 
 extension SKProductSubscriptionPeriod {
     
-    var stringWithNumber: String {
+    var displayNumberOfUnits: Int {
         if unit == .day, numberOfUnits == 7 {
-            return "1 \(SKProduct.PeriodUnit.week.string.lowercased())"
+            return 1
         } else {
-            return "\(numberOfUnits) \(unit.string.lowercased())\(numberOfUnits == 1 ? "" : "s")"
+            return numberOfUnits
         }
     }
     
-    var string: String {
+    var displayUnit: SKProduct.PeriodUnit {
         if unit == .day, numberOfUnits == 7 {
-            return SKProduct.PeriodUnit.week.string
-        } else if numberOfUnits == 1 {
-            return unit.string
+            return .week
         } else {
-            return stringWithNumber
+            return unit
         }
     }
     
-    var shortStringWithNumber: String {
-        if unit == .day, numberOfUnits == 7 {
-            return "1 \(SKProduct.PeriodUnit.week.shortString)"
-        } else {
-            return "\(numberOfUnits) \(unit.shortString)"
-        }
+    var displayUnitString: String {
+        displayUnit.string
     }
     
-    var shortString: String {
-        if unit == .day, numberOfUnits == 7 {
-            return SKProduct.PeriodUnit.week.shortString
-        } else if numberOfUnits == 1 {
-            return unit.string
-        } else {
-            return stringWithNumber
-        }
+    var displayUnitShortString: String {
+        displayUnit.shortString
     }
     
     var duration: TimeInterval {
@@ -126,7 +118,7 @@ extension SKProductSubscriptionPeriod {
     }
 }
 
-extension SKProduct.PeriodUnit {
+fileprivate extension SKProduct.PeriodUnit {
     
     var string: String {
         switch self {

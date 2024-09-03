@@ -7,7 +7,7 @@ class SCEPOnboardingController: UIViewController {
     @IBOutlet weak var slidesLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var pageControl: UIPageControl!
     
-    var config: SCEPKitInternal.OnboardingConfig!
+    var config: SCEPConfig.Onboarding!
     var slideIndex: Int = 0
     
     override func viewDidLoad() {
@@ -58,7 +58,7 @@ class SCEPOnboardingController: UIViewController {
         }
     }
     
-    func slideController(with config: SCEPKitInternal.OnboardingConfig.Slide, index: Int) -> SCEPOnboardingSlideController {
+    func slideController(with config: SCEPConfig.Onboarding.Slide, index: Int) -> SCEPOnboardingSlideController {
         let controller = SCEPOnboardingSlideController.instantiate(bundle: .module)
         controller.config = config
         controller.index = index

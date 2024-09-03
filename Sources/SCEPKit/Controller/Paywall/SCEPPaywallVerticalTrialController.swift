@@ -18,24 +18,21 @@ class SCEPPaywallVerticalTrialController: SCEPPaywallController {
         let buttonTitle: String
         let selectedIndex: Int
         let isTrialSelected: Bool
-        let products: [Product?]
-        let trialProducts: [Product?]
-        struct Product: Codable {
-            let id: String
-            let leftTitle: String
-            let leftSubtitle: String?
-            let rightTitle: String
-            let rightSubtitle: String?
-            let badge: String?
-        }
     }
     var config: Config!
     
     var selectedProductIndex: Int!
     
-    var displayProducts: [Config.Product] { products.enumerated().map { $1 ?? otherProducts[$0]! } }
-    var products: [Config.Product?] { trialSwitch.isOn ? config.trialProducts : config.products }
-    var otherProducts: [Config.Product?] { trialSwitch.isOn ? config.products : config.trialProducts }
+    var displayProducts: [AdaptyPaywallProduct] { products.enumerated().map { $1 ?? otherProducts[$0]! } }
+    var products: [AdaptyPaywallProduct?] { trialSwitch.isOn ? trialProducts : nonTrialProducts }
+    var otherProducts: [AdaptyPaywallProduct?] { trialSwitch.isOn ? nonTrialProducts : trialProducts }
+    
+    var trialProducts: [AdaptyPaywallProduct?] {
+        [ nil, SCEPKitInternal.shared.product(with: .shortTrial) ]
+    }
+    var nonTrialProducts: [AdaptyPaywallProduct?] {
+        [ SCEPKitInternal.shared.product(with: .long), SCEPKitInternal.shared.product(with: .short) ]
+    }
 
     @IBOutlet weak var continueButton: SCEPMainButton!
     @IBOutlet weak var trialSwitch: UISwitch!
@@ -91,10 +88,7 @@ class SCEPPaywallVerticalTrialController: SCEPPaywallController {
     }
     
     @IBAction func continueTapped(_ sender: SCEPMainButton) {
-        guard
-            let productId = products[selectedProductIndex]?.id,
-            let product = SCEPKitInternal.shared.product(with: productId)
-        else { return }
+        guard let product = products[selectedProductIndex] else { return }
         Adapty.makePurchase(product: product) { [weak self] result in
             switch result {
             case .success(let info):
@@ -107,11 +101,11 @@ class SCEPPaywallVerticalTrialController: SCEPPaywallController {
     }
     
     @IBAction func termsTapped(_ sender: UIButton) {
-        openURL(SCEPKitInternal.shared.appConfig.termsURL)
+        openURL(SCEPKitInternal.shared.config.app.termsURL)
     }
     
     @IBAction func privacyTapped(_ sender: UIButton) {
-        openURL(SCEPKitInternal.shared.appConfig.privacyURL)
+        openURL(SCEPKitInternal.shared.config.app.privacyURL)
     }
     
     @IBAction func restoreTapped(_ sender: UIButton) {
@@ -145,18 +139,38 @@ extension SCEPPaywallVerticalTrialController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(of: SCEPPaywallVerticalTrialProductCell.self, for: indexPath)
         let product = displayProducts[indexPath.row]
         let isSelected = indexPath.row == selectedProductIndex
-        let skProduct = SCEPKitInternal.shared.product(with: product.id)?.skProduct
+        
+        let periods = displayProducts.map { $0.skProduct.subscriptionPeriod! }
+        let shortPeroid = periods.min(by: { $0.duration < $1.duration })!
+        let period = product.skProduct.subscriptionPeriod!
+        let introductoryPeriod = product.skProduct.introductoryPrice?.subscriptionPeriod
         
         cell.outlineView.layer.borderColor = isSelected ? UIColor.scepAccent.cgColor : UIColor.scepShade2.cgColor
-        cell.badgeShadowImageView.isHidden = isSelected || product.badge == nil
-        cell.badgeView.isHidden = product.badge == nil
-        cell.badgeLabel.text = product.badge
-        cell.leftTitleLabel.text = product.leftTitle.insertingPrice(for: skProduct)
-        cell.leftSubtitleLabel.text = product.leftSubtitle?.insertingPrice(for: skProduct)
-        cell.leftSubtitleLabel.isHidden = product.leftSubtitle == nil
-        cell.rightTitleLabel.text = product.rightTitle.insertingPrice(for: skProduct)
-        cell.rightSubtitleLabel.text = product.rightSubtitle?.insertingPrice(for: skProduct)
-        cell.rightSubtitleLabel.isHidden = product.rightSubtitle == nil
+        
+        if indexPath.row == 0 {
+            cell.badgeShadowImageView.isHidden = isSelected
+            cell.badgeView.isHidden = false
+            cell.badgeLabel.text = "BEST OFFER"
+            cell.leftTitleLabel.text = "\(period.displayUnitString.uppercased())LY ACCESS"
+            cell.leftSubtitleLabel.text = "Just \(product.skProduct.localizedPrice) per year"
+            cell.leftSubtitleLabel.isHidden = false
+            cell.rightTitleLabel.text = product.skProduct.localizedPrice(for: shortPeroid)
+            cell.rightSubtitleLabel.text = "per \(shortPeroid.displayUnitString.lowercased())"
+            cell.rightSubtitleLabel.isHidden = false
+        } else {
+            
+            cell.badgeShadowImageView.isHidden = true
+            cell.badgeView.isHidden = true
+            if let introductoryPeriod {
+                cell.leftTitleLabel.text = "\(introductoryPeriod.displayNumberOfUnits)-\(introductoryPeriod.displayUnitString.uppercased()) FREE TRIAL"
+            } else {
+                cell.leftTitleLabel.text = "\(period.displayUnitString.uppercased())LY ACCESS"
+            }
+            cell.leftSubtitleLabel.isHidden = true
+            cell.rightTitleLabel.text = product.skProduct.localizedPrice(for: shortPeroid)
+            cell.rightSubtitleLabel.text = "per \(shortPeroid.displayUnitString.lowercased())"
+            cell.rightSubtitleLabel.isHidden = false
+        }
         
         return cell
     }

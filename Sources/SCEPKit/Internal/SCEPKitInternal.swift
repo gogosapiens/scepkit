@@ -37,23 +37,23 @@ class SCEPKitInternal: NSObject {
         let group = DispatchGroup()
         
         FirebaseApp.configure()
-        let config = RemoteConfig.remoteConfig()
-        config.setDefaults(fromPlist: "remote_config_defaults")
-        config.activate()
+        let remoteConfig = RemoteConfig.remoteConfig()
+        remoteConfig.setDefaults(fromPlist: "remote_config_defaults")
+        remoteConfig.activate()
         group.enter()
-        config.fetch(withExpirationDuration: 0) { status, error in
+        remoteConfig.fetch(withExpirationDuration: 0) { status, error in
             group.leave()
         }
         
         Adapty.delegate = self
         group.enter()
-        Adapty.activate(with: .init(withAPIKey: appConfig.adaptyApiKey)) { error in
+        Adapty.activate(with: .init(withAPIKey: config.app.adaptyApiKey)) { error in
             group.leave()
         }
         AdaptyUI.activate()
         
         window = UIWindow(frame: UIScreen.main.bounds)
-        window.overrideUserInterfaceStyle = appConfig.interface.style.uiUserInterfaceStyle
+        window.overrideUserInterfaceStyle = config.app.interface.style.uiUserInterfaceStyle
         let splashController = SCEPSplashController.instantiate(bundle: .module)
         window.rootViewController = splashController
         window.makeKeyAndVisible()
@@ -120,7 +120,7 @@ class SCEPKitInternal: NSObject {
             }
         }
         if !isOnboardingCompleted {
-            for imageURL in remoteOnboardingConfig.slides.map(\.imageURL) {
+            for imageURL in config.onboarding.slides.map(\.imageURL) {
                 group.enter()
                 Downloader.downloadImage(from: imageURL) { image in
                     if image == nil {
@@ -129,7 +129,7 @@ class SCEPKitInternal: NSObject {
                     group.leave()
                 }
             }
-            for imageURL in remotePaywallConfig(for: .onboarding).imageURLs {
+            for imageURL in config.paywall(for: .onboarding).imageURLs {
                 group.enter()
                 Downloader.downloadImage(from: imageURL) { image in
                     if image == nil {
@@ -148,34 +148,26 @@ class SCEPKitInternal: NSObject {
         }
     }
     
-    var appConfig: SCEPAppConfig { remoteConfigValue(for: "scepkit_app")! }
-    
-    private var remoteOnboardingConfig: OnboardingConfig { remoteConfigValue(for: "scepkit_onboarding")! }
-    private var defaultOnboardingConfig: OnboardingConfig { defaultRemoteConfigValue(for: "scepkit_onboarding")! }
-    var onboardingConfig: OnboardingConfig {
-        if isOnboardingResourcesLoadFailed {
-            return defaultOnboardingConfig
-        } else {
-            return remoteOnboardingConfig
-        }
+    var config: SCEPConfig {
+        let variations: [String: SCEPConfig] = remoteConfigValue(for: "scepkit_config")!
+        return variations[remoteConfigValue(for: "scepkit_variation_id")!]!
+    }
+    var defaultConfig: SCEPConfig {
+        let variations: [String: SCEPConfig] = defaultRemoteConfigValue(for: "scepkitt_config")!
+        return variations[defaultRemoteConfigValue(for: "scepkit_variation_id")!]!
     }
     
-    private func remotePaywallConfig(for placement: SCEPPaywallPlacement) -> SCEPPaywallController.Config {
-        remoteConfigValue(for: "scepkit_paywall_" + placement.id)!
-    }
-    private func defaultPaywallConfig(for placement: SCEPPaywallPlacement) -> SCEPPaywallController.Config {
-        defaultRemoteConfigValue(for: "scepkit_paywall_" + placement.id)!
-    }
-    func paywallConfig(for placement: SCEPPaywallPlacement) -> SCEPPaywallController.Config {
-        if placement == .onboarding, isOnboardingPaywallResourcesLoadFailed {
-            return defaultPaywallConfig(for: placement)
-        } else {
-            return remotePaywallConfig(for: placement)
-        }
+    var onboardingConfig: SCEPConfig.Onboarding {
+        return (isOnboardingResourcesLoadFailed ? defaultConfig : config).onboarding
     }
     
-    func product(with id: String) -> AdaptyPaywallProduct? {
-        adaptyProducts["custom"]?.first(where: { $0.vendorProductId == id })
+    func paywallConfig(for placement: SCEPPaywallPlacement) -> SCEPConfig.Paywall {
+        let isDefault = placement == .onboarding && isOnboardingPaywallResourcesLoadFailed
+        return (isDefault ? defaultConfig : config).paywall(for: placement)
+    }
+    
+    func product(with type: SCEPConfig.ProductType) -> AdaptyPaywallProduct? {
+        adaptyProducts["custom"]?.first(where: { $0.vendorProductId == config.app.productsIds[type.rawValue] })
     }
     
     func paywallController(for placement: SCEPPaywallPlacement, source: String) -> SCEPPaywallController {
@@ -194,10 +186,6 @@ class SCEPKitInternal: NSObject {
             } else {
                 fatalError()
             }
-        case .single(let config):
-            let controller = SCEPPaywallSingleController.instantiate(bundle: .module)
-            controller.config = config
-            paywallController = controller
         case .verticalTrial(let config):
             let controller = SCEPPaywallVerticalTrialController.instantiate(bundle: .module)
             controller.config = config
@@ -224,7 +212,7 @@ class SCEPKitInternal: NSObject {
     func showOnboarding() {
         let onboardingPageController = SCEPOnboardingController.instantiate(bundle: .module)
         onboardingWindow = UIWindow(frame: UIScreen.main.bounds)
-        onboardingWindow?.overrideUserInterfaceStyle = appConfig.interface.style.uiUserInterfaceStyle
+        onboardingWindow?.overrideUserInterfaceStyle = config.app.interface.style.uiUserInterfaceStyle
         onboardingWindow?.rootViewController = onboardingPageController
         onboardingWindow?.makeKeyAndVisible()
 //        KinderCode.shared.trackEvent("OnboardingStarted")

@@ -2,7 +2,7 @@ import UIKit
 
 class SCEPOnboardingSlideController: UIViewController {
     
-    var config: SCEPKitInternal.OnboardingConfig.Slide!
+    var config: SCEPConfig.Onboarding.Slide!
     var index: Int!
     
     @IBOutlet weak var imageView: UIImageView!

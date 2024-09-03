@@ -2,15 +2,7 @@ import UIKit
 
 public class SCEPSettingsController: UIViewController {
     
-    struct Config: Codable {
-        let title: String
-        let titleAccents: [String]
-        let subtitle: String
-        let features: [String]
-        let buttonTitle: String
-        let imageURL: URL
-    }
-    var config: Config!
+    var config: SCEPConfig.Settings!
 
     @IBOutlet weak var closeButton: UIButton!
     @IBOutlet weak var titleLabel: UILabel!
@@ -25,7 +17,7 @@ public class SCEPSettingsController: UIViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        config = SCEPKitInternal.shared.remoteConfigValue(for: "scepkit_settings")
+        config = SCEPKitInternal.shared.config.settings
         bannerTitleLabel.text = config.title
         let attributedTitle = NSMutableAttributedString(attributedString: bannerTitleLabel.attributedText!)
         for accent in config.titleAccents {
@@ -63,18 +55,18 @@ public class SCEPSettingsController: UIViewController {
     }
     
     @IBAction func termsTapped(_ sender: SCEPSecondaryButton) {
-        openURL(SCEPKitInternal.shared.appConfig.termsURL)
+        openURL(SCEPKitInternal.shared.config.app.termsURL)
     }
     
     @IBAction func privacyTapped(_ sender: SCEPSecondaryButton) {
-        openURL(SCEPKitInternal.shared.appConfig.privacyURL)
+        openURL(SCEPKitInternal.shared.config.app.privacyURL)
     }
     
     @IBAction func feedbackTapped(_ sender: SCEPSecondaryButton) {
-        openURL(SCEPKitInternal.shared.appConfig.feedbackURL)
+        openURL(SCEPKitInternal.shared.config.app.feedbackURL)
     }
     
     @IBAction func rateTapped(_ sender: SCEPSecondaryButton) {
-        openURL(SCEPKitInternal.shared.appConfig.reviewURL)
+        openURL(SCEPKitInternal.shared.config.app.reviewURL)
     }
 }
