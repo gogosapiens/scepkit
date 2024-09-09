@@ -33,3 +33,16 @@ class SCEPMainButton: UIButton {
         }
     }
 }
+
+fileprivate extension SCEPConfig.InterfaceStyle {
+    
+    var mainButtonCornerRadius: CGFloat {
+        switch self {
+        case .screensOneDark: return 16
+        case .screensOneLight:  return 16
+        case .screensTwoDark: return 28
+        case .screensThreeDark: return 8
+        case .screensFourDark: return 12
+        }
+    }
+}

@@ -21,3 +21,36 @@ public class SCEPPaywallController: UIViewController {
         }
     }
 }
+
+extension SCEPConfig.InterfaceStyle {
+    
+    var paywallTrialSwitchCornerRadius: CGFloat {
+        switch self {
+        case .screensOneDark: return 12
+        case .screensOneLight:  return 12
+        case .screensTwoDark: return 24
+        case .screensThreeDark: return 8
+        case .screensFourDark: return 12
+        }
+    }
+    
+    var paywallProductCornerRadius: CGFloat {
+        switch self {
+        case .screensOneDark: return 16
+        case .screensOneLight:  return 16
+        case .screensTwoDark: return 33
+        case .screensThreeDark: return 8
+        case .screensFourDark: return 12
+        }
+    }
+    
+    var paywallProductLeftPadding: CGFloat {
+        switch self {
+        case .screensOneDark: return 16
+        case .screensOneLight:  return 16
+        case .screensTwoDark: return 24
+        case .screensThreeDark: return 16
+        case .screensFourDark: return 16
+        }
+    }
+}

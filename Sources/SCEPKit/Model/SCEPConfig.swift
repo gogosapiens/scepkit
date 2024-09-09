@@ -98,7 +98,7 @@ struct SCEPConfig: Codable {
     struct Settings: Codable {
         let title: String
         let titleAccents: [String]
-        let subtitle: String
+        let subtitle: String?
         let features: [String]
         let buttonTitle: String
         let imageURL: URL
@@ -114,46 +114,6 @@ struct SCEPConfig: Codable {
             case .screensTwoDark: return .dark
             case .screensThreeDark: return .dark
             case .screensFourDark: return .dark
-            }
-        }
-        
-        var paywallTrialSwitchCornerRadius: CGFloat {
-            switch self {
-            case .screensOneDark: return 12
-            case .screensOneLight:  return 12
-            case .screensTwoDark: return 24
-            case .screensThreeDark: return 8
-            case .screensFourDark: return 12
-            }
-        }
-        
-        var paywallProductCornerRadius: CGFloat {
-            switch self {
-            case .screensOneDark: return 16
-            case .screensOneLight:  return 16
-            case .screensTwoDark: return 33
-            case .screensThreeDark: return 8
-            case .screensFourDark: return 12
-            }
-        }
-        
-        var paywallProductLeftPadding: CGFloat {
-            switch self {
-            case .screensOneDark: return 16
-            case .screensOneLight:  return 16
-            case .screensTwoDark: return 24
-            case .screensThreeDark: return 16
-            case .screensFourDark: return 16
-            }
-        }
-        
-        var mainButtonCornerRadius: CGFloat {
-            switch self {
-            case .screensOneDark: return 16
-            case .screensOneLight:  return 16
-            case .screensTwoDark: return 28
-            case .screensThreeDark: return 8
-            case .screensFourDark: return 12
             }
         }
     }

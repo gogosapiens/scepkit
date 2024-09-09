@@ -17,23 +17,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Headline about something important" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MNC-Ku-PSb">
-                                <rect key="frame" x="20" y="579" width="353" height="84"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="84" id="plb-7C-Fmj"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="32"/>
-                                <color key="textColor" name="SCEPTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nqc-6d-eDF">
-                                <rect key="frame" x="0.0" y="28.666666666666686" width="393" height="550.33333333333326"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nqc-6d-eDF" userLabel="Image Container">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="628.66666666666663"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NH5-qA-igJ">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="550.33333333333337"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="628.66666666666663"/>
                                     </imageView>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SCEPOnboardingOverlay" translatesAutoresizingMaskIntoConstraints="NO" id="P3k-fa-M4R">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="550.33333333333337"/>
+                                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SCEPOnboardingOverlay" translatesAutoresizingMaskIntoConstraints="NO" id="P3k-fa-M4R">
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="628.66666666666663"/>
                                         <color key="tintColor" name="SCEPShade4Color"/>
                                     </imageView>
                                 </subviews>
@@ -46,46 +37,68 @@
                                     <constraint firstAttribute="bottom" secondItem="NH5-qA-igJ" secondAttribute="bottom" id="cKh-ex-HW6"/>
                                     <constraint firstItem="NH5-qA-igJ" firstAttribute="top" secondItem="Nqc-6d-eDF" secondAttribute="top" id="mQs-SH-NgF"/>
                                     <constraint firstItem="P3k-fa-M4R" firstAttribute="leading" secondItem="Nqc-6d-eDF" secondAttribute="leading" id="pSZ-VV-5sa"/>
-                                    <constraint firstAttribute="width" secondItem="Nqc-6d-eDF" secondAttribute="height" multiplier="5:7" id="t9Y-PS-AiA"/>
+                                    <constraint firstAttribute="width" secondItem="Nqc-6d-eDF" secondAttribute="height" multiplier="5:8" id="t9Y-PS-AiA"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Headline about something important" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MNC-Ku-PSb">
+                                <rect key="frame" x="20" y="520.66666666666663" width="353" height="84"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="84" id="plb-7C-Fmj"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="32"/>
+                                <color key="textColor" name="SCEPTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="74t-qD-Urx">
+                                <rect key="frame" x="16" y="650" width="361" height="48"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="48" id="n0A-K8-5zI"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="btg-un-Xe2" customClass="SCEPMainButton" customModule="SCEPKit">
-                                <rect key="frame" x="16" y="719" width="361" height="35"/>
+                                <rect key="frame" x="16" y="698" width="361" height="56"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" priority="999" constant="56" id="yty-I4-0Xb"/>
+                                </constraints>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="Button"/>
                             </button>
-                            <pageControl opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="fty-CG-8Ch">
-                                <rect key="frame" x="16" y="671" width="361" height="48"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="48" id="KRh-TF-ktt"/>
-                                </constraints>
-                            </pageControl>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" name="SCEPShade4Color"/>
                         <constraints>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="fty-CG-8Ch" secondAttribute="trailing" constant="16" id="2HN-t2-xyN"/>
-                            <constraint firstItem="MNC-Ku-PSb" firstAttribute="top" secondItem="Nqc-6d-eDF" secondAttribute="bottom" id="5iX-XX-pJn"/>
-                            <constraint firstItem="btg-un-Xe2" firstAttribute="top" secondItem="fty-CG-8Ch" secondAttribute="bottom" id="C02-qS-fBR"/>
+                            <constraint firstItem="Nqc-6d-eDF" firstAttribute="bottom" secondItem="MNC-Ku-PSb" secondAttribute="bottom" priority="752" constant="24" id="Fk9-yE-emf"/>
+                            <constraint firstItem="btg-un-Xe2" firstAttribute="top" secondItem="74t-qD-Urx" secondAttribute="bottom" id="GJD-pG-rfz"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="MNC-Ku-PSb" secondAttribute="trailing" constant="20" id="Gur-OJ-aJk"/>
-                            <constraint firstItem="fty-CG-8Ch" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="OHY-LY-RMh"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="btg-un-Xe2" secondAttribute="bottom" constant="64" id="OXZ-Yt-UZg"/>
+                            <constraint firstItem="Nqc-6d-eDF" firstAttribute="top" secondItem="5EZ-qb-Rvc" secondAttribute="top" priority="999" id="QNb-l3-VfO"/>
                             <constraint firstItem="MNC-Ku-PSb" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="WBG-lS-hce"/>
                             <constraint firstItem="btg-un-Xe2" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="WWy-Q2-75M"/>
+                            <constraint firstItem="MNC-Ku-PSb" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" priority="750" constant="50" id="cIa-gs-OIc"/>
+                            <constraint firstItem="74t-qD-Urx" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Nqc-6d-eDF" secondAttribute="bottom" constant="8" id="fpT-Kf-afe"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="74t-qD-Urx" secondAttribute="trailing" constant="16" id="fuK-V1-WbV"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="btg-un-Xe2" secondAttribute="trailing" constant="16" id="hB8-Mz-i72"/>
                             <constraint firstItem="Nqc-6d-eDF" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="hOo-VB-oup"/>
+                            <constraint firstItem="74t-qD-Urx" firstAttribute="top" secondItem="MNC-Ku-PSb" secondAttribute="bottom" priority="751" constant="8" id="rhp-vJ-93T"/>
                             <constraint firstItem="Nqc-6d-eDF" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="tSg-2Y-YJa"/>
-                            <constraint firstItem="fty-CG-8Ch" firstAttribute="top" secondItem="MNC-Ku-PSb" secondAttribute="bottom" constant="8" id="wcf-Pd-Au7"/>
+                            <constraint firstItem="74t-qD-Urx" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="u3g-nK-vur"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="imageBottomConstraint" destination="fpT-Kf-afe" id="r2m-X6-mAC"/>
+                        <outlet property="imageTopConstraint" destination="QNb-l3-VfO" id="oVd-6m-btw"/>
                         <outlet property="imageView" destination="NH5-qA-igJ" id="dLj-hH-xYB"/>
+                        <outlet property="overlayImageView" destination="P3k-fa-M4R" id="MDe-OH-qwK"/>
+                        <outlet property="titleBottomConstraint" destination="rhp-vJ-93T" id="cHn-eQ-4DL"/>
+                        <outlet property="titleImageBottomConstraint" destination="Fk9-yE-emf" id="1ka-es-NSc"/>
                         <outlet property="titleLabel" destination="MNC-Ku-PSb" id="99U-1x-XpY"/>
+                        <outlet property="titleTopConstraint" destination="cIa-gs-OIc" id="PpS-Pf-6OZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6" y="-2"/>
+            <point key="canvasLocation" x="5.343511450381679" y="-2.1126760563380285"/>
         </scene>
     </scenes>
     <resources>

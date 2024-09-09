@@ -42,6 +42,7 @@ class SCEPKitInternal: NSObject {
         remoteConfig.activate()
         group.enter()
         remoteConfig.fetch(withExpirationDuration: 0) { status, error in
+            remoteConfig.activate()
             group.leave()
         }
         
@@ -69,7 +70,7 @@ class SCEPKitInternal: NSObject {
             
             self.loadResources {
                 DispatchQueue.main.async {
-                    self.showApplication()
+//                    self.showApplication()
                 }
             }
         }
