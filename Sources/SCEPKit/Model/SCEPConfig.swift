@@ -31,6 +31,17 @@ struct SCEPConfig: Codable {
         
         let appleAppId: String
         let adaptyApiKey: String
+        let amplitudeApiKey: String
+        
+        let requestTracking: Bool
+        
+        let adStartDelay: TimeInterval?
+        let adInterstitialInterval: TimeInterval?
+        let adAppId: String?
+        let adInterstitialId: String?
+        let adAppOpenId: String?
+        let adBannerId: String?
+        let adRewardedId: String?
         
         let style: InterfaceStyle
         let fontNames: [String: String]

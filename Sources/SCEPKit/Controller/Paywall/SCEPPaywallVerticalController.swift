@@ -1,10 +1,3 @@
-//
-//  SCEPPaywallVerticalTrialController.swift
-//  
-//
-//  Created by Illia Harkavy on 01/08/2024.
-//
-
 import UIKit
 import Adapty
 
@@ -89,15 +82,7 @@ class SCEPPaywallVerticalController: SCEPPaywallController {
     
     @IBAction func continueTapped(_ sender: SCEPMainButton) {
         guard let product = products[selectedProductIndex] else { return }
-        Adapty.makePurchase(product: product) { [weak self] result in
-            switch result {
-            case .success(let info):
-//                logger.debug("Purchase success \(info)")
-                self?.close()
-            case .failure(let error):
-                logger.error("Purchase error \(error)")
-            }
-        }
+        purchase(product)
     }
     
     @IBAction func termsTapped(_ sender: UIButton) {
@@ -109,14 +94,7 @@ class SCEPPaywallVerticalController: SCEPPaywallController {
     }
     
     @IBAction func restoreTapped(_ sender: UIButton) {
-        Adapty.restorePurchases { result in
-            switch result {
-            case .success(let profile):
-                print(profile)
-            case .failure(let error):
-                print(error)
-            }
-        }
+        restore()
     }
     
     override func showContinueButton() {

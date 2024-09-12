@@ -1,10 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by Illia Harkavy on 03/09/2024.
-//
-
 import UIKit
 import Adapty
 
@@ -94,15 +87,7 @@ class SCEPPaywallSingleController: SCEPPaywallController {
     }
     
     @IBAction func continueTapped(_ sender: SCEPMainButton) {
-        Adapty.makePurchase(product: displayProduct) { [weak self] result in
-            switch result {
-            case .success(let info):
-                //                logger.debug("Purchase success \(info)")
-                self?.close()
-            case .failure(let error):
-                logger.error("Purchase error \(error)")
-            }
-        }
+        purchase(displayProduct)
     }
     
     @IBAction func termsTapped(_ sender: UIButton) {
@@ -114,14 +99,7 @@ class SCEPPaywallSingleController: SCEPPaywallController {
     }
     
     @IBAction func restoreTapped(_ sender: UIButton) {
-        Adapty.restorePurchases { result in
-            switch result {
-            case .success(let profile):
-                print(profile)
-            case .failure(let error):
-                print(error)
-            }
-        }
+        restore()
     }
     
     override func showContinueButton() {

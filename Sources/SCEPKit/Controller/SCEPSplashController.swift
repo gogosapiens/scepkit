@@ -1,4 +1,5 @@
 import UIKit
+import AppTrackingTransparency
 
 class SCEPSplashController: UIViewController {
 
@@ -15,14 +16,10 @@ class SCEPSplashController: UIViewController {
     @IBOutlet weak var iconWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var iconCenterYConstraint: NSLayoutConstraint!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        iconImageView.image = .init(named: "SCEPAppIcon")
-        appNameLabel.text = Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ?? ""
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        iconImageView.image = .init(named: "SCEPAppIcon")
+        appNameLabel.text = Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ?? ""
         let style = SCEPKitInternal.shared.config.app.style
         loaderOneView.isHidden = true
         loaderTwoView.isHidden = true
@@ -63,6 +60,14 @@ class SCEPSplashController: UIViewController {
         titleToImageConstraint.isActive = style.splashTitlePosition != .top
         iconWidthConstraint.constant = style.splashIconWidth
         iconCenterYConstraint.constant = style.splashTitlePosition == .imageBottom ? -30 : 0
+        
+        if SCEPKitInternal.shared.config.app.requestTracking {
+            ATTrackingManager.requestTrackingAuthorization { status in
+                if case .authorized = status {
+                    
+                }
+            }
+        }
     }
     
     enum TitlePosition {

@@ -13,21 +13,23 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(name: "Amplitude", url: "https://github.com/amplitude/Amplitude-iOS", .exact("8.18.3")),
+        .package(name: "Amplitude-Swift", url: "https://github.com/amplitude/Amplitude-Swift", .exact("1.9.1")),
         .package(name: "Adapty", url: "https://github.com/adaptyteam/AdaptySDK-iOS", .exact("3.0.0-beta.2")),
-        .package(name: "Firebase", url: "https://github.com/firebase/firebase-ios-sdk", .exact("10.23.0"))        
+        .package(name: "Firebase", url: "https://github.com/firebase/firebase-ios-sdk", .exact("10.23.0")),
+        .package(name: "GoogleMobileAds", url: "https://github.com/googleads/swift-package-manager-google-mobile-ads.git", .exact("11.8.0"))
     ],
     targets: [
         .target(
             name: "SCEPKit",
             dependencies: [
-                .product(name: "AdaptyUI", package: "Adapty", condition: .when(platforms: [.iOS])),
-                .product(name: "Adapty", package: "Adapty", condition: .when(platforms: [.iOS])),
-                "Amplitude",
-                .product(name: "FirebaseRemoteConfig", package: "Firebase", condition: .when(platforms: [.iOS])),
-                .product(name: "FirebaseAnalytics", package: "Firebase", condition: .when(platforms: [.iOS])),
-                .product(name: "FirebaseAppCheck", package: "Firebase", condition: .when(platforms: [.iOS])),
-                .product(name: "FirebaseCrashlytics", package: "Firebase")
+                .product(name: "AdaptyUI", package: "Adapty"),
+                .product(name: "Adapty", package: "Adapty"),
+                .product(name: "AmplitudeSwift", package: "Amplitude-Swift"),
+                .product(name: "FirebaseRemoteConfig", package: "Firebase"),
+                .product(name: "FirebaseAnalytics", package: "Firebase"),
+                .product(name: "FirebaseAppCheck", package: "Firebase"),
+                .product(name: "FirebaseCrashlytics", package: "Firebase"),
+                .product(name: "GoogleMobileAds", package: "GoogleMobileAds")
             ],
             resources: [
                 .process("Resources")

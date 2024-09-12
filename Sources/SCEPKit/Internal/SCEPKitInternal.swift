@@ -1,10 +1,21 @@
 import UIKit
+import AdSupport
+import AppTrackingTransparency
 import StoreKit
 import Adapty
 import AdaptyUI
 import OSLog
 import Firebase
 import FirebaseRemoteConfig
+import AmplitudeSwift
+
+public var isDebug: Bool {
+#if DEBUG
+    return true
+#else
+    return false
+#endif
+}
 
 let logger = Logger(subsystem: "SCEPKit", category: "SCEPKitInternal")
 
@@ -20,19 +31,50 @@ class SCEPKitInternal: NSObject {
     var adaptyPaywalls: [String: AdaptyPaywall] = [:]
     var adaptyViewConfigurations: [String: AdaptyUI.LocalizedViewConfiguration] = [:]
     var adaptyProducts: [String: [AdaptyPaywallProduct]] = [:]
+    var amplitude: Amplitude!
+    var isApplicationShown: Bool = false
+    var isSessionPremium: Bool = false
     private var isOnboardingResourcesLoadFailed: Bool = false
     private var isOnboardingPaywallResourcesLoadFailed: Bool = false
     
     @UserDefaultsValue(key: "SCEPKitInternal.isOnboardingCompleted", defaultValue: false)
     var isOnboardingCompleted: Bool
     
-    @UserDefaultsValue(key: "SCEPKitInternal.isPremuim", defaultValue: false)
-    var isPremium: Bool
+    @UserDefaultsValue(key: "SCEPKitInternal.isAdaptyPremuim", defaultValue: false)
+    var isAdaptyPremium: Bool
+    
+    @UserDefaultsValue(key: "SCEPKitInternal.firstLaunchDate", defaultValue: nil)
+    var firstLaunchDate: Date!
+    
+    var isPremium: Bool {
+        return isAdaptyPremium || isSessionPremium
+    }
     
     let onboardingCompletedNotification = Notification.Name("SCEPKitInternal.onboardingCompletedNotification")
+    let applicationShownNotification = Notification.Name("SCEPKitInternal.applicationShownNotification")
     let premiumStatusUpdatedNotification = Notification.Name("SCEPKitInternal.premiumStatusUpdated")
     
-    func launch(rootViewController: UIViewController) {
+    @MainActor func launch(rootViewController: UIViewController) {
+        
+        let isFirstLaunch = firstLaunchDate == nil
+        if isFirstLaunch {
+            firstLaunchDate = .init()
+            let requestTracking = {
+                ATTrackingManager.requestTrackingAuthorization { status in
+                    let idfa = status == .authorized ? ASIdentifierManager.shared().advertisingIdentifier.uuidString : nil
+                    let idfv = UIDevice.current.identifierForVendor?.uuidString
+                    let properties = ["[SCEPKit] idfa": idfa, "[SCEPKit] idfv": idfv].compactMapValues { $0 }
+                    self.setUserProperties(properties)
+                    self.trackEvent("[SCEPKit] first_launch", properties: ["tracking_authorized": status == .authorized])
+                }
+            }
+            if UIApplication.shared.applicationState == .active {
+                requestTracking()
+            } else {
+                NotificationCenter.default.addOneTimeObserver(forName: UIApplication.didBecomeActiveNotification) { _ in requestTracking()
+                }
+            }
+        }
         
         let group = DispatchGroup()
         
@@ -44,6 +86,18 @@ class SCEPKitInternal: NSObject {
         remoteConfig.fetch(withExpirationDuration: 0) { status, error in
             remoteConfig.activate()
             group.leave()
+            switch status {
+            case .success:
+                let keysAndValues = remoteConfig.allKeys(from: .remote).map { key in
+                    ("[SCEPKit] \(key)", remoteConfig.configValue(forKey: key).stringValue ?? "none")
+                }
+                self.setUserProperties(.init(uniqueKeysWithValues: keysAndValues))
+                if isFirstLaunch, self.isApplicationShown {
+                    self.trackEvent("[SCEPKit] remote_config_fetch_late")
+                }
+            default:
+                self.trackEvent("[SCEPKit] remote_config_fetch_error")
+            }
         }
         
         Adapty.delegate = self
@@ -52,6 +106,10 @@ class SCEPKitInternal: NSObject {
             group.leave()
         }
         AdaptyUI.activate()
+        
+        amplitude = Amplitude(configuration: .init(apiKey: config.app.adaptyApiKey))
+        
+        SCEPAdManager.shared.start()
         
         window = UIWindow(frame: UIScreen.main.bounds)
         window.overrideUserInterfaceStyle = config.app.style.uiUserInterfaceStyle
@@ -70,7 +128,7 @@ class SCEPKitInternal: NSObject {
             
             self.loadResources {
                 DispatchQueue.main.async {
-//                    self.showApplication()
+                    self.showApplication()
                 }
             }
         }
@@ -150,8 +208,13 @@ class SCEPKitInternal: NSObject {
     }
     
     var config: SCEPConfig {
-        let variations: [String: SCEPConfig] = remoteConfigValue(for: "scepkit_config")!
-        return variations[remoteConfigValue(for: "scepkit_variation_id")!]!
+        if let variations: [String: SCEPConfig] = remoteConfigValue(for: "scepkit_config"),
+           let id: String = remoteConfigValue(for: "scepkit_variation_id"),
+           let config = variations[id] {
+            return config
+        } else {
+            return defaultConfig
+        }
     }
     var defaultConfig: SCEPConfig {
         let variations: [String: SCEPConfig] = defaultRemoteConfigValue(for: "scepkit_config")!
@@ -212,6 +275,8 @@ class SCEPKitInternal: NSObject {
         if !isOnboardingCompleted {
             showOnboarding()
         }
+        isApplicationShown = true
+        NotificationCenter.default.post(name: applicationShownNotification, object: nil)
     }
     
     func showOnboarding() {
@@ -220,12 +285,11 @@ class SCEPKitInternal: NSObject {
         onboardingWindow?.overrideUserInterfaceStyle = config.app.style.uiUserInterfaceStyle
         onboardingWindow?.rootViewController = onboardingPageController
         onboardingWindow?.makeKeyAndVisible()
-//        KinderCode.shared.trackEvent("OnboardingStarted")
+        trackEvent("[SCEPKit] onboarding_started")
     }
     
     func completeOnboarding() {
         isOnboardingCompleted = true
-//        KinderCode.shared.trackEvent("OnboardingFinished")
         let animator = UIViewPropertyAnimator(duration: 0.25, curve: .keyboard) {
             self.onboardingWindow?.transform = .init(translationX: 0, y: UIScreen.main.bounds.height)
         }
@@ -235,15 +299,33 @@ class SCEPKitInternal: NSObject {
         }
         animator.startAnimation()
         NotificationCenter.default.post(name: onboardingCompletedNotification, object: nil)
+        trackEvent("[SCEPKit] onboarding_finished")
+    }
+    
+    func trackEvent(_ name: String, properties: [String: Any]? = nil) {
+        guard !isDebug else {
+            logger.log("Track event: \(name), properties: \(properties?.debugDescription ?? "[:]")")
+            return
+        }
+        amplitude.track(eventType: name, eventProperties: properties)
+        Analytics.logEvent(name, parameters: properties)
+    }
+    
+    func setUserProperties(_ properties: [String: Any]) {
+        guard !isDebug else {
+            logger.log("Set user properties: \(properties.debugDescription)")
+            return
+        }
+        amplitude.identify(userProperties: properties)
     }
 }
 
 extension SCEPKitInternal: AdaptyDelegate {
     
     func didLoadLatestProfile(_ profile: AdaptyProfile) {
-        let isPremium = profile.accessLevels["premium"]?.isActive ?? false
-        if isPremium != self.isPremium {
-            self.isPremium = isPremium
+        let isAdaptyPremium = profile.accessLevels["premium"]?.isActive ?? false
+        if isAdaptyPremium != self.isAdaptyPremium {
+            self.isAdaptyPremium = isAdaptyPremium
             DispatchQueue.main.async {
                 NotificationCenter.default.post(name: self.premiumStatusUpdatedNotification, object: nil)
             }

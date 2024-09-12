@@ -1,6 +1,7 @@
 import UIKit
 import Adapty
 import AdaptyUI
+import GoogleMobileAds
 
 final public class SCEPKit {
     
@@ -21,21 +22,32 @@ final public class SCEPKit {
         SCEPKitInternal.shared.premiumStatusUpdatedNotification
     }
     
-    public static func launch(rootViewController: UIViewController) {
+    @MainActor public static func launch(rootViewController: UIViewController) {
         SCEPKitInternal.shared.launch(rootViewController: rootViewController)
     }
     
-    public static func paywallController(for placement: SCEPPaywallPlacement, source: String) -> SCEPPaywallController {
-        SCEPKitInternal.shared.paywallController(for: placement, source: source)
+    public static func paywallController(source: String) -> SCEPPaywallController {
+        SCEPKitInternal.shared.paywallController(for: .main, source: source)
     }
     
     public static func settingsController() -> SCEPSettingsController {
         SCEPKitInternal.shared.settingsController()
     }
     
+    @MainActor public static func showIntesstitialAd(from controller: UIViewController?, placement: String) {
+        SCEPAdManager.shared.showInterstitialAd(from: controller, placement: placement)
+    }
+    
+    @MainActor public static func showRewardedAd(from controller: UIViewController, placement: String, completion: @escaping (Bool) -> Void) {
+        SCEPAdManager.shared.showRewardedAd(from: controller, placement: placement, completion: completion)
+    }
+    
+    @MainActor public static func getBannerView(placement: String) -> GADBannerView? {
+        SCEPAdManager.shared.getBannerAdView(placement: placement)
+    }
 }
 
-public enum SCEPPaywallPlacement: CaseIterable, Hashable {
+enum SCEPPaywallPlacement: CaseIterable, Hashable {
     case onboarding
     case main
     
