@@ -5,10 +5,9 @@ class SCEPPaywallSingleController: SCEPPaywallController {
     
     struct Config: Codable {
         let imageURL: URL
-        let title: String
-        let features: [String]
-        let featuresAccents: [String]
-        let laurel: String
+        let title: LocalizedString
+        let features: [LocalizedString]
+        let laurel: LocalizedString
     }
     var config: Config!
     
@@ -34,6 +33,11 @@ class SCEPPaywallSingleController: SCEPPaywallController {
     @IBOutlet weak var feature1Label: SCEPLabel!
     @IBOutlet weak var feature2Label: SCEPLabel!
     @IBOutlet weak var feature3Label: SCEPLabel!
+    @IBOutlet weak var trialLabel: SCEPLabel!
+    @IBOutlet weak var cancelAnytimeLabel: SCEPLabel!
+    @IBOutlet weak var termsButton: SCEPButton!
+    @IBOutlet weak var privacyButton: SCEPButton!
+    @IBOutlet weak var restoreButton: SCEPButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,22 +56,23 @@ class SCEPPaywallSingleController: SCEPPaywallController {
             self?.imageView.image = image
         }
         updatePriceLabel()
+        
+        trialLabel.text = .init(localized: "Enable free trial", bundle: .module)
+        cancelAnytimeLabel.text = .init(localized: "CANCEL ANYTIME", bundle: .module)
+        termsButton.title = .init(localized: "Terms", bundle: .module)
+        privacyButton.title = .init(localized: "Privacy", bundle: .module)
+        restoreButton.title = .init(localized: "Restore", bundle: .module)
+        continueButton.title = .init(localized: "Continue", bundle: .module)
     }
     
     func setupTexts() {
-        titleLabel.text = config.title
-        laurelLabel.text = config.laurel
+        titleLabel.text = config.title.localized()
+        laurelLabel.text = config.laurel.localized()
         [feature0Label, feature1Label, feature2Label, feature3Label].enumerated().forEach { index, label in
             guard let label else { return }
             if index < config.features.count {
-                label.text = config.features[index]
-                let accent = config.featuresAccents[index]
-                let attributedText = NSMutableAttributedString(attributedString: label.attributedText!)
-                attributedText.addAttributes(
-                    [.foregroundColor: UIColor.scepAccent],
-                    range: NSString(string: attributedText.string).range(of: accent)
-                )
-                label.attributedText = attributedText
+                label.text = config.features[index].localized()
+                label.styleTextWithBraces()
             } else {
                 label.superview?.superview?.isHidden = true
             }
@@ -76,10 +81,10 @@ class SCEPPaywallSingleController: SCEPPaywallController {
     
     func updatePriceLabel() {
         guard let subscriptionPeriod = displayProduct.skProduct.subscriptionPeriod else {
-            priceLabel.text = "Error"
+            priceLabel.text = .init(localized: "Error", bundle: .module)
             return
         }
-        priceLabel.text = "\(subscriptionPeriod.displayUnitString)ly, \(displayProduct.skProduct.localizedPrice)/\(subscriptionPeriod.displayUnitString.lowercased())\nAuto-renewable. Cancel anytime"
+        priceLabel.text = "\(subscriptionPeriod.displayUnitLocalizedAdjective), \(displayProduct.skProduct.localizedPrice)/\(subscriptionPeriod.displayUnitLocalizedNoun.lowercased())\n" + .init(localized: "Auto-renewable. Cancel anytime", bundle: .module)
     }
     
     @IBAction func trialSwitchValueChanged(_ sender: UISwitch) {

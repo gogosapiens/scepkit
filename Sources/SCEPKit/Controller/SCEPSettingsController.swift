@@ -26,27 +26,26 @@ public class SCEPSettingsController: UIViewController {
     @IBOutlet weak var feedbackChevronImageView: UIImageView!
     @IBOutlet weak var privacyChevronImageView: UIImageView!
     @IBOutlet weak var termsChevronImageView: UIImageView!
+    @IBOutlet weak var mainLabel: SCEPLabel!
+    @IBOutlet weak var legalLabel: SCEPLabel!
+    @IBOutlet weak var rateButton: SCEPSecondaryButton!
+    @IBOutlet weak var feedbackButton: SCEPSecondaryButton!
+    @IBOutlet weak var privacyButton: SCEPSecondaryButton!
+    @IBOutlet weak var termsButton: SCEPSecondaryButton!
     
     public override func viewDidLoad() {
         super.viewDidLoad()
         config = SCEPKitInternal.shared.config.settings
         let style = SCEPKitInternal.shared.config.app.style
-        bannerTitleLabel.text = config.title
-        let attributedTitle = NSMutableAttributedString(attributedString: bannerTitleLabel.attributedText!)
-        for accent in config.titleAccents {
-            attributedTitle.addAttributes(
-                [.foregroundColor: UIColor.scepAccent],
-                range: NSString(string: attributedTitle.string).range(of: accent)
-            )
-        }
-        bannerTitleLabel.attributedText = attributedTitle
-        bannerSubtitleLabel.text = config.subtitle
+        bannerTitleLabel.text = config.title.localized()
+        bannerTitleLabel.styleTextWithBraces()
+        bannerSubtitleLabel.text = config.subtitle?.localized()
         bannerSubtitleLabel.alpha = 0.8
         bannerSubtitleLabel.isHidden = config.subtitle == nil
         [bannerFeature0Label, bannerFeature1Label, bannerFeature2Label, bannerFeature3Label].enumerated().forEach { index, label in
             if index < config.features.count {
                 label?.superview?.isHidden = false
-                label?.text = config.features[index]
+                label?.text = config.features[index].localized()
             } else {
                 label?.superview?.isHidden = false
             }
@@ -54,7 +53,6 @@ public class SCEPSettingsController: UIViewController {
                 stackView.isHidden = stackView.arrangedSubviews.allSatisfy(\.isHidden)
             }
         }
-        bannerButton.title = config.buttonTitle
         Downloader.downloadImage(from: config.imageURL) { [weak self] image in
             self?.bannerImageView.image = image
         }
@@ -73,6 +71,15 @@ public class SCEPSettingsController: UIViewController {
         feedbackImageView.image = style.settingsFeedbackImage
         privacyImageView.image = style.settingsPrivacyImage
         termsImageView.image = style.settingsTermsImage
+        
+        titleLabel.text = .init(localized: "Settings", bundle: .module)
+        bannerButton.title = .init(localized: "Get started", bundle: .module)
+        mainLabel.text = .init(localized: "MAIN", bundle: .module)
+        legalLabel.text = .init(localized: "LEGAL", bundle: .module)
+        rateButton.title = .init(localized: "Rate us", bundle: .module)
+        feedbackButton.title = .init(localized: "Feedback", bundle: .module)
+        privacyButton.title = .init(localized: "Privacy Policy", bundle: .module)
+        termsButton.title = .init(localized: "Terms of Use", bundle: .module)
     }
     
     @IBAction func bannerButtonTapped(_ sender: SCEPMainButton) {
@@ -198,5 +205,40 @@ fileprivate extension SCEPConfig.InterfaceStyle {
         case .screensFourDark:
             return .init(named: "SCEPSettingsTerms-screensFour", in: .module, with: nil)!
         }
+    }
+}
+
+extension UILabel {
+    func styleTextWithBraces() {
+        guard let text = self.text else { return }
+        
+        // Regular expression to find text within curly braces
+        let pattern = "\\{(.*?)\\}"
+        let regex = try! NSRegularExpression(pattern: pattern)
+        
+        // Mutable attributed string
+        let attributedText = NSMutableAttributedString(string: text)
+        let nsRange = NSRange(text.startIndex..<text.endIndex, in: text)
+        
+        // Find matches for curly braces
+        let matches = regex.matches(in: text, options: [], range: nsRange)
+        
+        // Iterate over the matches in reverse order to avoid index issues
+        for match in matches.reversed() {
+            let range = match.range(at: 1) // Get the range of the text inside {}
+            let braceRange = match.range // Get the range of the entire {}
+            
+            // Apply color to the text inside the braces
+            attributedText.addAttribute(.foregroundColor, value: UIColor.systemTeal, range: range)
+            
+            // Replace the entire {} with just the inner text
+            let startIndex = text.index(text.startIndex, offsetBy: braceRange.location + 1)
+            let endIndex = text.index(text.startIndex, offsetBy: braceRange.location + braceRange.length - 1)
+            let innerTextRange = NSRange(startIndex..<endIndex, in: text)
+            attributedText.replaceCharacters(in: braceRange, with: attributedText.attributedSubstring(from: innerTextRange).string)
+        }
+        
+        // Set the final attributed text to the label
+        self.attributedText = attributedText
     }
 }

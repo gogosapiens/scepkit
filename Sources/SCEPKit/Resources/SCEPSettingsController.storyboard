@@ -444,12 +444,18 @@
                         <outlet property="bannerTopStackView" destination="33K-mV-NId" id="2Dg-uR-2ly"/>
                         <outlet property="bannerView" destination="UO1-Ec-JhH" id="fjN-xn-dud"/>
                         <outlet property="closeButton" destination="WIv-v0-HML" id="2pQ-xa-c3h"/>
+                        <outlet property="feedbackButton" destination="1Fe-72-Dti" id="SoI-EJ-PQP"/>
                         <outlet property="feedbackChevronImageView" destination="6KT-cF-ht3" id="9hF-ig-X9h"/>
                         <outlet property="feedbackImageView" destination="QR9-mk-fw7" id="f4W-r1-Jyc"/>
+                        <outlet property="legalLabel" destination="osN-wU-JXe" id="6Dl-KN-jSW"/>
+                        <outlet property="mainLabel" destination="62u-iR-RPZ" id="YSu-vY-9Zz"/>
+                        <outlet property="privacyButton" destination="jMn-3Z-gZA" id="VfC-nX-mU2"/>
                         <outlet property="privacyChevronImageView" destination="vm1-2l-63d" id="jis-1K-9fu"/>
                         <outlet property="privacyImageView" destination="Img-hw-V3z" id="Qnh-mr-cRf"/>
+                        <outlet property="rateButton" destination="tkg-bC-a8K" id="dTP-SC-iCe"/>
                         <outlet property="rateChevronImageView" destination="PbA-NH-cCV" id="UMl-9E-3FV"/>
                         <outlet property="rateImageView" destination="gyo-R0-iyH" id="kgD-eZ-LHD"/>
+                        <outlet property="termsButton" destination="5Tf-Ie-KKv" id="nrl-BM-KXG"/>
                         <outlet property="termsChevronImageView" destination="B5C-Mk-MfF" id="evp-jI-XgQ"/>
                         <outlet property="termsImageView" destination="wHH-A3-tEo" id="I56-k5-hGg"/>
                         <outlet property="titleLabel" destination="guc-TB-jp8" id="mlH-gV-TKO"/>

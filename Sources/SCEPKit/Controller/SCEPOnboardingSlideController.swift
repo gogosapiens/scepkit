@@ -19,7 +19,7 @@ class SCEPOnboardingSlideController: UIViewController {
         
         let style = SCEPKitInternal.shared.config.app.style
         
-        titleLabel.text = config.title
+        titleLabel.text = config.title.localized()
         Downloader.downloadImage(from: config.imageURL) { [weak self] image in
             self?.imageView.image = image
         }

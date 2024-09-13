@@ -318,6 +318,22 @@ class SCEPKitInternal: NSObject {
         }
         amplitude.identify(userProperties: properties)
     }
+    
+    private func remoteConfigValue<Type: Decodable>(for key: String) -> Type? {
+        let data = RemoteConfig.remoteConfig().configValue(forKey: key).dataValue
+        guard let value = try? JSONDecoder().decode(Type.self, from: data) else { return nil }
+        return value
+    }
+    
+    private func defaultRemoteConfigValue<Type: Decodable>(for key: String) -> Type? {
+        guard
+            let data = RemoteConfig.remoteConfig().defaultValue(forKey: key)?.dataValue,
+            let value = try? JSONDecoder().decode(Type.self, from: data)
+        else {
+            return nil
+        }
+        return value
+    }
 }
 
 extension SCEPKitInternal: AdaptyDelegate {

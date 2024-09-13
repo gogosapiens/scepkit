@@ -5,9 +5,8 @@ class SCEPPaywallVerticalController: SCEPPaywallController {
     
     struct Config: Codable {
         let imageURL: URL
-        let title: String
-        let titleAccents: [String]
-        let features: [String]
+        let title: LocalizedString
+        let features: [LocalizedString]
     }
     var config: Config!
     
@@ -34,6 +33,11 @@ class SCEPPaywallVerticalController: SCEPPaywallController {
     @IBOutlet weak var feature1Label: SCEPLabel!
     @IBOutlet weak var feature2Label: SCEPLabel!
     @IBOutlet weak var feature3Label: SCEPLabel!
+    @IBOutlet weak var trialLabel: SCEPLabel!
+    @IBOutlet weak var cancelAnytimeLabel: SCEPLabel!
+    @IBOutlet weak var termsButton: SCEPButton!
+    @IBOutlet weak var privacyButton: SCEPButton!
+    @IBOutlet weak var restoreButton: SCEPButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,21 +55,21 @@ class SCEPPaywallVerticalController: SCEPPaywallController {
         Downloader.downloadImage(from: config.imageURL) { [weak self] image in
             self?.imageView.image = image
         }
+        
+        trialLabel.text = .init(localized: "Enable free trial", bundle: .module)
+        cancelAnytimeLabel.text = .init(localized: "CANCEL ANYTIME", bundle: .module)
+        termsButton.title = .init(localized: "Terms", bundle: .module)
+        privacyButton.title = .init(localized: "Privacy", bundle: .module)
+        restoreButton.title = .init(localized: "Restore", bundle: .module)
+        continueButton.title = .init(localized: "Continue", bundle: .module)
     }
     
     func setupTexts() {
-        titleLabel.text = config.title
-        let attributedTitle = NSMutableAttributedString(attributedString: titleLabel.attributedText!)
-        for accent in config.titleAccents {
-            attributedTitle.addAttributes(
-                [.foregroundColor: UIColor.scepAccent],
-                range: NSString(string: attributedTitle.string).range(of: accent)
-            )
-        }
-        titleLabel.attributedText = attributedTitle
+        titleLabel.text = config.title.localized()
+        titleLabel.styleTextWithBraces()
         [feature0Label, feature1Label, feature2Label, feature3Label].enumerated().forEach { index, label in
             if index < config.features.count {
-                label?.text = config.features[index]
+                label?.text = config.features[index].localized()
             } else {
                 label?.superview?.superview?.isHidden = true
             }
@@ -128,25 +132,25 @@ extension SCEPPaywallVerticalController: UITableViewDataSource {
         if indexPath.row == 0 {
             cell.badgeShadowView.isHidden = isSelected
             cell.badgeView.isHidden = false
-            cell.badgeLabel.text = "BEST OFFER"
-            cell.leftTitleLabel.text = "\(period.displayUnitString.uppercased())LY ACCESS"
-            cell.leftSubtitleLabel.text = "Just \(product.skProduct.localizedPrice) per year"
+            cell.badgeLabel.text = .init(localized: "BEST OFFER", bundle: .module)
+            cell.leftTitleLabel.text = .init(localized: "{0} ACCESS", bundle: .module).insertingArguments(period.displayUnitLocalizedAdjective.uppercased())
+            cell.leftSubtitleLabel.text = .init(localized: "Just {0} per {1}", bundle: .module).insertingArguments(product.skProduct.localizedPrice, period.displayUnitLocalizedNoun)
             cell.leftSubtitleLabel.isHidden = false
             cell.rightTitleLabel.text = product.skProduct.localizedPrice(for: shortPeroid)
-            cell.rightSubtitleLabel.text = "per \(shortPeroid.displayUnitString.lowercased())"
+            cell.rightSubtitleLabel.text = .init(localized: "per {0}", bundle: .module).insertingArguments(shortPeroid.displayUnitLocalizedNoun.lowercased())
             cell.rightSubtitleLabel.isHidden = false
         } else {
             
             cell.badgeShadowView.isHidden = true
             cell.badgeView.isHidden = true
             if let introductoryPeriod {
-                cell.leftTitleLabel.text = "\(introductoryPeriod.displayNumberOfUnits)-\(introductoryPeriod.displayUnitString.uppercased()) FREE TRIAL"
+                cell.leftTitleLabel.text = .init(localized: "{0}-DAY FREE TRIAL", bundle: .module).insertingArguments(introductoryPeriod.displayNumberOfUnits)
             } else {
-                cell.leftTitleLabel.text = "\(period.displayUnitString.uppercased())LY ACCESS"
+                cell.leftTitleLabel.text = .init(localized: "{0} ACCESS", bundle: .module).insertingArguments(period.displayUnitLocalizedAdjective.uppercased())
             }
             cell.leftSubtitleLabel.isHidden = true
             cell.rightTitleLabel.text = product.skProduct.localizedPrice(for: shortPeroid)
-            cell.rightSubtitleLabel.text = "per \(shortPeroid.displayUnitString.lowercased())"
+            cell.rightSubtitleLabel.text = .init(localized: "per {0}", bundle: .module).insertingArguments(shortPeroid.displayUnitLocalizedNoun.lowercased())
             cell.rightSubtitleLabel.isHidden = false
         }
         

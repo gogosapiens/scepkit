@@ -20,18 +20,6 @@ class SCEPMainButton: UIButton {
         titleLabel?.textColor = .scepText
         titleLabel?.font = SCEPKitInternal.shared.config.app.font(ofSize: 18, weight: .bold)
     }
-    
-    var title: String? {
-        get {
-            title(for: .normal)
-        }
-        set {
-            UIView.performWithoutAnimation {
-                setTitle(newValue, for: .normal)
-                layoutIfNeeded()
-            }
-        }
-    }
 }
 
 fileprivate extension SCEPConfig.InterfaceStyle {

@@ -1,35 +1,7 @@
 import Foundation
 import StoreKit
 
-extension String {
-    
-    func insertingPrice(for product: SKProduct?) -> String {
-        if let product {
-            return product.string(from: self)
-        } else {
-            let units: [SKProduct.PeriodUnit] = [.day, .week, .month, .year]
-            var string = self
-            for unit in units {
-                string = string.replacingOccurrences(of: "{\(unit.string.lowercased())}", with: "-")
-            }
-            return string
-        }
-    }
-}
-
 extension SKProduct {
-    
-    func string(from template: String) -> String {
-        let units: [SKProduct.PeriodUnit] = [.day, .week, .month, .year]
-        var string = template
-        for unit in units {
-            string = string.replacingOccurrences(
-                of: "{\(unit.string.lowercased())}",
-                with: localizedPriceForPeriod(unit: unit, numberOfUnits: 1)
-            )
-        }
-        return string
-    }
     
     var localizedPrice: String {
         guard let subscriptionPeriod else { return "-" }
@@ -105,12 +77,12 @@ extension SKProductSubscriptionPeriod {
         }
     }
     
-    var displayUnitString: String {
-        displayUnit.string
+    var displayUnitLocalizedNoun: String {
+        displayUnit.localizedNoun
     }
     
-    var displayUnitShortString: String {
-        displayUnit.shortString
+    var displayUnitLocalizedAdjective: String {
+        displayUnit.localizedAdjective
     }
     
     var duration: TimeInterval {
@@ -120,23 +92,23 @@ extension SKProductSubscriptionPeriod {
 
 fileprivate extension SKProduct.PeriodUnit {
     
-    var string: String {
+    var localizedNoun: String {
         switch self {
-        case .day: return "Day"
-        case .week: return "Week"
-        case .month: return "Month"
-        case .year: return "Year"
-        @unknown default: return "IDK"
+        case .day: return .init(localized: "Day", bundle: .module)
+        case .week: return .init(localized: "Week", bundle: .module)
+        case .month: return .init(localized: "Month", bundle: .module)
+        case .year: return .init(localized: "Year", bundle: .module)
+        @unknown default: return "-"
         }
     }
     
-    var shortString: String {
+    var localizedAdjective: String {
         switch self {
-        case .day: return "dy"
-        case .week: return "week"
-        case .month: return "mo"
-        case .year: return "yr"
-        @unknown default: return "idk"
+        case .day: return .init(localized: "Daily", bundle: .module)
+        case .week: return .init(localized: "Weekly", bundle: .module)
+        case .month: return .init(localized: "Monthly", bundle: .module)
+        case .year: return .init(localized: "Yearly", bundle: .module)
+        @unknown default: return "-"
         }
     }
     

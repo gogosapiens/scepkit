@@ -40,7 +40,7 @@
                                     <constraint firstItem="JCZ-67-aYL" firstAttribute="top" secondItem="nRv-G6-QA9" secondAttribute="top" id="wmu-Xm-emR"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="248" verticalHuggingPriority="251" text="Get full access with Our App PRO" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UK9-ss-RUG" customClass="SCEPLabel" customModule="SCEPKit">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="248" verticalHuggingPriority="251" text="Get full access with Our App PRO" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="UK9-ss-RUG" customClass="SCEPLabel" customModule="SCEPKit">
                                 <rect key="frame" x="16" y="245" width="361" height="91"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="38"/>
                                 <color key="textColor" name="SCEPTextColor"/>
@@ -59,7 +59,7 @@
                                                     <constraint firstAttribute="width" constant="24" id="ocG-7p-DcK"/>
                                                 </constraints>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="248" verticalHuggingPriority="251" text="Unlimited chat messages" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="83z-UH-X1E" customClass="SCEPLabel" customModule="SCEPKit">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="248" verticalHuggingPriority="251" text="Unlimited chat messages" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="83z-UH-X1E" customClass="SCEPLabel" customModule="SCEPKit">
                                                 <rect key="frame" x="32" y="0.0" width="329" height="24"/>
                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                                 <color key="textColor" name="SCEPTextColor"/>
@@ -80,7 +80,7 @@
                                                     <constraint firstAttribute="width" constant="24" id="mOw-lk-rFk"/>
                                                 </constraints>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="248" verticalHuggingPriority="251" text="Fastest GPT model" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pXx-yd-COc" customClass="SCEPLabel" customModule="SCEPKit">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="248" verticalHuggingPriority="251" text="Fastest GPT model" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="pXx-yd-COc" customClass="SCEPLabel" customModule="SCEPKit">
                                                 <rect key="frame" x="32" y="0.0" width="329" height="24"/>
                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                                 <color key="textColor" name="SCEPTextColor"/>
@@ -101,7 +101,7 @@
                                                     <constraint firstAttribute="width" constant="24" id="RNK-rd-Y2F"/>
                                                 </constraints>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="248" verticalHuggingPriority="251" text="Premium AI features" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xuI-dI-WRC" customClass="SCEPLabel" customModule="SCEPKit">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="248" verticalHuggingPriority="251" text="Premium AI features" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="xuI-dI-WRC" customClass="SCEPLabel" customModule="SCEPKit">
                                                 <rect key="frame" x="32" y="0.0" width="329" height="24"/>
                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                                 <color key="textColor" name="SCEPTextColor"/>
@@ -122,7 +122,7 @@
                                                     <constraint firstAttribute="width" constant="24" id="wZq-32-Lrz"/>
                                                 </constraints>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="248" verticalHuggingPriority="251" text="No more ads" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Msb-19-li8" customClass="SCEPLabel" customModule="SCEPKit">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="248" verticalHuggingPriority="251" text="No more ads" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Msb-19-li8" customClass="SCEPLabel" customModule="SCEPKit">
                                                 <rect key="frame" x="32" y="0.0" width="329" height="24"/>
                                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                                 <color key="textColor" name="SCEPTextColor"/>
@@ -369,7 +369,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="quU-kN-ayM">
                                 <rect key="frame" x="42" y="780" width="309" height="38"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kJc-a2-kvL">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kJc-a2-kvL" customClass="SCEPButton" customModule="SCEPKit">
                                         <rect key="frame" x="0.0" y="0.0" width="103" height="38"/>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="12"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -380,7 +380,7 @@
                                             <action selector="termsTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="lx5-YK-PDL"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M96-sB-f78">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M96-sB-f78" customClass="SCEPButton" customModule="SCEPKit">
                                         <rect key="frame" x="103" y="0.0" width="103" height="38"/>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="12"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -391,7 +391,7 @@
                                             <action selector="privacyTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="pww-I7-Gii"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vrv-th-AGX">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="bottom" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vrv-th-AGX" customClass="SCEPButton" customModule="SCEPKit">
                                         <rect key="frame" x="206" y="0.0" width="103" height="38"/>
                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="12"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -446,14 +446,19 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="cancelAnytimeLabel" destination="jTf-id-TSR" id="fbi-je-0zP"/>
                         <outlet property="continueButton" destination="SLd-Vz-J81" id="Hq7-gZ-QnI"/>
                         <outlet property="feature0Label" destination="83z-UH-X1E" id="pb0-Xi-0Oo"/>
                         <outlet property="feature1Label" destination="pXx-yd-COc" id="OlS-R9-ohH"/>
                         <outlet property="feature2Label" destination="xuI-dI-WRC" id="MOC-ys-BSh"/>
                         <outlet property="feature3Label" destination="Msb-19-li8" id="pzA-wL-hbK"/>
                         <outlet property="imageView" destination="JCZ-67-aYL" id="8FL-24-MF6"/>
+                        <outlet property="privacyButton" destination="M96-sB-f78" id="Fvc-vW-IDk"/>
+                        <outlet property="restoreButton" destination="Vrv-th-AGX" id="kxm-x0-sBy"/>
                         <outlet property="tableView" destination="R18-7W-ehU" id="ce6-2L-IjE"/>
+                        <outlet property="termsButton" destination="kJc-a2-kvL" id="KkB-5X-lC4"/>
                         <outlet property="titleLabel" destination="UK9-ss-RUG" id="DC7-ax-SVG"/>
+                        <outlet property="trialLabel" destination="Bzp-zO-s7k" id="RTn-GL-l0K"/>
                         <outlet property="trialSwitch" destination="1fB-go-aI2" id="bHF-FF-0ts"/>
                         <outlet property="trialView" destination="ROG-fE-b80" id="Gyd-GW-obV"/>
                     </connections>

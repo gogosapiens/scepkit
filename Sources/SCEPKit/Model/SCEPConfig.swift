@@ -72,12 +72,11 @@ struct SCEPConfig: Codable {
     
     struct Onboarding: Codable {
         
-        let buttonTitle: String
         let slides: [Slide]
         
         struct Slide: Codable {
             let imageURL: URL
-            let title: String
+            let title: LocalizedString
         }
     }
     
@@ -107,11 +106,9 @@ struct SCEPConfig: Codable {
     }
     
     struct Settings: Codable {
-        let title: String
-        let titleAccents: [String]
-        let subtitle: String?
-        let features: [String]
-        let buttonTitle: String
+        let title: LocalizedString
+        let subtitle: LocalizedString?
+        let features: [LocalizedString]
         let imageURL: URL
     }
     
