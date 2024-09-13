@@ -207,38 +207,3 @@ fileprivate extension SCEPConfig.InterfaceStyle {
         }
     }
 }
-
-extension UILabel {
-    func styleTextWithBraces() {
-        guard let text = self.text else { return }
-        
-        // Regular expression to find text within curly braces
-        let pattern = "\\{(.*?)\\}"
-        let regex = try! NSRegularExpression(pattern: pattern)
-        
-        // Mutable attributed string
-        let attributedText = NSMutableAttributedString(string: text)
-        let nsRange = NSRange(text.startIndex..<text.endIndex, in: text)
-        
-        // Find matches for curly braces
-        let matches = regex.matches(in: text, options: [], range: nsRange)
-        
-        // Iterate over the matches in reverse order to avoid index issues
-        for match in matches.reversed() {
-            let range = match.range(at: 1) // Get the range of the text inside {}
-            let braceRange = match.range // Get the range of the entire {}
-            
-            // Apply color to the text inside the braces
-            attributedText.addAttribute(.foregroundColor, value: UIColor.systemTeal, range: range)
-            
-            // Replace the entire {} with just the inner text
-            let startIndex = text.index(text.startIndex, offsetBy: braceRange.location + 1)
-            let endIndex = text.index(text.startIndex, offsetBy: braceRange.location + braceRange.length - 1)
-            let innerTextRange = NSRange(startIndex..<endIndex, in: text)
-            attributedText.replaceCharacters(in: braceRange, with: attributedText.attributedSubstring(from: innerTextRange).string)
-        }
-        
-        // Set the final attributed text to the label
-        self.attributedText = attributedText
-    }
-}
