@@ -13,7 +13,7 @@
         <scene sceneID="s0d-6b-0kx">
             <objects>
                 <viewController id="Y6W-OH-hqX" customClass="SCEPOnboardingSlideController" customModule="SCEPKit" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
+                    <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc" customClass="SCEPBackgroundView" customModule="SCEPKit">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -23,9 +23,14 @@
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NH5-qA-igJ">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="628.66666666666663"/>
                                     </imageView>
-                                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SCEPOnboardingOverlay" translatesAutoresizingMaskIntoConstraints="NO" id="P3k-fa-M4R">
+                                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SCEPOnboardingOverlay" translatesAutoresizingMaskIntoConstraints="NO" id="P3k-fa-M4R" customClass="SCEPTemplateImageView" customModule="SCEPKit">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="628.66666666666663"/>
                                         <color key="tintColor" name="SCEPShade4Color"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="shadeIndex">
+                                                <integer key="value" value="4"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </imageView>
                                 </subviews>
                                 <constraints>
@@ -40,7 +45,7 @@
                                     <constraint firstAttribute="width" secondItem="Nqc-6d-eDF" secondAttribute="height" multiplier="5:8" id="t9Y-PS-AiA"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Headline about something important" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MNC-Ku-PSb">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Headline about something important" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MNC-Ku-PSb" customClass="SCEPLabel" customModule="SCEPKit">
                                 <rect key="frame" x="20" y="520.66666666666663" width="353" height="84"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="84" id="plb-7C-Fmj"/>
@@ -84,6 +89,11 @@
                             <constraint firstItem="Nqc-6d-eDF" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="tSg-2Y-YJa"/>
                             <constraint firstItem="74t-qD-Urx" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="u3g-nK-vur"/>
                         </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="shadeIndex">
+                                <integer key="value" value="4"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                     </view>
                     <connections>
                         <outlet property="imageBottomConstraint" destination="fpT-Kf-afe" id="r2m-X6-mAC"/>
@@ -107,7 +117,7 @@
             <color red="0.047058823529411764" green="0.043137254901960784" blue="0.043137254901960784" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="SCEPTextColor">
-            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

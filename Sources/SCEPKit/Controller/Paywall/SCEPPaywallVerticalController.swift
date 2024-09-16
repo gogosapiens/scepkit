@@ -46,6 +46,8 @@ class SCEPPaywallVerticalController: SCEPPaywallController {
         }
         selectedProductIndex = 0
         trialSwitch.isOn = false
+        trialSwitch.onTintColor = .scepAccent
+        trialSwitch.thumbTintColor = .scepShade0
         trialView.layer.borderColor = UIColor.scepShade2.cgColor
         trialView.layer.borderWidth = 2
         trialView.layer.cornerRadius = SCEPKitInternal.shared.config.app.style.paywallTrialSwitchCornerRadius

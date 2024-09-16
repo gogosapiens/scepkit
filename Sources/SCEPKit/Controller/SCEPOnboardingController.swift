@@ -35,7 +35,7 @@ class SCEPOnboardingController: UIViewController {
         for (index, constraint) in [page0WidthConstraint, page1WidthConstraint, page2WidthConstraint].enumerated() {
             let isCurrent = index == currentIndex
             constraint?.constant = isCurrent ? style.onboardingSelectedPageWidth : 8
-            pageStackView.arrangedSubviews[index].backgroundColor = isCurrent ? .scepText : .scepShade1
+            pageStackView.arrangedSubviews[index].backgroundColor = isCurrent ? .scepShade0 : .scepShade1
         }
         UIView.animate(withDuration: animated ? 0.66 : 0, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0) {
             self.view.layoutIfNeeded()

@@ -9,8 +9,11 @@ import UIKit
 
 class SCEPLabel: UILabel {
     
+    @IBInspectable var shadeIndex: Int = 0
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         font = SCEPKitInternal.shared.config.app.font(ofSize: font.pointSize, weight: font.weight)
+        textColor = .scepShade(with: shadeIndex)
     }
 }

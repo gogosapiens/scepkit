@@ -23,6 +23,7 @@ class SCEPSplashController: UIViewController {
         let style = SCEPKitInternal.shared.config.app.style
         loaderOneView.isHidden = true
         loaderTwoView.isHidden = true
+        loaderTwoView.color = .scepAccent
         loaderThreeImageView.isHidden = true
         loaderFourView.isHidden = true
         switch style {

@@ -27,12 +27,20 @@ extension UIColor {
 //        }
 //    }
     
-    static var scepAccent: UIColor { .init(named: "SCEPAccentColor", in: .main, compatibleWith: nil) ?? .clear }
-    static var scepText: UIColor { .init(named: "SCEPTextColor", in: .main, compatibleWith: nil) ?? .clear }
-    static var scepShade1: UIColor { .init(named: "SCEPShade1Color", in: .main, compatibleWith: nil) ?? .clear }
-    static var scepShade2: UIColor { .init(named: "SCEPShade2Color", in: .main, compatibleWith: nil) ?? .clear }
-    static var scepShade3: UIColor { .init(named: "SCEPShade3Color", in: .main, compatibleWith: nil) ?? .clear }
-    static var scepShade4: UIColor { .init(named: "SCEPShade4Color", in: .main, compatibleWith: nil) ?? .clear }
+    static var scepAccent: UIColor { .scepShade(with: -1) }
+    static var scepShade0: UIColor { .scepShade(with: 0) }
+    static var scepShade1: UIColor { .scepShade(with: 1) }
+    static var scepShade2: UIColor { .scepShade(with: 2) }
+    static var scepShade3: UIColor { .scepShade(with: 3) }
+    static var scepShade4: UIColor { .scepShade(with: 4) }
+    
+    static func scepShade(with index: Int) -> UIColor {
+        if (0...4).contains(index) {
+            return .init(named: "SCEPShade\(index)Color", in: .main, compatibleWith: nil) ?? .clear
+        } else {
+            return .init(named: "SCEPAccentColor", in: .main, compatibleWith: nil) ?? .clear
+        }
+    }
     
 //    static var scepAccent: UIColor {
 //        .init(named: "AccentColor", in: .main, compatibleWith: nil) ?? .red

@@ -20,7 +20,7 @@ class SCEPPaywallVerticalProductCell: UITableViewCell {
         outlineView.layer.borderWidth = 2
         outlineView.layer.cornerRadius = cornerRadius
         badgeShadowView.mask = badgeShadowMaskView
-        badgeShadowView.layer.borderColor = UIColor.scepText.cgColor
+        badgeShadowView.layer.borderColor = UIColor.scepShade0.cgColor
         badgeShadowView.layer.borderWidth = 2
         badgeShadowView.layer.cornerRadius = cornerRadius
     }
