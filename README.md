@@ -1,77 +1,267 @@
-# SCEPKit
+# SCEPKit Configuration Guide
 
-SCEPKit is a Swift package designed to simplify the management of typical iOS app workflows. This package provides tools for handling splash screens, onboarding processes, paywalls, settings screens, tracking premium status, and more. By integrating SCEPKit, you can streamline your app development process and ensure a consistent user experience.
+This guide provides instructions on how to configure the Swift Package using Firebase Remote Config. The configuration is stored in the `scepkit_config` key, and the current version is specified in the `scepkit_config_var` key.
 
-## Features
+## Configuration Overview
 
-- **Splash Screen**: Easily configure and display a splash screen.
-- **Onboarding**: Manage the onboarding process for new users.
-- **Paywalls**: Implement paywalls to handle in-app purchases and subscriptions.
-- **Settings Screen**: Provide a customizable settings screen for users.
-- **Premium Status Tracking**: Track and manage user premium status.
-- **Firebase Integration**: Seamlessly integrate Firebase for tracking and analytics.
+Below is the JSON configuration for the Swift Package. Please note that API keys, font names, and certain localization data have been replaced with placeholders or limited to English and French for clarity.
 
-## Installation
-
-To install SCEPKit using Swift Package Manager, add the following dependency to your `Package.swift` file:
-
-```swift
-dependencies: [
-    .package(url: "https://github.com/gogosapiens/scepkit", from: "1.0.0")
-]
+```json
+{
+  "v1": {
+    "app": {
+      "appleAppId": "YOUR_APPLE_APP_ID",
+      "adaptyApiKey": "YOUR_ADAPTY_API_KEY",
+      "amplitudeApiKey": "YOUR_AMPLITUDE_API_KEY",
+      "adStartDelay": 0,
+      "adInterstitialInterval": 40,
+      "requestTracking": true,
+      "adAppId": "YOUR_AD_APP_ID",
+      "adInterstitialId": "YOUR_AD_INTERSTITIAL_ID",
+      "adAppOpenId": "YOUR_AD_APP_OPEN_ID",
+      "adBannerId": "YOUR_AD_BANNER_ID",
+      "adRewardedId": "YOUR_AD_REWARDED_ID",
+      "termsURL": "https://yourwebsite.com/terms",
+      "privacyURL": "https://yourwebsite.com/privacy",
+      "feedbackURL": "https://yourwebsite.com/feedback",
+      "productsIds": {
+        "short": "com.yourapp.subscription.short",
+        "shortTrial": "com.yourapp.subscription.short.trial",
+        "long": "com.yourapp.subscription.long"
+      },
+      "style": "yourStyle",
+      "fontNames": {
+        "semibold": "YOUR_SEMIBOLD_FONT_NAME",
+        "bold": "YOUR_BOLD_FONT_NAME",
+        "medium": "YOUR_MEDIUM_FONT_NAME"
+      }
+    },
+    "onboarding": {
+      "slides": [
+        {
+          "title": {
+            "en": "Welcome to Our App",
+            "fr": "Bienvenue dans Notre Application"
+          },
+          "imageURL": "https://yourcdn.com/onboarding-slide-1.png"
+        },
+        {
+          "title": {
+            "en": "Discover New Features",
+            "fr": "Découvrez de Nouvelles Fonctionnalités"
+          },
+          "imageURL": "https://yourcdn.com/onboarding-slide-2.png"
+        },
+        {
+          "title": {
+            "en": "Stay Connected",
+            "fr": "Restez Connecté"
+          },
+          "imageURL": "https://yourcdn.com/onboarding-slide-3.png"
+        }
+      ]
+    },
+    "settings": {
+      "title": {
+        "en": "App PRO",
+        "fr": "Application PRO"
+      },
+      "subtitle": {
+        "en": "Get full access with a subscription",
+        "fr": "Accédez à tout avec un abonnement"
+      },
+      "features": [
+        {
+          "en": "All Premium Features",
+          "fr": "Toutes les Fonctionnalités Premium"
+        },
+        {
+          "en": "Ad-Free Experience",
+          "fr": "Expérience Sans Publicités"
+        }
+      ],
+      "imageURL": "https://yourcdn.com/settings-image.png"
+    },
+    "paywalls": {
+      "main": {
+        "single": {
+          "config": {
+            "imageURL": "https://yourcdn.com/paywall-single.png",
+            "title": {
+              "en": "Unlimited Access to All Features",
+              "fr": "Accès Illimité à Toutes les Fonctionnalités"
+            },
+            "features": [
+              {
+                "en": "Unlimited Messages",
+                "fr": "Messages Illimités"
+              },
+              {
+                "en": "Premium Support",
+                "fr": "Support Premium"
+              }
+            ],
+            "laurel": {
+              "en": "BEST AI MODELS INSIDE",
+              "fr": "LES MEILLEURS MODÈLES AI"
+            }
+          }
+        },
+        "adapty": {
+          "placementId": "YOUR_ADAPTY_PLACEMENT_ID"
+        }
+      },
+      "onboarding": {
+        "vertical": {
+          "config": {
+            "imageURL": "https://yourcdn.com/paywall-vertical.png",
+            "title": {
+              "en": "Get Full Access with App PRO",
+              "fr": "Accédez à Tout avec l'Application PRO"
+            },
+            "features": [
+              {
+                "en": "Unlimited Chat Messages",
+                "fr": "Messages de Chat Illimités"
+              },
+              {
+                "en": "Fastest AI Model",
+                "fr": "Modèle AI le Plus Rapide"
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}
 ```
 
-Alternatively, you can add SCEPKit directly through Xcode:
-1. Open your project in Xcode.
-2. Go to `File > Add Packages...`.
-3. Enter the URL `https://github.com/gogosapiens/scepkit`.
-4. Choose the version and click `Add Package`.
+## Firebase Remote Config Keys
 
-## Configuration
+- **Configuration Key**: `scepkit_config`
+- **Version Key**: `scepkit_config_var`
 
-### 1. Configure `SCEPKit.plist`
+Ensure you update both keys in Firebase Remote Config to apply the new configuration.
 
-Create a `SCEPKit.plist` file in your project and configure it according to your app's requirements. This file will contain various settings used by SCEPKit.
+## Product Identifiers
 
-### 2. Add Custom Fonts to Project
+The `productsIds` object contains identifiers for in-app purchase subscriptions:
 
-To use custom fonts in your project, follow these steps:
+- **short**: Short period subscription (e.g., weekly or monthly).
+- **shortTrial**: Short period subscription with a trial period. Optional. If not specified, the trial switch will be hidden in the paywalls.
+- **long**: Long period subscription (e.g., yearly).
 
-1. Add your font files (e.g., `.ttf` or `.otf`) to your Xcode project.
-2. Ensure the font files are included in the `Copy Bundle Resources` build phase.
-3. Update your `Info.plist` file to include the fonts:
+### Example
 
-```xml
-<key>UIAppFonts</key>
-<array>
-    <string>YourCustomFont-Regular.ttf</string>
-    <string>YourCustomFont-Bold.ttf</string>
-</array>
+```json
+"productsIds": {
+  "short": "com.yourapp.subscription.short",
+  "shortTrial": "com.yourapp.subscription.short.trial",
+  "long": "com.yourapp.subscription.long"
+}
 ```
 
-### 3. Add `SCEPKit.xcassets`
+## Paywalls Configuration
 
-Add the `SCEPKit.xcassets` asset catalog to your project. This catalog should contain any images or other assets used by SCEPKit.
+The `paywalls` object defines how paywalls are displayed in the app. There are two main placements:
 
-1. Drag and drop the `SCEPKit.xcassets` folder into your Xcode project.
-2. Ensure the assets are included in the `Copy Bundle Resources` build phase.
+- **main**: Shown throughout the app.
+- **onboarding**: Shown during the onboarding process.
 
-### 4. Add Firebase Configuration
+### Paywall Types
 
-To integrate Firebase, add the `GoogleService-Info.plist` file to your project:
+There are three types of paywalls:
 
-1. Download the `GoogleService-Info.plist` file from the Firebase Console.
-2. Add the `GoogleService-Info.plist` file to your Xcode project.
-3. Ensure the file is included in the `Copy Bundle Resources` build phase.
+1. **Single Paywall** (`single`): Displays only one product, which is the short subscription or short trial if available.
 
-## Contributing
+2. **Vertical Paywall** (`vertical`): Displays two products—short and long subscriptions. If `shortTrial` exists, it will also be included.
 
-Contributions are welcome! If you have any ideas, suggestions, or bug reports, please create an issue or submit a pull request.
+3. **Adapty Paywall** (`adapty`): This paywall is controlled by the Adapty SDK and requires a `placementId` to display.
 
-## License
+### Single Paywall Example
 
-SCEPKit is released under the MIT License.
+Shown in the `main` placement.
 
----
+```json
+"main": {
+  "single": {
+    "config": {
+      "imageURL": "https://yourcdn.com/paywall-single.png",
+      "title": {
+        "en": "Unlimited Access to All Features",
+        "fr": "Accès Illimité à Toutes les Fonctionnalités"
+      },
+      "features": [
+        {
+          "en": "Unlimited Messages",
+          "fr": "Messages Illimités"
+        },
+        {
+          "en": "Premium Support",
+          "fr": "Support Premium"
+        }
+      ],
+      "laurel": {
+        "en": "BEST AI MODELS INSIDE",
+        "fr": "LES MEILLEURS MODÈLES AI"
+      }
+    }
+  }
+}
+```
 
-Thank you for using SCEPKit! We hope it makes your iOS app development experience smoother and more enjoyable. If you have any questions or need further assistance, please don't hesitate to reach out.
+### Vertical Paywall Example
+
+Shown in the `onboarding` placement.
+
+```json
+"onboarding": {
+  "vertical": {
+    "config": {
+      "imageURL": "https://yourcdn.com/paywall-vertical.png",
+      "title": {
+        "en": "Get Full Access with App PRO",
+        "fr": "Accédez à Tout avec l'Application PRO"
+      },
+      "features": [
+        {
+          "en": "Unlimited Chat Messages",
+          "fr": "Messages de Chat Illimités"
+        },
+        {
+          "en": "Fastest AI Model",
+          "fr": "Modèle AI le Plus Rapide"
+        }
+      ]
+    }
+  }
+}
+```
+
+### Adapty Paywall Example
+
+The Adapty paywall is controlled by the Adapty SDK and requires a placement ID. This is used for displaying dynamic paywalls based on the user's interaction.
+
+```json
+"main": {
+  "adapty": {
+    "placementId": "YOUR_ADAPTY_PLACEMENT_ID"
+  }
+}
+```
+
+## Localization
+
+For brevity, only English (`en`) and French (`fr`) localizations are shown in the configuration. You can add more languages as needed by extending the localization objects.
+
+## Notes
+
+- **API Keys and Font Names**: Replace placeholders like `YOUR_APPLE_APP_ID`, `YOUR_ADAPTY_API_KEY`, and `YOUR_SEMIBOLD_FONT_NAME` with your actual values.
+- **Image URLs**: Update `imageURL` fields with the correct paths to your assets.
+- **Terms and Privacy URLs**: Ensure `termsURL`, `privacyURL`, and `feedbackURL` point to your actual web pages.
+- **Product Identifiers**: Confirm that `productsIds` match the identifiers set up in your in-app purchase configurations.
+
+## Conclusion
+
+By following this guide, you should be able to configure the Swift Package to suit your app's needs. Make sure to update all placeholders with your actual data and test the configuration thoroughly before deploying it to production.
