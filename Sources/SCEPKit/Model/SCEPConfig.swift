@@ -35,16 +35,19 @@ struct SCEPConfig: Codable {
         
         let requestTracking: Bool
         
-        let adStartDelay: TimeInterval?
-        let adInterstitialInterval: TimeInterval?
-        let adAppId: String?
-        let adInterstitialId: String?
-        let adAppOpenId: String?
-        let adBannerId: String?
-        let adRewardedId: String?
-        
+        let ads: Ads
         let style: InterfaceStyle
         let fontNames: [String: String]
+        
+        struct Ads: Codable {
+            let isEnabled: Bool
+            let startDelay: TimeInterval?
+            let interstitialInterval: TimeInterval?
+            let interstitialId: String?
+            let appOpenId: String?
+            let bannerId: String?
+            let rewardedId: String?
+        }
         
         func font(ofSize size: CGFloat, weight: UIFont.Weight) -> UIFont {
             var fontName: String?

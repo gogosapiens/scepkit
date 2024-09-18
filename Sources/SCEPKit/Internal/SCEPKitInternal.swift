@@ -218,7 +218,7 @@ class SCEPKitInternal: NSObject {
     }
     var defaultConfig: SCEPConfig {
         let variations: [String: SCEPConfig] = defaultRemoteConfigValue(for: "scepkit_config")!
-        return variations[defaultRemoteConfigValue(for: "scepkit_variation_id")!]!
+        return variations[defaultRemoteConfigValue(for: "scepkit_config_var")!]!
     }
     
     var onboardingConfig: SCEPConfig.Onboarding {

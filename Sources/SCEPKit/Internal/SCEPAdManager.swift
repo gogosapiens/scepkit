@@ -16,7 +16,7 @@ class SCEPAdManager: NSObject {
     }
     
     var isStartDelayPassed: Bool {
-        let startDelay: TimeInterval = SCEPKitInternal.shared.config.app.adStartDelay ?? 0
+        let startDelay: TimeInterval = SCEPKitInternal.shared.config.app.ads.startDelay ?? 0
         return Date() >= SCEPKitInternal.shared.firstLaunchDate.addingTimeInterval(startDelay)
     }
     
@@ -25,11 +25,12 @@ class SCEPAdManager: NSObject {
     }
     
     @MainActor func start() {
+        guard SCEPKitInternal.shared.config.app.ads.isEnabled else { return }
         if !SCEPKitInternal.shared.isAdaptyPremium {
-            if SCEPKitInternal.shared.config.app.adInterstitialId != nil {
+            if SCEPKitInternal.shared.config.app.ads.interstitialId != nil {
                 loadInterstitialAd()
             }
-            if SCEPKitInternal.shared.config.app.adAppOpenId != nil {
+            if SCEPKitInternal.shared.config.app.ads.appOpenId != nil {
                 loadAppOpenAd()
             }
         }
@@ -43,8 +44,9 @@ class SCEPAdManager: NSObject {
     }
     
     private func loadInterstitialAd() {
+        guard SCEPKitInternal.shared.config.app.ads.isEnabled else { return }
         guard interstitial == nil else { return }
-        let unitId = isDebug ? "ca-app-pub-3940256099942544/4411468910" : SCEPKitInternal.shared.config.app.adInterstitialId!
+        let unitId = isDebug ? "ca-app-pub-3940256099942544/4411468910" : SCEPKitInternal.shared.config.app.ads.interstitialId!
         let request = GADRequest()
         GADInterstitialAd.load(withAdUnitID: unitId, request: request) { ad, error in
             guard let ad else {
@@ -57,8 +59,9 @@ class SCEPAdManager: NSObject {
     }
     
     private func loadAppOpenAd() {
+        guard SCEPKitInternal.shared.config.app.ads.isEnabled else { return }
         guard appOpenAd == nil else { return }
-        let unitId = isDebug ? "ca-app-pub-3940256099942544/5575463023" : SCEPKitInternal.shared.config.app.adAppOpenId!
+        let unitId = isDebug ? "ca-app-pub-3940256099942544/5575463023" : SCEPKitInternal.shared.config.app.ads.appOpenId!
         let request = GADRequest()
         GADAppOpenAd.load(withAdUnitID: unitId, request: request) { ad, error in
             if let error = error {
@@ -74,7 +77,7 @@ class SCEPAdManager: NSObject {
     
     @MainActor func showInterstitialAd(from viewController: UIViewController? = nil, placement: String) {
         guard canShowAds else { return }
-        let interstitialInterval: TimeInterval = SCEPKitInternal.shared.config.app.adInterstitialInterval ?? 60
+        let interstitialInterval: TimeInterval = SCEPKitInternal.shared.config.app.ads.interstitialInterval ?? 60
         if let interstitial = interstitial, Date() > lastInterstitialShowDate + interstitialInterval {
             interstitial.present(fromRootViewController: viewController)
             lastInterstitialShowDate = Date()
@@ -111,7 +114,7 @@ class SCEPAdManager: NSObject {
     
     @MainActor func getBannerAdView(placement: String) -> GADBannerView? {
         guard canShowAds else { return nil }
-        let unitId = isDebug ? "ca-app-pub-3940256099942544/2435281174" : SCEPKitInternal.shared.config.app.adBannerId!
+        let unitId = isDebug ? "ca-app-pub-3940256099942544/2435281174" : SCEPKitInternal.shared.config.app.ads.bannerId!
         let adaptiveSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.width)
         let bannerView = GADBannerView(adSize: adaptiveSize)
         bannerView.adUnitID = unitId
@@ -121,7 +124,7 @@ class SCEPAdManager: NSObject {
     }
     
     @MainActor func showRewardedAd(from viewController: UIViewController, placement: String, completion: @escaping (Bool) -> Void) {
-        let unitId = isDebug ? "ca-app-pub-3940256099942544/1712485313" : SCEPKitInternal.shared.config.app.adRewardedId!
+        let unitId = isDebug ? "ca-app-pub-3940256099942544/1712485313" : SCEPKitInternal.shared.config.app.ads.rewardedId!
         let activitiController = SCEPActivityController.instantiate(bundle: .module)
         viewController.present(activitiController, animated: true)
         let request = GADRequest()
