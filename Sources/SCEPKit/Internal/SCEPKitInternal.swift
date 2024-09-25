@@ -109,6 +109,13 @@ class SCEPKitInternal: NSObject {
         
         amplitude = Amplitude(configuration: .init(apiKey: config.app.adaptyApiKey))
         
+        let builder = AdaptyProfileParameters.Builder()
+            .with(amplitudeUserId: amplitude.getUserId())
+            .with(amplitudeDeviceId: amplitude.getDeviceId())
+            .with(firebaseAppInstanceId: Analytics.appInstanceID())
+        
+        Adapty.updateProfile(params: builder.build())
+        
         SCEPAdManager.shared.start()
         
         window = UIWindow(frame: UIScreen.main.bounds)
