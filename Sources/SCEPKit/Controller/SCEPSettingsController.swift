@@ -36,7 +36,7 @@ public class SCEPSettingsController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         config = SCEPKitInternal.shared.config.settings
-        let style = SCEPKitInternal.shared.config.app.style
+        let style = SCEPKitInternal.shared.config.style
         bannerTitleLabel.text = config.title.localized()
         bannerTitleLabel.styleTextWithBraces()
         bannerSubtitleLabel.text = config.subtitle?.localized()
@@ -53,9 +53,7 @@ public class SCEPSettingsController: UIViewController {
                 stackView.isHidden = stackView.arrangedSubviews.allSatisfy(\.isHidden)
             }
         }
-        Downloader.downloadImage(from: config.imageURL) { [weak self] image in
-            self?.bannerImageView.image = image
-        }
+        bannerImageView.image = .init(named: "SCEPAppIcon")
         
         bannerView.layer.cornerRadius = 24
         bannerTopStackView.axis = style.settingsTopAxis
@@ -83,7 +81,7 @@ public class SCEPSettingsController: UIViewController {
     }
     
     @IBAction func bannerButtonTapped(_ sender: SCEPMainButton) {
-        let paywallController = SCEPKitInternal.shared.paywallController(for: .main, source: "SettingsBanner")
+        let paywallController = SCEPKitInternal.shared.paywallController(for: .premium, source: "SettingsBanner")
         present(paywallController, animated: true)
     }
     
@@ -92,19 +90,19 @@ public class SCEPSettingsController: UIViewController {
     }
     
     @IBAction func termsTapped(_ sender: SCEPSecondaryButton) {
-        openURL(SCEPKitInternal.shared.config.app.termsURL)
+        openURL(SCEPKitInternal.shared.termsURL)
     }
     
     @IBAction func privacyTapped(_ sender: SCEPSecondaryButton) {
-        openURL(SCEPKitInternal.shared.config.app.privacyURL)
+        openURL(SCEPKitInternal.shared.privacyURL)
     }
     
     @IBAction func feedbackTapped(_ sender: SCEPSecondaryButton) {
-        openURL(SCEPKitInternal.shared.config.app.feedbackURL)
+        openURL(SCEPKitInternal.shared.feedbackURL)
     }
     
     @IBAction func rateTapped(_ sender: SCEPSecondaryButton) {
-        openURL(SCEPKitInternal.shared.config.app.reviewURL)
+        openURL(SCEPKitInternal.shared.reviewURL)
     }
 }
 

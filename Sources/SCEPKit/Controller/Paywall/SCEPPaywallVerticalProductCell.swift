@@ -15,8 +15,8 @@ class SCEPPaywallVerticalProductCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        let cornerRadius = SCEPKitInternal.shared.config.app.style.paywallProductCornerRadius
-        leftPaddingConstraint.constant = SCEPKitInternal.shared.config.app.style.paywallProductLeftPadding
+        let cornerRadius = SCEPKitInternal.shared.config.style.paywallProductCornerRadius
+        leftPaddingConstraint.constant = SCEPKitInternal.shared.config.style.paywallProductLeftPadding
         outlineView.layer.borderWidth = 2
         outlineView.layer.cornerRadius = cornerRadius
         badgeShadowView.mask = badgeShadowMaskView

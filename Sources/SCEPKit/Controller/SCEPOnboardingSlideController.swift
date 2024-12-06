@@ -17,7 +17,7 @@ class SCEPOnboardingSlideController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let style = SCEPKitInternal.shared.config.app.style
+        let style = SCEPKitInternal.shared.config.style
         
         titleLabel.text = config.title.localized()
         Downloader.downloadImage(from: config.imageURL) { [weak self] image in

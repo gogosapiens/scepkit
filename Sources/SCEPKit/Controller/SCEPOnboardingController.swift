@@ -16,14 +16,14 @@ class SCEPOnboardingController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         config = SCEPKitInternal.shared.onboardingConfig
-        let style = SCEPKitInternal.shared.config.app.style
+        let style = SCEPKitInternal.shared.config.style
         pageStackView.isHidden = style.onboardingIsPageHidden
         showSlideController(slideController(with: config.slides.first!, index: 0), animated: false, isLast: false)
         continueButton.title = .init(localized: "Continue", bundle: .module)
     }
     
     func showSlideController(_ controller: UIViewController, animated: Bool, isLast: Bool, completion: (() -> Void)? = nil) {
-        let style = SCEPKitInternal.shared.config.app.style
+        let style = SCEPKitInternal.shared.config.style
         let currentIndex = slidesStackView.arrangedSubviews.count
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         addChild(controller)

@@ -34,6 +34,7 @@ class SCEPKitInternal: NSObject {
     var amplitude: Amplitude!
     var isApplicationShown: Bool = false
     var isSessionPremium: Bool = false
+    var font: SCEPFont = .system
     private var isOnboardingResourcesLoadFailed: Bool = false
     private var isOnboardingPaywallResourcesLoadFailed: Bool = false
     
@@ -76,6 +77,8 @@ class SCEPKitInternal: NSObject {
             }
         }
         
+        font = SCEPFont.allCases.first(where: { $0.uiFont(ofSize: 10, weight: .medium) != nil }) ?? .system
+        
         let group = DispatchGroup()
         
         FirebaseApp.configure()
@@ -102,12 +105,12 @@ class SCEPKitInternal: NSObject {
         
         Adapty.delegate = self
         group.enter()
-        Adapty.activate(with: .init(withAPIKey: config.app.adaptyApiKey)) { error in
+        Adapty.activate(with: .init(withAPIKey: config.integrations.adaptyApiKey)) { error in
             group.leave()
         }
         AdaptyUI.activate()
         
-        amplitude = Amplitude(configuration: .init(apiKey: config.app.adaptyApiKey))
+        amplitude = Amplitude(configuration: .init(apiKey: config.integrations.amplitudeApiKey))
         
         let builder = AdaptyProfileParameters.Builder()
             .with(amplitudeUserId: amplitude.getUserId())
@@ -119,7 +122,7 @@ class SCEPKitInternal: NSObject {
         SCEPAdManager.shared.start()
         
         window = UIWindow(frame: UIScreen.main.bounds)
-        window.overrideUserInterfaceStyle = config.app.style.uiUserInterfaceStyle
+        window.overrideUserInterfaceStyle = config.style.uiUserInterfaceStyle
         let splashController = SCEPSplashController.instantiate(bundle: .module)
         window.rootViewController = splashController
         window.makeKeyAndVisible()
@@ -205,8 +208,14 @@ class SCEPKitInternal: NSObject {
                 }
             }
         }
+        if SCEPAdManager.shared.isLoadingAppOpen {
+            group.enter()
+            NotificationCenter.default.addOneTimeObserver(forName: SCEPAdManager.appOpenLoadedNotification) { _ in
+                group.leave()
+            }
+        }
         DispatchQueue.global().async {
-            let result = group.wait(timeout: .now() + 5)
+            let result = group.wait(timeout: .now() + 7)
             if result == .timedOut {
                 logger.log("Adapty apywall load timed out")
             }
@@ -232,13 +241,13 @@ class SCEPKitInternal: NSObject {
         return (isOnboardingResourcesLoadFailed ? defaultConfig : config).onboarding
     }
     
-    func paywallConfig(for placement: SCEPPaywallPlacement) -> SCEPConfig.Paywall {
+    func paywallConfig(for placement: SCEPPaywallPlacement) -> SCEPPaywallConfig {
         let isDefault = placement == .onboarding && isOnboardingPaywallResourcesLoadFailed
         return (isDefault ? defaultConfig : config).paywall(for: placement)
     }
     
-    func product(with type: SCEPConfig.ProductType) -> AdaptyPaywallProduct? {
-        adaptyProducts["custom"]?.first(where: { $0.vendorProductId == config.app.productsIds[type.rawValue] })
+    func product(with id: String) -> AdaptyPaywallProduct? {
+        adaptyProducts["custom"]?.first(where: { $0.vendorProductId == id })
     }
     
     func paywallController(for placement: SCEPPaywallPlacement, source: String) -> SCEPPaywallController {
@@ -265,6 +274,10 @@ class SCEPKitInternal: NSObject {
             let controller = SCEPPaywallSingleController.instantiate(bundle: .module)
             controller.config = config
             paywallController = controller
+        case .credits(let config):
+            let controller = SCEPPaywallCreditsController.instantiate(bundle: .module)
+            controller.config = config
+            paywallController = controller
         }
         paywallController.placement = placement
         paywallController.source = source
@@ -277,7 +290,6 @@ class SCEPKitInternal: NSObject {
     }
     
     func showApplication() {
-        print(#function)
         window.rootViewController = rootViewController
         if !isOnboardingCompleted {
             showOnboarding()
@@ -289,7 +301,7 @@ class SCEPKitInternal: NSObject {
     func showOnboarding() {
         let onboardingPageController = SCEPOnboardingController.instantiate(bundle: .module)
         onboardingWindow = UIWindow(frame: UIScreen.main.bounds)
-        onboardingWindow?.overrideUserInterfaceStyle = config.app.style.uiUserInterfaceStyle
+        onboardingWindow?.overrideUserInterfaceStyle = config.style.uiUserInterfaceStyle
         onboardingWindow?.rootViewController = onboardingPageController
         onboardingWindow?.makeKeyAndVisible()
         trackEvent("[SCEPKit] onboarding_started")
@@ -341,6 +353,26 @@ class SCEPKitInternal: NSObject {
         }
         return value
     }
+    
+    var termsURL: URL {
+        return config.legal.termsURL
+    }
+    
+    var privacyURL: URL {
+        return config.legal.privacyURL
+    }
+    
+    var feedbackURL: URL {
+        return config.legal.feedbackURL
+    }
+    
+    var reviewURL: URL {
+        .init(string: "https://itunes.apple.com/app/id\(config.integrations.appleAppId)?action=write-review")!
+    }
+    
+    func font(ofSize size: CGFloat, weight: UIFont.Weight) -> UIFont {
+        return font.uiFont(ofSize: size, weight: weight) ?? .systemFont(ofSize: size, weight: weight)
+    }
 }
 
 extension SCEPKitInternal: AdaptyDelegate {
@@ -352,6 +384,17 @@ extension SCEPKitInternal: AdaptyDelegate {
             DispatchQueue.main.async {
                 NotificationCenter.default.post(name: self.premiumStatusUpdatedNotification, object: nil)
             }
+        }
+    }
+}
+
+extension SCEPPaywallConfig.Position {
+    
+    var product: AdaptyPaywallProduct? {
+        if case .productId(let id) = self {
+            return SCEPKitInternal.shared.product(with: id)
+        } else {
+            return nil
         }
     }
 }

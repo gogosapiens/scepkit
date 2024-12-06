@@ -20,12 +20,12 @@
         }
       },
       {
-        "package": "Amplitude",
-        "repositoryURL": "https://github.com/amplitude/Amplitude-iOS",
+        "package": "Amplitude-Swift",
+        "repositoryURL": "https://github.com/amplitude/Amplitude-Swift",
         "state": {
           "branch": null,
-          "revision": "d4a71f3e06b5108696ca7b33567d0fc539597d82",
-          "version": "8.18.3"
+          "revision": "255c7eed0f2d4932530ba3b50605bb309552d41d",
+          "version": "1.9.1"
         }
       },
       {
@@ -134,6 +134,24 @@
           "branch": null,
           "revision": "540318ecedd63d883069ae7f1ed811a2df00b6ac",
           "version": "2.4.0"
+        }
+      },
+      {
+        "package": "GoogleMobileAds",
+        "repositoryURL": "https://github.com/googleads/swift-package-manager-google-mobile-ads.git",
+        "state": {
+          "branch": null,
+          "revision": "ee80d8b9fb9c110c35ff0af56cfc672eee4b515e",
+          "version": "11.8.0"
+        }
+      },
+      {
+        "package": "GoogleUserMessagingPlatform",
+        "repositoryURL": "https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git",
+        "state": {
+          "branch": null,
+          "revision": "708a282840c2171ee63bd93b87afa49fe507d70e",
+          "version": "2.7.0"
         }
       },
       {

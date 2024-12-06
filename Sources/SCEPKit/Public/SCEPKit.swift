@@ -15,11 +15,18 @@ final public class SCEPKit {
         SCEPKitInternal.shared.isOnboardingCompleted
     }
     
+    public static var isShowingAppOpenAd: Bool {
+        SCEPAdManager.shared.isShowingAppOpen
+    }
+    
     public static var onboardingCompletedNotification: Notification.Name {
         SCEPKitInternal.shared.onboardingCompletedNotification
     }
     public static var premiumStatusUpdatedNotification: Notification.Name {
         SCEPKitInternal.shared.premiumStatusUpdatedNotification
+    }
+    public static var appOpenAdDismissedNotification: Notification.Name {
+        SCEPAdManager.appOpenDismissedNotification
     }
     
     @MainActor public static func launch(rootViewController: UIViewController) {
@@ -27,19 +34,19 @@ final public class SCEPKit {
     }
     
     public static func paywallController(source: String) -> SCEPPaywallController {
-        SCEPKitInternal.shared.paywallController(for: .main, source: source)
+        SCEPKitInternal.shared.paywallController(for: .premium, source: source)
     }
     
     public static func settingsController() -> SCEPSettingsController {
         SCEPKitInternal.shared.settingsController()
     }
     
-    @MainActor public static func showIntesstitialAd(from controller: UIViewController?, placement: String) {
+    @discardableResult @MainActor public static func showInterstitialAd(from controller: UIViewController?, placement: String) -> Bool {
         SCEPAdManager.shared.showInterstitialAd(from: controller, placement: placement)
     }
     
-    @MainActor public static func showRewardedAd(from controller: UIViewController, placement: String, completion: @escaping (Bool) -> Void) {
-        SCEPAdManager.shared.showRewardedAd(from: controller, placement: placement, completion: completion)
+    @MainActor public static func showRewardedAd(from controller: UIViewController, placement: String, customLoadingCompletion: ((Bool) -> Void)? = nil, completion: @escaping (Bool) -> Void) {
+        SCEPAdManager.shared.showRewardedAd(from: controller, placement: placement, customLoadingCompletion: customLoadingCompletion, completion: completion)
     }
     
     @MainActor public static func getBannerView(placement: String) -> GADBannerView? {
@@ -49,14 +56,17 @@ final public class SCEPKit {
 
 enum SCEPPaywallPlacement: CaseIterable, Hashable {
     case onboarding
-    case main
+    case premium
+    case credits
     
     var id: String {
         switch self {
         case .onboarding:
             return "onboarding"
-        case .main:
-            return "main"
+        case .premium:
+            return "premium"
+        case .credits:
+            return "credits"
         }
     }
 }

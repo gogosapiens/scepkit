@@ -4,10 +4,20 @@ import Adapty
 class SCEPPaywallSingleController: SCEPPaywallController {
     
     struct Config: Codable {
-        let imageURL: URL
-        let title: LocalizedString
-        let features: [LocalizedString]
-        let laurel: LocalizedString
+        let positions: [SCEPPaywallConfig.Position]
+        let texts: Texts
+        let meta: Meta
+        struct Texts: Codable {
+            let title: LocalizedString
+            let feature0: LocalizedString
+            let feature1: LocalizedString
+            let feature2: LocalizedString
+            let feature3: LocalizedString
+            let laurel: LocalizedString
+        }
+        struct Meta: Codable {
+            let imageURL: URL
+        }
     }
     var config: Config!
     
@@ -16,10 +26,14 @@ class SCEPPaywallSingleController: SCEPPaywallController {
     var displayProduct: AdaptyPaywallProduct { trialSwitch.isOn ? trialProduct! : nonTrialProduct }
     
     var trialProduct: AdaptyPaywallProduct? {
-        SCEPKitInternal.shared.product(with: .shortTrial)
+        if config.positions.count > 1 {
+            return config.positions[1].product
+        } else {
+            return nil
+        }
     }
     var nonTrialProduct: AdaptyPaywallProduct {
-        SCEPKitInternal.shared.product(with: .short)!
+        return config.positions[0].product!
     }
     
     @IBOutlet weak var continueButton: SCEPMainButton!
@@ -50,11 +64,11 @@ class SCEPPaywallSingleController: SCEPPaywallController {
         trialSwitch.thumbTintColor = .scepShade0
         trialView.layer.borderColor = UIColor.scepShade2.cgColor
         trialView.layer.borderWidth = 2
-        trialView.layer.cornerRadius = SCEPKitInternal.shared.config.app.style.paywallTrialSwitchCornerRadius
+        trialView.layer.cornerRadius = SCEPKitInternal.shared.config.style.paywallTrialSwitchCornerRadius
         trialView.isHidden = trialProduct == nil
         
         setupTexts()
-        Downloader.downloadImage(from: config.imageURL) { [weak self] image in
+        Downloader.downloadImage(from: config.meta.imageURL) { [weak self] image in
             self?.imageView.image = image
         }
         updatePriceLabel()
@@ -68,16 +82,13 @@ class SCEPPaywallSingleController: SCEPPaywallController {
     }
     
     func setupTexts() {
-        titleLabel.text = config.title.localized()
-        laurelLabel.text = config.laurel.localized()
-        [feature0Label, feature1Label, feature2Label, feature3Label].enumerated().forEach { index, label in
-            guard let label else { return }
-            if index < config.features.count {
-                label.text = config.features[index].localized()
-                label.styleTextWithBraces()
-            } else {
-                label.superview?.superview?.isHidden = true
-            }
+        titleLabel.text = config.texts.title.localized()
+        laurelLabel.text = config.texts.laurel.localized()
+        let labels = [feature0Label, feature1Label, feature2Label, feature3Label]
+        let features = [config.texts.feature0, config.texts.feature1, config.texts.feature2, config.texts.feature3]
+        for (label, feature) in zip(labels, features) {
+            label?.text = feature.localized()
+            label?.styleTextWithBraces()
         }
     }
     
@@ -98,11 +109,11 @@ class SCEPPaywallSingleController: SCEPPaywallController {
     }
     
     @IBAction func termsTapped(_ sender: UIButton) {
-        openURL(SCEPKitInternal.shared.config.app.termsURL)
+        openURL(SCEPKitInternal.shared.termsURL)
     }
     
     @IBAction func privacyTapped(_ sender: UIButton) {
-        openURL(SCEPKitInternal.shared.config.app.privacyURL)
+        openURL(SCEPKitInternal.shared.privacyURL)
     }
     
     @IBAction func restoreTapped(_ sender: UIButton) {

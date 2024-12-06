@@ -20,7 +20,7 @@ class SCEPSplashController: UIViewController {
         super.viewDidAppear(animated)
         iconImageView.image = .init(named: "SCEPAppIcon")
         appNameLabel.text = Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ?? ""
-        let style = SCEPKitInternal.shared.config.app.style
+        let style = SCEPKitInternal.shared.config.style
         loaderOneView.isHidden = true
         loaderTwoView.isHidden = true
         loaderTwoView.color = .scepAccent
@@ -62,7 +62,7 @@ class SCEPSplashController: UIViewController {
         iconWidthConstraint.constant = style.splashIconWidth
         iconCenterYConstraint.constant = style.splashTitlePosition == .imageBottom ? -30 : 0
         
-        if SCEPKitInternal.shared.config.app.requestTracking {
+        if SCEPKitInternal.shared.config.legal.requestTracking {
             ATTrackingManager.requestTrackingAuthorization { status in
                 if case .authorized = status {
                     

@@ -7,11 +7,11 @@ class SCEPSecondaryButton: UIButton {
                 
         backgroundColor = .scepShade3
         clipsToBounds = true
-        layer.cornerRadius = SCEPKitInternal.shared.config.app.style.secondaryButtonCornerRadius
+        layer.cornerRadius = SCEPKitInternal.shared.config.style.secondaryButtonCornerRadius
         heightAnchor.constraint(equalToConstant: 56).isActive = true
         
         setTitleColor(.scepShade0, for: .normal)
-        titleLabel?.font = SCEPKitInternal.shared.config.app.font(ofSize: 16, weight: .bold)
+        titleLabel?.font = SCEPKitInternal.shared.font(ofSize: 16, weight: .bold)
     }
 }
 
