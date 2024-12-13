@@ -113,7 +113,7 @@ public class SCEPSettingsController: UIViewController {
     }
     
     @IBAction func bannerButtonTapped(_ sender: SCEPMainButton) {
-        let paywallController = SCEPKitInternal.shared.paywallController(for: .main, source: "SettingsBanner", successHandler: nil)
+        let paywallController = SCEPKitInternal.shared.paywallController(for: .main, successHandler: nil)
         present(paywallController, animated: true)
     }
     

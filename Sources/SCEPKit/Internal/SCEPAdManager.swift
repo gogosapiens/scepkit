@@ -13,6 +13,7 @@ class SCEPAdManager: NSObject {
     var rewardedAdCompletion: ((Bool) -> Void)?
     var rewardedAdDidReward: Bool = false
     var shownRewardedAd: GADRewardedAd?
+    var bannerAdViews: Set<SCEPBannerAdView> = []
     
     private var interstitial: GADInterstitialAd?
     private var appOpenAd: GADAppOpenAd?
@@ -43,6 +44,7 @@ class SCEPAdManager: NSObject {
         }
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(applicationShown), name: SCEPKitInternal.shared.applicationShownNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(premiumStatusUpdated), name: SCEPMonetization.shared.premiumStatusUpdatedNotification, object: nil)
     }
     
     @MainActor @objc func applicationDidBecomeActive() {
@@ -52,6 +54,15 @@ class SCEPAdManager: NSObject {
     @MainActor @objc func applicationShown() {
         if needsToShowAppOpenOnApplicationShown {
             showAppOpenAd()
+        }
+    }
+    
+    @MainActor @objc func premiumStatusUpdated() {
+        if SCEPMonetization.shared.isPremium {
+            for bannerAdView in bannerAdViews {
+                bannerAdView.dismissHandler(bannerAdView)
+            }
+            bannerAdViews.removeAll()
         }
     }
     
@@ -115,15 +126,13 @@ class SCEPAdManager: NSObject {
         }
     }
     
-    @MainActor func getBannerAdView(placement: String) -> GADBannerView? {
-        guard canShowAds else { return nil }
+    @MainActor func getBannerAdView(placement: String, completion: (SCEPBannerAdView) -> Void, dismissHandler: @escaping (SCEPBannerAdView) -> Void) {
+        guard canShowAds else { return }
         let unitId = isDebug ? "ca-app-pub-3940256099942544/2435281174" : SCEPKitInternal.shared.config.monetization.ads.bannerId!
-        let adaptiveSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.width)
-        let bannerView = GADBannerView(adSize: adaptiveSize)
-        bannerView.adUnitID = unitId
-        bannerView.load(GADRequest())
+        let bannerView = SCEPBannerAdView(unitId: unitId, dismissHandler: dismissHandler)
+        bannerAdViews.insert(bannerView)
         SCEPKitInternal.shared.trackEvent("[SCEPKit] banner_ad_shown", properties: ["placement": placement])
-        return bannerView
+        completion(bannerView)
     }
     
     @MainActor func loadRewardedAd(id: String? = nil, completion: @escaping (GADRewardedAd?) -> Void) {

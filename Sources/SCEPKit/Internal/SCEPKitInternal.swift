@@ -259,7 +259,7 @@ class SCEPKitInternal: NSObject {
         adaptyProducts["custom"]?.first(where: { $0.vendorProductId == id })
     }
     
-    func paywallController(for placement: SCEPPaywallPlacement, source: String, successHandler: (() -> Void)?) -> SCEPPaywallController {
+    func paywallController(for placement: SCEPPaywallPlacement, successHandler: (() -> Void)?) -> SCEPPaywallController {
         let paywallConfig = SCEPKitInternal.shared.paywallConfig(for: placement)
         let paywallController: SCEPPaywallController
         
@@ -289,14 +289,13 @@ class SCEPKitInternal: NSObject {
             paywallController = controller
         }
         paywallController.placement = placement
-        paywallController.source = source
         paywallController.successHandler = successHandler
         return paywallController
     }
     
     func onboardingPaywallController() -> SCEPPaywallController? {
         if config.monetization.placements[SCEPPaywallPlacement.onboarding.id]!.credits != nil || !SCEPMonetization.shared.isPremium {
-            return SCEPKitInternal.shared.paywallController(for: .onboarding, source: "Onboarding", successHandler: nil)
+            return SCEPKitInternal.shared.paywallController(for: .onboarding, successHandler: nil)
         } else {
             return nil
         }
@@ -339,20 +338,12 @@ class SCEPKitInternal: NSObject {
         trackEvent("[SCEPKit] onboarding_finished")
     }
     
-    func showPaywallController(for placement: SCEPPaywallPlacement, from controller: UIViewController, source: String, successHandler: (() -> Void)? = nil) {
-        let paywallController = paywallController(for: placement, source: source, successHandler: successHandler)
+    func showPaywallController(for placement: SCEPPaywallPlacement, from controller: UIViewController, successHandler: (() -> Void)? = nil) {
+        let paywallController = paywallController(for: placement, successHandler: successHandler)
         controller.present(paywallController, animated: true)
     }
     
-    func provideContent(with requirement: SCEPContentRequirement, from controller: UIViewController, source: String, placement: SCEPPaywallPlacement, handler: @escaping () -> Void) {
-        if canProvideContent(with: requirement) {
-            handler()
-        } else {
-            showPaywallController(for: placement, from: controller, source: source, successHandler: handler)
-        }
-    }
-    
-    func canProvideContent(with requirement: SCEPContentRequirement) -> Bool {
+    func canAccessContent(for requirement: SCEPContentRequirement) -> Bool {
         switch requirement {
         case .premium:
             guard
@@ -369,6 +360,24 @@ class SCEPKitInternal: NSObject {
             }
             return SCEPMonetization.shared.credits >= credits
             
+        }
+    }
+    
+    func requestAccessToContent(for requirement: SCEPContentRequirement, from controller: UIViewController, placement: SCEPPaywallPlacement, handler: @escaping () -> Void) {
+        if canAccessContent(for: requirement) {
+            handler()
+        } else {
+            showPaywallController(for: placement, from: controller, successHandler: handler)
+        }
+    }
+    
+    
+    func provideContent(for requirement: SCEPContentRequirement, from controller: UIViewController, placement: SCEPPaywallPlacement, handler: @escaping () -> Void) {
+        requestAccessToContent(for: requirement, from: controller, placement: placement) {
+            handler()
+            if case .credits(let value) = requirement {
+                SCEPMonetization.shared.decrementCredits(by: value)
+            }
         }
     }
     
@@ -442,6 +451,23 @@ class SCEPKitInternal: NSObject {
     
     func font(ofSize size: CGFloat, weight: UIFont.Weight) -> UIFont {
         return font.uiFont(ofSize: size, weight: weight) ?? .systemFont(ofSize: size, weight: weight)
+    }
+    
+    func performWhenApplicationIsVisible(_ block: @escaping () -> Void) {
+        let group = DispatchGroup()
+        if !SCEPKit.isOnboardingCompleted {
+            group.enter()
+            NotificationCenter.default.addOneTimeObserver(forName: onboardingCompletedNotification) { _ in
+                group.leave()
+            }
+        }
+        if SCEPKit.isShowingAppOpenAd {
+            group.enter()
+            NotificationCenter.default.addOneTimeObserver(forName: SCEPAdManager.appOpenDismissedNotification) { _ in
+                group.leave()
+            }
+        }
+        group.notify(queue: .main, execute: block)
     }
 }
 
