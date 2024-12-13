@@ -17,6 +17,7 @@ public class SCEPSettingsController: UIViewController {
     @IBOutlet weak var bannerImageView: UIImageView!
     @IBOutlet weak var bannerTopStackView: UIStackView!
     @IBOutlet var bannerFeaturesStackViews: [UIStackView]!
+    @IBOutlet weak var debugStackView: UIStackView!
     @IBOutlet var buttonStackViews: [UIStackView]!
     @IBOutlet weak var rateImageView: UIImageView!
     @IBOutlet weak var feedbackImageView: UIImageView!
@@ -32,6 +33,10 @@ public class SCEPSettingsController: UIViewController {
     @IBOutlet weak var feedbackButton: SCEPSecondaryButton!
     @IBOutlet weak var privacyButton: SCEPSecondaryButton!
     @IBOutlet weak var termsButton: SCEPSecondaryButton!
+    @IBOutlet weak var premiumStatusButton: SCEPSecondaryButton!
+    @IBOutlet weak var recurringCreditsButton: SCEPSecondaryButton!
+    @IBOutlet weak var additionalCreditsButton: SCEPSecondaryButton!
+    @IBOutlet weak var resetOnboardingButton: SCEPSecondaryButton!
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -78,10 +83,37 @@ public class SCEPSettingsController: UIViewController {
         feedbackButton.title = .init(localized: "Feedback", bundle: .module)
         privacyButton.title = .init(localized: "Privacy Policy", bundle: .module)
         termsButton.title = .init(localized: "Terms of Use", bundle: .module)
+        
+        debugStackView.isHidden = !isDebug
+                
+        premiumStatusUpdated()
+        NotificationCenter.default.addObserver(self, selector: #selector(premiumStatusUpdated), name: SCEPMonetization.shared.premiumStatusUpdatedNotification, object: nil)
+        
+        creditsUpdated()
+        NotificationCenter.default.addObserver(self, selector: #selector(creditsUpdated), name: SCEPMonetization.shared.creditsUpdatedNotification, object: nil)
+    }
+    
+    @objc func premiumStatusUpdated() {
+        bannerView.isHidden = SCEPMonetization.shared.isPremium
+        let title: String
+        switch SCEPMonetization.shared.premuimStatus {
+        case .free:
+            title = "Free"
+        case .trial:
+            title = "Trial"
+        case .paid:
+            title = "Paid"
+        }
+        premiumStatusButton.setTitle("Premium st.: \(title)", for: .normal)
+    }
+    
+    @objc func creditsUpdated() {
+        recurringCreditsButton.setTitle("Recurring cr.: \(SCEPMonetization.shared.recurringCredits)", for: .normal)
+        additionalCreditsButton.setTitle("Additional cr.: \(SCEPMonetization.shared.additionalCredits)", for: .normal)
     }
     
     @IBAction func bannerButtonTapped(_ sender: SCEPMainButton) {
-        let paywallController = SCEPKitInternal.shared.paywallController(for: .premium, source: "SettingsBanner")
+        let paywallController = SCEPKitInternal.shared.paywallController(for: .main, source: "SettingsBanner", successHandler: nil)
         present(paywallController, animated: true)
     }
     
@@ -104,104 +136,154 @@ public class SCEPSettingsController: UIViewController {
     @IBAction func rateTapped(_ sender: SCEPSecondaryButton) {
         openURL(SCEPKitInternal.shared.reviewURL)
     }
+    
+    @IBAction func premiumStatusTapped(_ sender: SCEPSecondaryButton) {
+        let alert = UIAlertController(title: "Change premium status", message: nil, preferredStyle: .alert)
+        let free = UIAlertAction(title: "Free", style: .default) { [weak self] _ in
+            SCEPMonetization.shared.setPremuimStatus(.free)
+            self?.showInfoAlert(title: "Premium Status Changed", message: "New status: Free")
+        }
+        alert.addAction(free)
+        let trial = UIAlertAction(title: "Trial", style: .default) { [weak self] _ in
+            SCEPMonetization.shared.setPremuimStatus(.trial)
+            self?.showInfoAlert(title: "Premium Status Changed", message: "New status: Trial")
+        }
+        alert.addAction(trial)
+        let paid = UIAlertAction(title: "Paid", style: .default) { [weak self] _ in
+            SCEPMonetization.shared.setPremuimStatus(.paid)
+            self?.showInfoAlert(title: "Premium Status Changed", message: "New status: Paid")
+        }
+        alert.addAction(paid)
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel)
+        alert.addAction(cancel)
+        present(alert, animated: true)
+    }
+    
+    @IBAction func resetOnboardingTapped(_ sender: SCEPSecondaryButton) {
+        SCEPKitInternal.shared.isOnboardingCompleted = false
+        showInfoAlert(title: "Onboarding Reset", message: "Onboarding will be shown on next app launch")
+    }
+    
+    @IBAction func recurringCreditsTapped(_ sender: SCEPSecondaryButton) {
+        showNumberFieldAlert(title: "Set Recurring Credits", message: "Enter NEW value for recurring credits", placeholder: SCEPMonetization.shared.recurringCredits) { [weak self] value in
+            SCEPMonetization.shared.setRecurringCredits(value)
+            self?.showInfoAlert(title: "Recurring Credits Set", message: "New value is \(SCEPMonetization.shared.recurringCredits)")
+        }
+    }
+    
+    @IBAction func additionalCreditsTapped(_ sender: SCEPSecondaryButton) {
+        showNumberFieldAlert(title: "Add Additional Credits", message: "Enter value to ADD to additional credits. Enter negative value to decrement", placeholder: 0) { [weak self] value in
+            SCEPMonetization.shared.incrementAdditionalCredits(by: value)
+            self?.showInfoAlert(title: "Additional Credits Added", message: "New value is \(SCEPMonetization.shared.additionalCredits)")
+        }
+    }
+    
+    func showNumberFieldAlert(title: String, message: String? = nil, placeholder: Int, completion: @escaping (Int) -> Void) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addTextField { textField in
+            textField.keyboardType = .numbersAndPunctuation
+            textField.placeholder = String(placeholder)
+        }
+        let enter = UIAlertAction(title: "Enter", style: .default) { _ in
+            if let textField = alert.textFields?.first, let value = Int(textField.text ?? "") {
+                completion(value)
+            } else {
+                self.showInfoAlert(title: "Invalid Value", message: "Please enter a valid number")
+            }
+        }
+        alert.addAction(enter)
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel)
+        alert.addAction(cancel)
+        present(alert, animated: true)
+    }
+    
+    func showInfoAlert(title: String, message: String? = nil) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+    }
 }
 
 fileprivate extension SCEPConfig.InterfaceStyle {
     
     var settingsTopAxis: NSLayoutConstraint.Axis {
         switch self {
-        case .screensOneDark, .screensOneLight, .screensTwoDark, .screensThreeDark:
-            return .horizontal
-        case .screensFourDark:
-            return .vertical
+        case .classicoDark, .classicoLight: return .horizontal
+        case .salsicciaDark, .salsicciaLight: return .horizontal
+        case .buratinoDark, .buratinoLight: return .horizontal
+        case .giornaleDark, .giornaleLight: return .vertical
         }
     }
     
     var settingsFeatureAxis: NSLayoutConstraint.Axis {
         switch self {
-        case .screensOneDark, .screensOneLight, .screensTwoDark, .screensFourDark:
-            return .horizontal
-        case .screensThreeDark:
-            return .vertical
+        case .classicoDark, .classicoLight: return .horizontal
+        case .salsicciaDark, .salsicciaLight: return .horizontal
+        case .buratinoDark, .buratinoLight: return .vertical
+        case .giornaleDark, .giornaleLight: return .horizontal
         }
     }
     
     var settingsImageIndex: Int {
         switch self {
-        case .screensOneDark, .screensOneLight:
-            return 1
-        case .screensTwoDark, .screensThreeDark, .screensFourDark:
-            return 0
+        case .classicoDark, .classicoLight: return 1
+        case .salsicciaDark, .salsicciaLight: return 0
+        case .buratinoDark, .buratinoLight: return 0
+        case .giornaleDark, .giornaleLight: return 0
         }
     }
     
     var settingsTextAlignment: NSTextAlignment {
         switch self {
-        case .screensOneDark, .screensOneLight, .screensTwoDark, .screensThreeDark:
-            return .left
-        case .screensFourDark:
-            return .center
+        case .classicoDark, .classicoLight: return .left
+        case .salsicciaDark, .salsicciaLight: return .left
+        case .buratinoDark, .buratinoLight: return .left
+        case .giornaleDark, .giornaleLight: return .center
         }
     }
     
     var settingsButtonAxis: NSLayoutConstraint.Axis {
         switch self {
-        case .screensOneDark, .screensOneLight, .screensTwoDark, .screensThreeDark:
-            return .vertical
-        case .screensFourDark:
-            return .horizontal
+        case .classicoDark, .classicoLight: return .vertical
+        case .salsicciaDark, .salsicciaLight: return .vertical
+        case .buratinoDark, .buratinoLight: return .vertical
+        case .giornaleDark, .giornaleLight: return .horizontal
         }
     }
     
     var settingsRateImage: UIImage {
         switch self {
-        case .screensOneDark, .screensOneLight:
-            return .init(named: "SCEPSettingsRate-screensOne", in: .module, with: nil)!
-        case .screensTwoDark:
-            return .init(named: "SCEPSettingsRate-screensTwo", in: .module, with: nil)!
-        case .screensThreeDark:
-            return .init(named: "SCEPSettingsRate-screensThree", in: .module, with: nil)!
-        case .screensFourDark:
-            return .init(named: "SCEPSettingsRate-screensFour", in: .module, with: nil)!
+        case .classicoDark, .classicoLight: return .init(named: "SCEPSettingsRate-screensOne", in: .module, with: nil)!
+        case .salsicciaDark, .salsicciaLight: return .init(named: "SCEPSettingsRate-screensTwo", in: .module, with: nil)!
+        case .buratinoDark, .buratinoLight: return .init(named: "SCEPSettingsRate-screensThree", in: .module, with: nil)!
+        case .giornaleDark, .giornaleLight: return .init(named: "SCEPSettingsRate-screensFour", in: .module, with: nil)!
         }
     }
     
     var settingsFeedbackImage: UIImage {
         switch self {
-        case .screensOneDark, .screensOneLight:
-            return .init(named: "SCEPSettingsFeedback-screensOne", in: .module, with: nil)!
-        case .screensTwoDark:
-            return .init(named: "SCEPSettingsFeedback-screensTwo", in: .module, with: nil)!
-        case .screensThreeDark:
-            return .init(named: "SCEPSettingsFeedback-screensThree", in: .module, with: nil)!
-        case .screensFourDark:
-            return .init(named: "SCEPSettingsFeedback-screensFour", in: .module, with: nil)!
+        case .classicoDark, .classicoLight: return .init(named: "SCEPSettingsFeedback-screensOne", in: .module, with: nil)!
+        case .salsicciaDark, .salsicciaLight: return .init(named: "SCEPSettingsFeedback-screensTwo", in: .module, with: nil)!
+        case .buratinoDark, .buratinoLight: return .init(named: "SCEPSettingsFeedback-screensThree", in: .module, with: nil)!
+        case .giornaleDark, .giornaleLight: return .init(named: "SCEPSettingsFeedback-screensFour", in: .module, with: nil)!
         }
     }
     
     var settingsPrivacyImage: UIImage {
         switch self {
-        case .screensOneDark, .screensOneLight:
-            return .init(named: "SCEPSettingsPrivacy-screensOne", in: .module, with: nil)!
-        case .screensTwoDark:
-            return .init(named: "SCEPSettingsPrivacy-screensTwo", in: .module, with: nil)!
-        case .screensThreeDark:
-            return .init(named: "SCEPSettingsPrivacy-screensThree", in: .module, with: nil)!
-        case .screensFourDark:
-            return .init(named: "SCEPSettingsPrivacy-screensFour", in: .module, with: nil)!
+        case .classicoDark, .classicoLight: return .init(named: "SCEPSettingsPrivacy-screensOne", in: .module, with: nil)!
+        case .salsicciaDark, .salsicciaLight: return .init(named: "SCEPSettingsPrivacy-screensTwo", in: .module, with: nil)!
+        case .buratinoDark, .buratinoLight: return .init(named: "SCEPSettingsPrivacy-screensThree", in: .module, with: nil)!
+        case .giornaleDark, .giornaleLight: return .init(named: "SCEPSettingsPrivacy-screensFour", in: .module, with: nil)!
         }
     }
     
     var settingsTermsImage: UIImage {
         switch self {
-        case .screensOneDark, .screensOneLight:
-            return .init(named: "SCEPSettingsTerms-screensOne", in: .module, with: nil)!
-        case .screensTwoDark:
-            return .init(named: "SCEPSettingsTerms-screensTwo", in: .module, with: nil)!
-        case .screensThreeDark:
-            return .init(named: "SCEPSettingsTerms-screensThree", in: .module, with: nil)!
-        case .screensFourDark:
-            return .init(named: "SCEPSettingsTerms-screensFour", in: .module, with: nil)!
+        case .classicoDark, .classicoLight: return .init(named: "SCEPSettingsTerms-screensOne", in: .module, with: nil)!
+        case .salsicciaDark, .salsicciaLight: return .init(named: "SCEPSettingsTerms-screensTwo", in: .module, with: nil)!
+        case .buratinoDark, .buratinoLight: return .init(named: "SCEPSettingsTerms-screensThree", in: .module, with: nil)!
+        case .giornaleDark, .giornaleLight: return .init(named: "SCEPSettingsTerms-screensFour", in: .module, with: nil)!
         }
     }
 }

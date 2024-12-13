@@ -28,7 +28,7 @@ extension SCEPPaywallAdaptyController: AdaptyPaywallControllerDelegate {
     func paywallController(_ controller: AdaptyPaywallController, didPerform action: AdaptyUI.Action) {
         switch action {
         case .close:
-            close()
+            close(success: false)
         case let .openURL(url):
             // handle URL opens (incl. terms and privacy links)
             UIApplication.shared.open(url, options: [:])
@@ -47,7 +47,7 @@ extension SCEPPaywallAdaptyController: AdaptyPaywallControllerDelegate {
     func paywallController(_ controller: AdaptyPaywallController, didCancelPurchase product: AdaptyPaywallProduct) {
     }
     func paywallController(_ controller: AdaptyPaywallController, didFinishPurchase product: AdaptyPaywallProduct, purchasedInfo: AdaptyPurchasedInfo) {
-        close()
+        close(success: true)
     }
     func paywallController(_ controller: AdaptyPaywallController, didFailPurchase product: AdaptyPaywallProduct, error: AdaptyError) {
     }

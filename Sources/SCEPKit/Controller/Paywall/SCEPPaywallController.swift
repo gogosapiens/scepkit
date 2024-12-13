@@ -5,6 +5,7 @@ public class SCEPPaywallController: UIViewController {
     
     var placement: SCEPPaywallPlacement!
     var source: String = ""
+    var successHandler: (() -> Void)?
 
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -15,11 +16,17 @@ public class SCEPPaywallController: UIViewController {
     
     func purchase(_ product: AdaptyPaywallProduct) {
         if isDebug {
-            let alert = UIAlertController(title: "Purchase Product?", message: "Debug mode. The premium status will be reset on next launch", preferredStyle: .alert)
-            let purchase = UIAlertAction(title: "Purchase", style: .default) { [unowned self] _ in
-                SCEPKitInternal.shared.isSessionPremium = true
-                NotificationCenter.default.post(name: SCEPKitInternal.shared.premiumStatusUpdatedNotification, object: nil)
-                close()
+            let isTrial = product.introductoryDiscount?.paymentMode == .freeTrial
+            let credits = SCEPMonetization.shared.credits(for: product.vendorProductId)
+            let title = credits > 0 ? "Increment credits by \(credits)?" : "Enable \(isTrial ? "trial" : "paid") status?"
+            let alert = UIAlertController(title: title, message: "Debug mode", preferredStyle: .alert)
+            let purchase = UIAlertAction(title: "Confirm", style: .default) { [unowned self] _ in
+                if credits > 0 {
+                    SCEPMonetization.shared.incrementAdditionalCredits(by: credits)
+                } else {
+                    SCEPMonetization.shared.setPremuimStatus(isTrial ? .trial : .paid)
+                }
+                close(success: true)
             }
             alert.addAction(purchase)
             let cancel = UIAlertAction(title: "Cancel", style: .cancel)
@@ -32,7 +39,7 @@ public class SCEPPaywallController: UIViewController {
                 switch result {
                 case .success(let info):
                     logger.debug("Purchase success \(String(describing: info))")
-                    close()
+                    close(success: true)
                     SCEPKitInternal.shared.trackEvent("[SCEPKit] subscribed", properties: ["product_id": product.vendorProductId, "placenemt": placement.id, "source": source])
                 case .failure(let error):
                     logger.error("Purchase error \(error)")
@@ -53,12 +60,16 @@ public class SCEPPaywallController: UIViewController {
         }
     }
     
-    func close() {
+    func close(success: Bool) {
         SCEPKitInternal.shared.trackEvent("[SCEPKit] paywall_closed", properties: ["placenemt": placement.id, "source": source])
         if parent is SCEPOnboardingController {
             SCEPKitInternal.shared.completeOnboarding()
         } else {
-            dismiss(animated: true)
+            dismiss(animated: true) { [successHandler] in
+                if success {
+                    successHandler?()
+                }
+            }
         }
     }
 }
@@ -67,31 +78,28 @@ extension SCEPConfig.InterfaceStyle {
     
     var paywallTrialSwitchCornerRadius: CGFloat {
         switch self {
-        case .screensOneDark: return 12
-        case .screensOneLight:  return 12
-        case .screensTwoDark: return 24
-        case .screensThreeDark: return 8
-        case .screensFourDark: return 12
+        case .classicoDark, .classicoLight: return 12
+        case .salsicciaDark, .salsicciaLight: return 24
+        case .buratinoDark, .buratinoLight: return 8
+        case .giornaleDark, .giornaleLight: return 12
         }
     }
     
     var paywallProductCornerRadius: CGFloat {
         switch self {
-        case .screensOneDark: return 16
-        case .screensOneLight:  return 16
-        case .screensTwoDark: return 33
-        case .screensThreeDark: return 8
-        case .screensFourDark: return 12
+        case .classicoDark, .classicoLight: return 16
+        case .salsicciaDark, .salsicciaLight: return 33
+        case .buratinoDark, .buratinoLight: return 8
+        case .giornaleDark, .giornaleLight: return 12
         }
     }
     
     var paywallProductLeftPadding: CGFloat {
         switch self {
-        case .screensOneDark: return 16
-        case .screensOneLight:  return 16
-        case .screensTwoDark: return 24
-        case .screensThreeDark: return 16
-        case .screensFourDark: return 16
+        case .classicoDark, .classicoLight: return 16
+        case .salsicciaDark, .salsicciaLight: return 24
+        case .buratinoDark, .buratinoLight: return 16
+        case .giornaleDark, .giornaleLight: return 16
         }
     }
 }

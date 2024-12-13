@@ -1,7 +1,7 @@
 import UIKit
 import Adapty
 
-class SCEPPaywallSingleController: SCEPPaywallController {
+class SCEPPaywallCatController: SCEPPaywallController {
     
     struct Config: Codable {
         let positions: [SCEPPaywallConfig.Position]
@@ -61,7 +61,7 @@ class SCEPPaywallSingleController: SCEPPaywallController {
         selectedProductIndex = 0
         trialSwitch.isOn = false
         trialSwitch.onTintColor = .scepAccent
-        trialSwitch.thumbTintColor = .scepShade0
+        trialSwitch.thumbTintColor = .scepTextColor
         trialView.layer.borderColor = UIColor.scepShade2.cgColor
         trialView.layer.borderWidth = 2
         trialView.layer.cornerRadius = SCEPKitInternal.shared.config.style.paywallTrialSwitchCornerRadius
@@ -126,6 +126,6 @@ class SCEPPaywallSingleController: SCEPPaywallController {
     }
     
     @IBAction func closeTapped(_ sender: UIButton) {
-        close()
+        close(success: false)
     }
 }

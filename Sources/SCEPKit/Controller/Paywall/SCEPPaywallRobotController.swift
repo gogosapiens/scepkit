@@ -1,7 +1,7 @@
 import UIKit
 import Adapty
 
-class SCEPPaywallVerticalController: SCEPPaywallController {
+class SCEPPaywallRobotController: SCEPPaywallController {
     
     struct Config: Codable {
         let positions: [SCEPPaywallConfig.Position]
@@ -64,7 +64,7 @@ class SCEPPaywallVerticalController: SCEPPaywallController {
         selectedProductIndex = 0
         trialSwitch.isOn = false
         trialSwitch.onTintColor = .scepAccent
-        trialSwitch.thumbTintColor = .scepShade0
+        trialSwitch.thumbTintColor = .scepTextColor
         trialView.layer.borderColor = UIColor.scepShade2.cgColor
         trialView.layer.borderWidth = 2
         trialView.layer.cornerRadius = SCEPKitInternal.shared.config.style.paywallTrialSwitchCornerRadius
@@ -124,18 +124,18 @@ class SCEPPaywallVerticalController: SCEPPaywallController {
     }
     
     @IBAction func closeTapped(_ sender: UIButton) {
-        close()
+        close(success: false)
     }
 }
 
-extension SCEPPaywallVerticalController: UITableViewDataSource {
+extension SCEPPaywallRobotController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return displayProducts.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(of: SCEPPaywallVerticalProductCell.self, for: indexPath)
+        let cell = tableView.dequeueReusableCell(of: SCEPPaywallRobotProductCell.self, for: indexPath)
         let product = displayProducts[indexPath.row]
         let isSelected = indexPath.row == selectedProductIndex
         
@@ -175,10 +175,10 @@ extension SCEPPaywallVerticalController: UITableViewDataSource {
     }
 }
 
-extension SCEPPaywallVerticalController: UITableViewDelegate {
+extension SCEPPaywallRobotController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+        UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
         selectedProductIndex = indexPath.row
         if products[selectedProductIndex] == nil {
             trialSwitch.setOn(!trialSwitch.isOn, animated: true)

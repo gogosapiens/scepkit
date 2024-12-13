@@ -41,30 +41,28 @@ extension SCEPConfig.InterfaceStyle {
     
     var onboardingTitlePosition: SCEPOnboardingSlideController.TitlePosition {
         switch self {
-        case .screensOneDark, .screensOneLight, .screensThreeDark:
-            return .bottom
-        case .screensTwoDark:
-            return .top
-        case .screensFourDark:
-            return .imageBottom
+        case .classicoDark, .classicoLight: return .bottom
+        case .salsicciaDark, .salsicciaLight: return .top
+        case .buratinoDark, .buratinoLight: return .bottom
+        case .giornaleDark, .giornaleLight: return .imageBottom
         }
     }
     
     var onboardingOverlayHidden: Bool {
         switch self {
-        case .screensOneDark, .screensOneLight, .screensThreeDark, .screensTwoDark:
-            return false
-        case .screensFourDark:
-            return true
+        case .classicoDark, .classicoLight: return false
+        case .salsicciaDark, .salsicciaLight: return false
+        case .buratinoDark, .buratinoLight: return false
+        case .giornaleDark, .giornaleLight: return true
         }
     }
     
     var onboardingIsImageAtTop: Bool {
         switch self {
-        case .screensOneDark, .screensOneLight, .screensFourDark, .screensThreeDark:
-            return true
-        case .screensTwoDark:
-            return false
+        case .classicoDark, .classicoLight: return true
+        case .salsicciaDark, .salsicciaLight: return false
+        case .buratinoDark, .buratinoLight: return true
+        case .giornaleDark, .giornaleLight: return true
         }
     }
 }

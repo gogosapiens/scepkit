@@ -7,35 +7,20 @@ struct UserDefaultsValue<Value> where Value: Codable {
     let defaultValue: Value
     var container: UserDefaults = .standard
     
+    private var namespacedKey: String { "SCEPKit." + key }
+    
     var wrappedValue: Value {
         get {
-            if let data = container.data(forKey: key), let value = try? JSONDecoder().decode(Value.self, from: data) {
+            if let data = container.data(forKey: namespacedKey), let value = try? JSONDecoder().decode(Value.self, from: data) {
                 return value
             } else {
                 return defaultValue
             }
         }
         set {
-            if let optional = newValue as? AnyOptional, optional.isNil {
-                container.removeObject(forKey: key)
-            } else if let data = try? JSONEncoder().encode(newValue) {
-                container.set(data, forKey: key)
+            if let data = try? JSONEncoder().encode(newValue) {
+                container.set(data, forKey: namespacedKey)
             }
         }
     }
-}
-
-extension UserDefaultsValue where Value: ExpressibleByNilLiteral {
-    
-    init(key: String, _ container: UserDefaults = .standard) {
-        self.init(key: key, defaultValue: nil, container: container)
-    }
-}
-
-protocol AnyOptional {
-    var isNil: Bool { get }
-}
-
-extension Optional: AnyOptional {
-    public var isNil: Bool { self == nil }
 }

@@ -17,7 +17,7 @@ class SCEPMainButton: UIButton {
         layer.cornerRadius = SCEPKitInternal.shared.config.style.mainButtonCornerRadius
         heightAnchor.constraint(equalToConstant: 56).isActive = true
         
-        setTitleColor(.scepShade0, for: .normal)
+        setTitleColor(.scepButtonTextColor, for: .normal)
         titleLabel?.font = SCEPKitInternal.shared.font(ofSize: 18, weight: .bold)
     }
 }
@@ -26,11 +26,10 @@ fileprivate extension SCEPConfig.InterfaceStyle {
     
     var mainButtonCornerRadius: CGFloat {
         switch self {
-        case .screensOneDark: return 16
-        case .screensOneLight:  return 16
-        case .screensTwoDark: return 28
-        case .screensThreeDark: return 8
-        case .screensFourDark: return 12
+        case .classicoDark, .classicoLight: return 16
+        case .salsicciaDark, .salsicciaLight: return 28
+        case .buratinoDark, .buratinoLight: return 8
+        case .giornaleDark, .giornaleLight: return 1
         }
     }
 }

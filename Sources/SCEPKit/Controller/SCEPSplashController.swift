@@ -27,7 +27,7 @@ class SCEPSplashController: UIViewController {
         loaderThreeImageView.isHidden = true
         loaderFourView.isHidden = true
         switch style {
-        case .screensOneDark, .screensOneLight:
+        case .classicoDark, .classicoLight:
             loaderOneView.isHidden = false
             let rotation = CABasicAnimation(keyPath: "transform.rotation")
             rotation.fromValue = 0
@@ -35,10 +35,10 @@ class SCEPSplashController: UIViewController {
             rotation.duration = 2
             rotation.repeatCount = Float.infinity
             loaderOneImageView.layer.add(rotation, forKey: "rotationAnimation")
-        case .screensTwoDark:
+        case .salsicciaDark, .salsicciaLight:
             loaderTwoView.isHidden = false
             loaderTwoView.startAnimating()
-        case .screensThreeDark:
+        case .buratinoDark, .buratinoLight:
             loaderThreeImageView.isHidden = false
             let rotation = CABasicAnimation(keyPath: "transform.rotation")
             rotation.fromValue = 0
@@ -49,7 +49,7 @@ class SCEPSplashController: UIViewController {
             UIView.animate(withDuration: 2, delay: 0, options: [.repeat, .autoreverse, .curveEaseInOut]) {
                 self.loaderThreeImageView.transform = .init(scaleX: 0.6, y: 0.6)
             }
-        case .screensFourDark:
+        case .giornaleDark, .giornaleLight:
             loaderFourView.isHidden = false
             loaderFourLeadingConstraint.constant = 60
             UIView.animate(withDuration: 2, delay: 0, options: [.repeat, .autoreverse, .curveEaseInOut]) {
@@ -80,21 +80,19 @@ extension SCEPConfig.InterfaceStyle {
     
     var splashTitlePosition: SCEPSplashController.TitlePosition {
         switch self {
-        case .screensOneDark, .screensOneLight, .screensTwoDark:
-            return .imageBottom
-        case .screensThreeDark:
-            return .none
-        case .screensFourDark:
-            return .top
+        case .classicoDark, .classicoLight: return .imageBottom
+        case .salsicciaDark, .salsicciaLight: return .imageBottom
+        case .buratinoDark, .buratinoLight: return .none
+        case .giornaleDark, .giornaleLight: return .top
         }
     }
     
     var splashIconWidth: CGFloat {
         switch self {
-        case .screensOneDark, .screensOneLight, .screensTwoDark, .screensFourDark:
-            return 122
-        case .screensThreeDark:
-            return 84
+        case .classicoDark, .classicoLight: return 122
+        case .salsicciaDark, .salsicciaLight: return 122
+        case .buratinoDark, .buratinoLight: return 84
+        case .giornaleDark, .giornaleLight: return 122
         }
     }
 }

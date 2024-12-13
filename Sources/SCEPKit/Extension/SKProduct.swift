@@ -4,8 +4,7 @@ import StoreKit
 extension SKProduct {
     
     var localizedPrice: String {
-        guard let subscriptionPeriod else { return "-" }
-        return localizedPriceForPeriod(unit: subscriptionPeriod.unit, numberOfUnits: subscriptionPeriod.numberOfUnits)
+        return localize(price.doubleValue)
     }
     
     func priceForPeriod(unit: SKProduct.PeriodUnit, numberOfUnits: Int) -> Double? {
@@ -23,13 +22,17 @@ extension SKProduct {
     
     func localizedPriceForPeriod(unit: SKProduct.PeriodUnit, numberOfUnits: Int) -> String {
         if let price = priceForPeriod(unit: unit, numberOfUnits: numberOfUnits) {
-            let formatter = NumberFormatter()
-            formatter.numberStyle = .currency
-            formatter.locale = priceLocale
-            return formatter.string(from: .init(value: price)) ?? "-"
+            return localize(price)
         } else {
             return "-"
         }
+    }
+    
+    private func localize(_ price: Double) -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.locale = priceLocale
+        return formatter.string(from: .init(value: price)) ?? "-"
     }
     
     var localizedIntroductoryPrice: String {

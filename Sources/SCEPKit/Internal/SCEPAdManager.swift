@@ -10,6 +10,9 @@ class SCEPAdManager: NSObject {
     var needsToShowAppOpenOnApplicationShown: Bool = false
     var isLoadingAppOpen: Bool = false
     var isShowingAppOpen: Bool = false
+    var rewardedAdCompletion: ((Bool) -> Void)?
+    var rewardedAdDidReward: Bool = false
+    var shownRewardedAd: GADRewardedAd?
     
     private var interstitial: GADInterstitialAd?
     private var appOpenAd: GADAppOpenAd?
@@ -24,12 +27,12 @@ class SCEPAdManager: NSObject {
     }
     
     var canShowAds: Bool {
-        return !SCEPKitInternal.shared.isAdaptyPremium && isStartDelayPassed
+        return !SCEPMonetization.shared.isPremium && isStartDelayPassed
     }
     
     @MainActor func start() {
         guard SCEPKitInternal.shared.config.monetization.ads.isEnabled else { return }
-        if !SCEPKitInternal.shared.isAdaptyPremium {
+        if !SCEPMonetization.shared.isPremium {
             if SCEPKitInternal.shared.config.monetization.ads.interstitialId != nil {
                 loadInterstitialAd()
             }
@@ -123,35 +126,47 @@ class SCEPAdManager: NSObject {
         return bannerView
     }
     
-    @MainActor func showRewardedAd(from viewController: UIViewController, placement: String, customLoadingCompletion: ((Bool) -> Void)?, completion: @escaping (Bool) -> Void) {
-        let unitId = isDebug ? "ca-app-pub-3940256099942544/1712485313" : SCEPKitInternal.shared.config.monetization.ads.rewardedId!
+    @MainActor func loadRewardedAd(id: String? = nil, completion: @escaping (GADRewardedAd?) -> Void) {
+        let request = GADRequest()
+        let unitId = isDebug ? "ca-app-pub-3940256099942544/1712485313" : id ?? SCEPKitInternal.shared.config.monetization.ads.rewardedId!
+        GADRewardedAd.load(withAdUnitID: unitId, request: request) { ad, error in
+            if let error {
+                print("Failed to load rewarded ad with error: \(error.localizedDescription)")
+            }
+            completion(ad)
+        }
+    }
+    
+    @MainActor func showRewardedAd(_ ad: GADRewardedAd, from viewController: UIViewController, placement: String, completion: @escaping (Bool) -> Void) {
+        rewardedAdCompletion = completion
+        rewardedAdDidReward = false
+        shownRewardedAd = ad
+        ad.fullScreenContentDelegate = self
+        ad.present(fromRootViewController: viewController) {
+            self.rewardedAdDidReward = true
+        }
+        SCEPKitInternal.shared.trackEvent("[SCEPKit] rewarded_ad_shown", properties: ["placement": placement])
+    }
+    
+    @MainActor func loadAndShowRewardedAd(from viewController: UIViewController, placement: String, customLoadingCompletion: ((Bool) -> Void)?, completion: @escaping (Bool) -> Void) {
         var activityController: SCEPActivityController?
         if customLoadingCompletion == nil {
             activityController = SCEPActivityController.instantiate(bundle: .module)
             viewController.present(activityController!, animated: true)
         }
-        let request = GADRequest()
-        GADRewardedAd.load(withAdUnitID: unitId, request: request) { ad, error in
+        loadRewardedAd { ad in
             let showAd = {
                 guard let ad else {
-                    print("Failed to load rewarded ad with error: \(error?.localizedDescription ?? "none")")
-                    customLoadingCompletion?(false)
                     completion(false)
                     return
                 }
-                customLoadingCompletion?(true)
-                ad.fullScreenContentDelegate = self
-                ad.present(fromRootViewController: viewController) {
-                    let reward = ad.adReward
-                    print("User rewarded with \(reward.amount) \(reward.type)")
-                    completion(true)
-                }
-                SCEPKitInternal.shared.trackEvent("[SCEPKit] rewarded_ad_shown", properties: ["placement": placement])
+                self.showRewardedAd(ad, from: viewController, placement: placement, completion: completion)
             }
-            if customLoadingCompletion == nil {
-                activityController?.dismiss(animated: true, completion: showAd)
-            } else {
+            if let customLoadingCompletion {
+                customLoadingCompletion(ad != nil)
                 showAd()
+            } else {
+                activityController?.dismiss(animated: true, completion: showAd)
             }
         }
     }
@@ -180,6 +195,11 @@ extension SCEPAdManager: GADFullScreenContentDelegate {
             loadAppOpenAd()
             isShowingAppOpen = false
             NotificationCenter.default.post(Self.appOpenDismissedNotification)
+        } else if ad is GADRewardedAd {
+            rewardedAdCompletion?(rewardedAdDidReward)
+            rewardedAdCompletion = nil
+            rewardedAdDidReward = false
+            shownRewardedAd = nil
         }
     }
 }

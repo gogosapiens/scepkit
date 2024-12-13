@@ -17,15 +17,6 @@ struct SCEPConfig: Codable {
     let onboarding: Onboarding
     let settings: Settings
     
-    enum ProductType: String, Codable {
-        case short, shortTrial, long
-    }
-    
-    func paywall(for placement: SCEPPaywallPlacement) -> SCEPPaywallConfig {
-        let paywallId = monetization.placements[placement.id]!
-        return monetization.paywalls[paywallId]!
-    }
-    
     struct Legal: Codable {
         let termsURL: URL
         let privacyURL: URL
@@ -40,9 +31,22 @@ struct SCEPConfig: Codable {
     }
     
     struct Monetization: Codable {
-        let placements: [String: String]
+        let initialCredits: Int
+        let trialCredits: Int
+        let premiumWeeklyCredits: Int
+        let placements: [String: Placement]
         let ads: Ads
         let paywalls: [String: SCEPPaywallConfig]
+        
+        struct Placement: Codable {
+            let premium: String?
+            let credits: String?
+            let noTrialPremium: String?
+            
+            var all: [String] {
+                [premium, credits, noTrialPremium].compactMap(\.self)
+            }
+        }
         
         struct Ads: Codable {
             let isEnabled: Bool
@@ -72,15 +76,21 @@ struct SCEPConfig: Codable {
     }
     
     enum InterfaceStyle: String, Codable {
-        case screensOneDark, screensOneLight, screensTwoDark, screensThreeDark, screensFourDark
+        case classicoDark = "classico.dark"
+        case salsicciaDark = "salsiccia.dark"
+        case buratinoDark = "buratino.dark"
+        case giornaleDark = "giornale.dark"
+        case classicoLight = "classico.light"
+        case salsicciaLight = "salsiccia.light"
+        case buratinoLight = "buratino.light"
+        case giornaleLight = "giornale.light"
         
         var uiUserInterfaceStyle: UIUserInterfaceStyle {
             switch self {
-            case .screensOneDark: return .dark
-            case .screensOneLight:  return .light
-            case .screensTwoDark: return .dark
-            case .screensThreeDark: return .dark
-            case .screensFourDark: return .dark
+            case .classicoDark, .salsicciaDark, .buratinoDark, .giornaleDark:
+                return .dark
+            case .classicoLight, .salsicciaLight, .buratinoLight, .giornaleLight:
+                return .light
             }
         }
     }

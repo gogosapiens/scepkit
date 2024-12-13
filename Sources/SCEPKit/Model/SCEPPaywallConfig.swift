@@ -8,9 +8,9 @@
 import Foundation
 
 enum SCEPPaywallConfig {
-    case vertical(config: SCEPPaywallVerticalController.Config)
-    case single(config: SCEPPaywallSingleController.Config)
-    case credits(config: SCEPPaywallCreditsController.Config)
+    case robot(config: SCEPPaywallRobotController.Config)
+    case cat(config: SCEPPaywallCatController.Config)
+    case shop(config: SCEPPaywallShopController.Config)
     case adapty(placementId: String)
     
     var adaptyPlacementId: String {
@@ -21,13 +21,13 @@ enum SCEPPaywallConfig {
         }
     }
     
-    var imageURLs: [URL] {
+    var imageURLs: Set<URL> {
         switch self {
-        case .vertical(let config):
+        case .robot(let config):
             return [config.meta.imageURL]
-        case .single(let config):
+        case .cat(let config):
             return [config.meta.imageURL]
-        case .credits(let config):
+        case .shop(let config):
             return [config.meta.imageURL, config.meta.balanceImageURL]
         case .adapty:
             return []
@@ -40,6 +40,22 @@ enum SCEPPaywallConfig {
         enum CodingKeys: CodingKey {
             case productId
             case rewardedAdId
+        }
+        
+        var productId: String? {
+            if case .productId(let id) = self {
+                return id
+            } else {
+                return nil
+            }
+        }
+        
+        var rewardedAdId: String? {
+            if case .rewardedAdId(let id) = self {
+                return id
+            } else {
+                return nil
+            }
         }
         
         init(from decoder: any Decoder) throws {
@@ -78,18 +94,18 @@ extension SCEPPaywallConfig: Codable {
     }
     
     private enum BaseType: String, Codable {
-        case vertical, single, credits, adapty
+        case robot, cat, shop, adapty
     }
     
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         switch try container.decode(BaseType.self, forKey: .style) {
-        case .vertical:
-            self = .vertical(config: try .init(from: decoder))
-        case .single:
-            self = .single(config: try .init(from: decoder))
-        case .credits:
-            self = .credits(config: try .init(from: decoder))
+        case .robot:
+            self = .robot(config: try .init(from: decoder))
+        case .cat:
+            self = .cat(config: try .init(from: decoder))
+        case .shop:
+            self = .shop(config: try .init(from: decoder))
         case .adapty:
             let placementId = try container.decode(String.self, forKey: .placementId)
             self = .adapty(placementId: placementId)
@@ -99,14 +115,14 @@ extension SCEPPaywallConfig: Codable {
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         switch self {
-        case .vertical(let config):
-            try container.encode(BaseType.vertical, forKey: .style)
+        case .robot(let config):
+            try container.encode(BaseType.robot, forKey: .style)
             try config.encode(to: encoder)
-        case .single(let config):
-            try container.encode(BaseType.single, forKey: .style)
+        case .cat(let config):
+            try container.encode(BaseType.cat, forKey: .style)
             try config.encode(to: encoder)
-        case .credits(let config):
-            try container.encode(BaseType.credits, forKey: .style)
+        case .shop(let config):
+            try container.encode(BaseType.shop, forKey: .style)
             try config.encode(to: encoder)
         case .adapty(let placementId):
             try container.encode(BaseType.adapty, forKey: .style)

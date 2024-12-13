@@ -33,46 +33,44 @@ class SCEPKitInternal: NSObject {
     var adaptyProducts: [String: [AdaptyPaywallProduct]] = [:]
     var amplitude: Amplitude!
     var isApplicationShown: Bool = false
-    var isSessionPremium: Bool = false
     var font: SCEPFont = .system
     private var isOnboardingResourcesLoadFailed: Bool = false
     private var isOnboardingPaywallResourcesLoadFailed: Bool = false
     
-    @UserDefaultsValue(key: "SCEPKitInternal.isOnboardingCompleted", defaultValue: false)
+    @UserDefaultsValue(key: "isOnboardingCompleted", defaultValue: false)
     var isOnboardingCompleted: Bool
     
-    @UserDefaultsValue(key: "SCEPKitInternal.isAdaptyPremuim", defaultValue: false)
-    var isAdaptyPremium: Bool
-    
-    @UserDefaultsValue(key: "SCEPKitInternal.firstLaunchDate", defaultValue: nil)
+    @UserDefaultsValue(key: "firstLaunchDate", defaultValue: nil)
     var firstLaunchDate: Date!
-    
-    var isPremium: Bool {
-        return isAdaptyPremium || isSessionPremium
-    }
     
     let onboardingCompletedNotification = Notification.Name("SCEPKitInternal.onboardingCompletedNotification")
     let applicationShownNotification = Notification.Name("SCEPKitInternal.applicationShownNotification")
-    let premiumStatusUpdatedNotification = Notification.Name("SCEPKitInternal.premiumStatusUpdated")
     
     @MainActor func launch(rootViewController: UIViewController) {
+        
+        FirebaseApp.configure()
+        let remoteConfig = RemoteConfig.remoteConfig()
+        remoteConfig.setDefaults(fromPlist: "remote_config_defaults")
+        remoteConfig.activate()
         
         let isFirstLaunch = firstLaunchDate == nil
         if isFirstLaunch {
             firstLaunchDate = .init()
-            let requestTracking = {
-                ATTrackingManager.requestTrackingAuthorization { status in
-                    let idfa = status == .authorized ? ASIdentifierManager.shared().advertisingIdentifier.uuidString : nil
-                    let idfv = UIDevice.current.identifierForVendor?.uuidString
-                    let properties = ["[SCEPKit] idfa": idfa, "[SCEPKit] idfv": idfv].compactMapValues { $0 }
-                    self.setUserProperties(properties)
-                    self.trackEvent("[SCEPKit] first_launch", properties: ["tracking_authorized": status == .authorized])
+            if config.legal.requestTracking {
+                let requestTracking = {
+                    ATTrackingManager.requestTrackingAuthorization { status in
+                        let idfa = status == .authorized ? ASIdentifierManager.shared().advertisingIdentifier.uuidString : nil
+                        let idfv = UIDevice.current.identifierForVendor?.uuidString
+                        let properties = ["[SCEPKit] idfa": idfa, "[SCEPKit] idfv": idfv].compactMapValues { $0 }
+                        self.setUserProperties(properties)
+                        self.trackEvent("[SCEPKit] first_launch", properties: ["tracking_authorized": status == .authorized])
+                    }
                 }
-            }
-            if UIApplication.shared.applicationState == .active {
-                requestTracking()
-            } else {
-                NotificationCenter.default.addOneTimeObserver(forName: UIApplication.didBecomeActiveNotification) { _ in requestTracking()
+                if UIApplication.shared.applicationState == .active {
+                    requestTracking()
+                } else {
+                    NotificationCenter.default.addOneTimeObserver(forName: UIApplication.didBecomeActiveNotification) { _ in requestTracking()
+                    }
                 }
             }
         }
@@ -81,10 +79,6 @@ class SCEPKitInternal: NSObject {
         
         let group = DispatchGroup()
         
-        FirebaseApp.configure()
-        let remoteConfig = RemoteConfig.remoteConfig()
-        remoteConfig.setDefaults(fromPlist: "remote_config_defaults")
-        remoteConfig.activate()
         group.enter()
         remoteConfig.fetch(withExpirationDuration: 0) { status, error in
             remoteConfig.activate()
@@ -146,7 +140,8 @@ class SCEPKitInternal: NSObject {
     
     func loadResources(completion: @escaping () -> Void) {
         let group = DispatchGroup()
-        let adaptyPlacementIds = Set(SCEPPaywallPlacement.allCases.map { paywallConfig(for: $0).adaptyPlacementId })
+        let paywallIds = config.monetization.placements.values.flatMap(\.all)
+        let adaptyPlacementIds = Set(paywallIds.map { config.monetization.paywalls[$0]!.adaptyPlacementId })
         adaptyPlacementIds.forEach { placementId in
             guard !adaptyPaywalls.keys.contains(placementId) else { return }
             group.enter()
@@ -198,7 +193,10 @@ class SCEPKitInternal: NSObject {
                     group.leave()
                 }
             }
-            for imageURL in config.paywall(for: .onboarding).imageURLs {
+            let placement = config.monetization.placements[SCEPPaywallPlacement.onboarding.id]
+            let paywallIds = [placement?.premium, placement?.credits].compactMap({ $0 })
+            let imageURLs = Set(paywallIds.flatMap { config.monetization.paywalls[$0]!.imageURLs })
+            for imageURL in imageURLs {
                 group.enter()
                 Downloader.downloadImage(from: imageURL) { image in
                     if image == nil {
@@ -243,14 +241,25 @@ class SCEPKitInternal: NSObject {
     
     func paywallConfig(for placement: SCEPPaywallPlacement) -> SCEPPaywallConfig {
         let isDefault = placement == .onboarding && isOnboardingPaywallResourcesLoadFailed
-        return (isDefault ? defaultConfig : config).paywall(for: placement)
+        let config = isDefault ? defaultConfig : config
+        let placementConfig = config.monetization.placements[placement.id]!
+        let paywallId: String
+        switch SCEPMonetization.shared.premuimStatus {
+        case .free:
+            paywallId = placementConfig.premium ?? placementConfig.credits!
+        case .trial:
+            paywallId = placementConfig.noTrialPremium ?? placementConfig.credits!
+        case .paid:
+            paywallId = placementConfig.credits!
+        }
+        return config.monetization.paywalls[paywallId]!
     }
     
     func product(with id: String) -> AdaptyPaywallProduct? {
         adaptyProducts["custom"]?.first(where: { $0.vendorProductId == id })
     }
     
-    func paywallController(for placement: SCEPPaywallPlacement, source: String) -> SCEPPaywallController {
+    func paywallController(for placement: SCEPPaywallPlacement, source: String, successHandler: (() -> Void)?) -> SCEPPaywallController {
         let paywallConfig = SCEPKitInternal.shared.paywallConfig(for: placement)
         let paywallController: SCEPPaywallController
         
@@ -266,22 +275,31 @@ class SCEPKitInternal: NSObject {
             } else {
                 fatalError()
             }
-        case .vertical(let config):
-            let controller = SCEPPaywallVerticalController.instantiate(bundle: .module)
+        case .robot(let config):
+            let controller = SCEPPaywallRobotController.instantiate(bundle: .module)
             controller.config = config
             paywallController = controller
-        case .single(let config):
-            let controller = SCEPPaywallSingleController.instantiate(bundle: .module)
+        case .cat(let config):
+            let controller = SCEPPaywallCatController.instantiate(bundle: .module)
             controller.config = config
             paywallController = controller
-        case .credits(let config):
-            let controller = SCEPPaywallCreditsController.instantiate(bundle: .module)
+        case .shop(let config):
+            let controller = SCEPPaywallShopController.instantiate(bundle: .module)
             controller.config = config
             paywallController = controller
         }
         paywallController.placement = placement
         paywallController.source = source
+        paywallController.successHandler = successHandler
         return paywallController
+    }
+    
+    func onboardingPaywallController() -> SCEPPaywallController? {
+        if config.monetization.placements[SCEPPaywallPlacement.onboarding.id]!.credits != nil || !SCEPMonetization.shared.isPremium {
+            return SCEPKitInternal.shared.paywallController(for: .onboarding, source: "Onboarding", successHandler: nil)
+        } else {
+            return nil
+        }
     }
     
     func settingsController() -> SCEPSettingsController {
@@ -321,6 +339,43 @@ class SCEPKitInternal: NSObject {
         trackEvent("[SCEPKit] onboarding_finished")
     }
     
+    func showPaywallController(for placement: SCEPPaywallPlacement, from controller: UIViewController, source: String, successHandler: (() -> Void)? = nil) {
+        let paywallController = paywallController(for: placement, source: source, successHandler: successHandler)
+        controller.present(paywallController, animated: true)
+    }
+    
+    func provideContent(with requirement: SCEPContentRequirement, from controller: UIViewController, source: String, placement: SCEPPaywallPlacement, handler: @escaping () -> Void) {
+        if canProvideContent(with: requirement) {
+            handler()
+        } else {
+            showPaywallController(for: placement, from: controller, source: source, successHandler: handler)
+        }
+    }
+    
+    func canProvideContent(with requirement: SCEPContentRequirement) -> Bool {
+        switch requirement {
+        case .premium:
+            guard
+                config.monetization.placements.values.contains(where: { $0.premium != nil })
+            else {
+                fatalError("Premium requirement not supported for this application")
+            }
+            return SCEPMonetization.shared.isPremium
+        case .credits(let credits):
+            guard
+                config.monetization.placements.values.contains(where: { $0.credits != nil })
+            else {
+                fatalError("Credits requirement not supported for this application")
+            }
+            return SCEPMonetization.shared.credits >= credits
+            
+        }
+    }
+    
+    var creditsString: String {
+        SCEPMonetization.shared.credits.formatted()
+    }
+    
     func trackEvent(_ name: String, properties: [String: Any]? = nil) {
         guard !isDebug else {
             logger.log("Track event: \(name), properties: \(properties?.debugDescription ?? "[:]")")
@@ -354,6 +409,21 @@ class SCEPKitInternal: NSObject {
         return value
     }
     
+    private func getUserDefaultsValue<T: Decodable>(for key: String) -> T? {
+        if let data = UserDefaults.standard.data(forKey: "SCEPKitInternal." + key),
+           let value = try? JSONDecoder().decode(T.self, from: data) {
+            return value
+        } else {
+            return nil
+        }
+    }
+    
+    private func setUserDefaultsValue<T: Encodable>(_ value: T?, for key: String) {
+        if let data = try? JSONEncoder().encode(value) {
+            UserDefaults.standard.set(data, forKey: "SCEPKitInternal." + key)
+        }
+    }
+    
     var termsURL: URL {
         return config.legal.termsURL
     }
@@ -378,12 +448,8 @@ class SCEPKitInternal: NSObject {
 extension SCEPKitInternal: AdaptyDelegate {
     
     func didLoadLatestProfile(_ profile: AdaptyProfile) {
-        let isAdaptyPremium = profile.accessLevels["premium"]?.isActive ?? false
-        if isAdaptyPremium != self.isAdaptyPremium {
-            self.isAdaptyPremium = isAdaptyPremium
-            DispatchQueue.main.async {
-                NotificationCenter.default.post(name: self.premiumStatusUpdatedNotification, object: nil)
-            }
+        DispatchQueue.main.async {
+            SCEPMonetization.shared.update(for: profile)
         }
     }
 }
@@ -391,10 +457,7 @@ extension SCEPKitInternal: AdaptyDelegate {
 extension SCEPPaywallConfig.Position {
     
     var product: AdaptyPaywallProduct? {
-        if case .productId(let id) = self {
-            return SCEPKitInternal.shared.product(with: id)
-        } else {
-            return nil
-        }
+        guard let productId else { return nil }
+        return SCEPKitInternal.shared.product(with: productId)
     }
 }

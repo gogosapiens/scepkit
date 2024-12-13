@@ -1,6 +1,6 @@
 import UIKit
 
-class SCEPPaywallVerticalProductCell: UITableViewCell {
+class SCEPPaywallRobotProductCell: UITableViewCell {
 
     @IBOutlet weak var outlineView: UIView!
     @IBOutlet weak var badgeView: UIView!
@@ -20,7 +20,7 @@ class SCEPPaywallVerticalProductCell: UITableViewCell {
         outlineView.layer.borderWidth = 2
         outlineView.layer.cornerRadius = cornerRadius
         badgeShadowView.mask = badgeShadowMaskView
-        badgeShadowView.layer.borderColor = UIColor.scepShade0.cgColor
+        badgeShadowView.layer.borderColor = UIColor.scepTextColor.cgColor
         badgeShadowView.layer.borderWidth = 2
         badgeShadowView.layer.cornerRadius = cornerRadius
     }
