@@ -112,9 +112,7 @@ class SCEPKitInternal: NSObject {
             .with(firebaseAppInstanceId: Analytics.appInstanceID())
         
         Adapty.updateProfile(params: builder.build())
-        
-        SCEPAdManager.shared.start()
-        
+                
         window = UIWindow(frame: UIScreen.main.bounds)
         window.overrideUserInterfaceStyle = config.style.uiUserInterfaceStyle
         let splashController = SCEPSplashController.instantiate(bundle: .module)

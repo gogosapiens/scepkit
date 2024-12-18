@@ -27,22 +27,21 @@
                                     <constraint firstAttribute="height" constant="500" id="lme-IE-aQp"/>
                                 </constraints>
                             </imageView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SCEPPaywallDot" translatesAutoresizingMaskIntoConstraints="NO" id="e9k-5W-K0e" customClass="SCEPTemplateImageView" customModule="SCEPKit">
-                                <rect key="frame" x="174.66666666666666" y="79" width="44" height="44.333333333333343"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="shadeIndex">
-                                        <integer key="value" value="0"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="e9k-5W-K0e">
+                                <rect key="frame" x="161.66666666666666" y="79" width="70" height="42"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="70" id="4Oi-dp-kbF"/>
+                                    <constraint firstAttribute="height" constant="42" id="bAC-ys-HXu"/>
+                                </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="248" verticalHuggingPriority="251" text="Get full access with Our App PRO" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="x0w-2k-ZDG" customClass="SCEPLabel" customModule="SCEPKit">
-                                <rect key="frame" x="16" y="135.33333333333334" width="361" height="76.666666666666657"/>
+                                <rect key="frame" x="16" y="133" width="361" height="76.666666666666686"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="32"/>
                                 <color key="textColor" name="SCEPTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="De3-7L-jZM">
-                                <rect key="frame" x="137" y="238" width="119" height="71"/>
+                                <rect key="frame" x="137" y="235.66666666666663" width="119" height="71"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SCEPPaywallLaurel" translatesAutoresizingMaskIntoConstraints="NO" id="PYc-Vd-4cM" customClass="SCEPTemplateImageView" customModule="SCEPKit">
                                         <rect key="frame" x="0.0" y="0.0" width="119" height="71"/>
@@ -79,10 +78,10 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vi2-aS-jgt">
-                                <rect key="frame" x="16" y="309" width="361" height="308.66666666666674"/>
+                                <rect key="frame" x="16" y="306.66666666666669" width="361" height="311.00000000000006"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="ORx-O1-Srm">
-                                        <rect key="frame" x="0.0" y="105" width="361" height="98.666666666666686"/>
+                                        <rect key="frame" x="0.0" y="106.33333333333331" width="361" height="98.666666666666686"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="248" verticalHuggingPriority="251" text="Unlimited chat messages" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jCN-6e-AkJ" customClass="SCEPLabel" customModule="SCEPKit">
                                                 <rect key="frame" x="0.0" y="0.0" width="361" height="21.666666666666668"/>
@@ -311,6 +310,7 @@
                     <connections>
                         <outlet property="cancelAnytimeLabel" destination="SDG-jS-huy" id="Imi-np-zB2"/>
                         <outlet property="continueButton" destination="z3N-1c-M6r" id="Xye-a5-WM5"/>
+                        <outlet property="crownImageView" destination="e9k-5W-K0e" id="rdc-B7-efA"/>
                         <outlet property="feature0Label" destination="jCN-6e-AkJ" id="RYp-ea-jO4"/>
                         <outlet property="feature1Label" destination="ueR-1Q-anV" id="Uf7-G3-Vsq"/>
                         <outlet property="feature2Label" destination="x8u-gU-0ds" id="sQ4-jp-wVY"/>
@@ -335,7 +335,6 @@
     <resources>
         <image name="SCEPPaywallAnytime" width="18.333333969116211" height="18.333333969116211"/>
         <image name="SCEPPaywallClose" width="24" height="24"/>
-        <image name="SCEPPaywallDot" width="44" height="44.333332061767578"/>
         <image name="SCEPPaywallLaurel" width="119" height="71.333335876464844"/>
         <image name="SCEPPaywallSingleOverlay" width="375" height="500"/>
         <namedColor name="SCEPAccentColor">

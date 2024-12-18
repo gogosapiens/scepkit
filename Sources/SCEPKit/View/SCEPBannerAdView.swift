@@ -14,9 +14,10 @@ public class SCEPBannerAdView: UIView {
     
     init(unitId: String, dismissHandler: @escaping (SCEPBannerAdView) -> Void) {
         self.dismissHandler = dismissHandler
-        super.init(frame: .zero)
-        
         let adaptiveSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(UIScreen.main.bounds.width)
+        let frame = CGRect(origin: .zero, size: adaptiveSize.size)
+        super.init(frame: frame)
+        
         let bannerView = GADBannerView(adSize: adaptiveSize)
         bannerView.adUnitID = unitId
         bannerView.load(GADRequest())

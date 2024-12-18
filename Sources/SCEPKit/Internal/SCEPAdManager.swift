@@ -2,6 +2,7 @@ import GoogleMobileAds
 import UIKit
 
 class SCEPAdManager: NSObject {
+    
     static let shared = SCEPAdManager()
     static let appOpenLoadedNotification = Notification.Name(rawValue: "AdManager.appOpenLoaded")
     static let appOpenDismissedNotification = Notification.Name("SCEPAdManager.appOpenAdDismissed")
@@ -15,40 +16,50 @@ class SCEPAdManager: NSObject {
     var shownRewardedAd: GADRewardedAd?
     var bannerAdViews: Set<SCEPBannerAdView> = []
     
+    private let debugInterstitialId = "ca-app-pub-3940256099942544/4411468910"
+    private let debugAppOpenId = "ca-app-pub-3940256099942544/5575463023"
+    private let debugBannerId = "ca-app-pub-3940256099942544/2435281174"
+    private let debudRewardedId = "ca-app-pub-3940256099942544/1712485313"
+    
     private var interstitial: GADInterstitialAd?
     private var appOpenAd: GADAppOpenAd?
     
     private override init() {
         super.init()
-    }
-    
-    var isStartDelayPassed: Bool {
-        let startDelay: TimeInterval = SCEPKitInternal.shared.config.monetization.ads.startDelay ?? 0
-        return Date() >= SCEPKitInternal.shared.firstLaunchDate.addingTimeInterval(startDelay)
-    }
-    
-    var canShowAds: Bool {
-        return !SCEPMonetization.shared.isPremium && isStartDelayPassed
-    }
-    
-    @MainActor func start() {
-        guard SCEPKitInternal.shared.config.monetization.ads.isEnabled else { return }
-        if !SCEPMonetization.shared.isPremium {
-            if SCEPKitInternal.shared.config.monetization.ads.interstitialId != nil {
-                loadInterstitialAd()
-            }
-            if SCEPKitInternal.shared.config.monetization.ads.appOpenId != nil {
-                isLoadingAppOpen = true
-                loadAppOpenAd()
-            }
-        }
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(applicationShown), name: SCEPKitInternal.shared.applicationShownNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(premiumStatusUpdated), name: SCEPMonetization.shared.premiumStatusUpdatedNotification, object: nil)
     }
     
+    var config: SCEPConfig.Monetization.Ads {
+        SCEPKitInternal.shared.config.monetization.ads
+    }
+    
+    var isStartDelayPassed: Bool {
+        let startDelay: TimeInterval = config.startDelay ?? 0
+        return Date() >= SCEPKitInternal.shared.firstLaunchDate.addingTimeInterval(startDelay)
+    }
+    
+    var canShowAds: Bool {
+        return config.isEnabled && !SCEPMonetization.shared.isPremium && isStartDelayPassed
+    }
+    
+    @MainActor private func start() {
+        guard canShowAds else { return }
+        if !SCEPMonetization.shared.isPremium {
+            if config.interstitialId != nil {
+                loadInterstitialAd()
+            }
+            if config.appOpenId != nil {
+                isLoadingAppOpen = true
+                loadAppOpenAd()
+            }
+        }
+    }
+    
     @MainActor @objc func applicationDidBecomeActive() {
         showAppOpenAd()
+        start()
     }
     
     @MainActor @objc func applicationShown() {
@@ -67,9 +78,9 @@ class SCEPAdManager: NSObject {
     }
     
     private func loadInterstitialAd() {
-        guard SCEPKitInternal.shared.config.monetization.ads.isEnabled else { return }
+        guard config.isEnabled else { return }
         guard interstitial == nil else { return }
-        let unitId = isDebug ? "ca-app-pub-3940256099942544/4411468910" : SCEPKitInternal.shared.config.monetization.ads.interstitialId!
+        let unitId = isDebug ? debugInterstitialId : config.interstitialId!
         let request = GADRequest()
         GADInterstitialAd.load(withAdUnitID: unitId, request: request) { ad, error in
             guard let ad else {
@@ -82,9 +93,9 @@ class SCEPAdManager: NSObject {
     }
     
     private func loadAppOpenAd() {
-        guard SCEPKitInternal.shared.config.monetization.ads.isEnabled else { return }
+        guard config.isEnabled else { return }
         guard appOpenAd == nil else { return }
-        let unitId = isDebug ? "ca-app-pub-3940256099942544/5575463023" : SCEPKitInternal.shared.config.monetization.ads.appOpenId!
+        let unitId = isDebug ? debugAppOpenId : config.appOpenId!
         let request = GADRequest()
         GADAppOpenAd.load(withAdUnitID: unitId, request: request) { ad, error in
             self.isLoadingAppOpen = false
@@ -100,7 +111,7 @@ class SCEPAdManager: NSObject {
     }
     @MainActor func showInterstitialAd(from viewController: UIViewController? = nil, placement: String) -> Bool {
         guard canShowAds else { return false }
-        let interstitialInterval: TimeInterval = SCEPKitInternal.shared.config.monetization.ads.interstitialInterval ?? 60
+        let interstitialInterval: TimeInterval = config.interstitialInterval ?? 60
         if let interstitial = interstitial, Date() > lastInterstitialShowDate + interstitialInterval {
             interstitial.present(fromRootViewController: viewController)
             lastInterstitialShowDate = Date()
@@ -128,7 +139,7 @@ class SCEPAdManager: NSObject {
     
     @MainActor func getBannerAdView(placement: String, completion: (SCEPBannerAdView) -> Void, dismissHandler: @escaping (SCEPBannerAdView) -> Void) {
         guard canShowAds else { return }
-        let unitId = isDebug ? "ca-app-pub-3940256099942544/2435281174" : SCEPKitInternal.shared.config.monetization.ads.bannerId!
+        let unitId = isDebug ? debugBannerId : config.bannerId!
         let bannerView = SCEPBannerAdView(unitId: unitId, dismissHandler: dismissHandler)
         bannerAdViews.insert(bannerView)
         SCEPKitInternal.shared.trackEvent("[SCEPKit] banner_ad_shown", properties: ["placement": placement])
@@ -137,7 +148,7 @@ class SCEPAdManager: NSObject {
     
     @MainActor func loadRewardedAd(id: String? = nil, completion: @escaping (GADRewardedAd?) -> Void) {
         let request = GADRequest()
-        let unitId = isDebug ? "ca-app-pub-3940256099942544/1712485313" : id ?? SCEPKitInternal.shared.config.monetization.ads.rewardedId!
+        let unitId = isDebug ? debudRewardedId : id ?? config.rewardedId!
         GADRewardedAd.load(withAdUnitID: unitId, request: request) { ad, error in
             if let error {
                 print("Failed to load rewarded ad with error: \(error.localizedDescription)")

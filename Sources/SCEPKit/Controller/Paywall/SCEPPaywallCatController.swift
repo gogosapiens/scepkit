@@ -1,5 +1,6 @@
 import UIKit
 import Adapty
+import SwiftyGif
 
 class SCEPPaywallCatController: SCEPPaywallController {
     
@@ -37,6 +38,7 @@ class SCEPPaywallCatController: SCEPPaywallController {
     }
     
     @IBOutlet weak var continueButton: SCEPMainButton!
+    @IBOutlet weak var crownImageView: UIImageView!
     @IBOutlet weak var trialSwitch: UISwitch!
     @IBOutlet weak var trialView: UIView!
     @IBOutlet weak var imageView: UIImageView!
@@ -58,6 +60,12 @@ class SCEPPaywallCatController: SCEPPaywallController {
         if placement == .onboarding {
             continueButton.alpha = 0
         }
+        
+        if let image = try? UIImage(gifName: "SCEPPaywallCatCrown", bundle: .module) {
+            crownImageView.setGifImage(image)
+            crownImageView.startAnimatingGif()
+        }
+        
         selectedProductIndex = 0
         trialSwitch.isOn = false
         trialSwitch.onTintColor = .scepAccent
