@@ -10,7 +10,8 @@ class SCEPAdManager: NSObject {
     var lastInterstitialShowDate: Date = .distantPast
     var needsToShowAppOpenOnApplicationShown: Bool = false
     var isLoadingAppOpen: Bool = false
-    var isShowingAppOpen: Bool = false
+    private var isShowingAppOpen: Bool = false
+    var willShowAppOpen: Bool = false
     var rewardedAdCompletion: ((Bool) -> Void)?
     var rewardedAdDidReward: Bool = false
     var shownRewardedAd: GADRewardedAd?
@@ -44,28 +45,27 @@ class SCEPAdManager: NSObject {
         return config.isEnabled && !SCEPMonetization.shared.isPremium && isStartDelayPassed
     }
     
-    @MainActor private func start() {
+    func load() {
         guard canShowAds else { return }
-        if !SCEPMonetization.shared.isPremium {
-            if config.interstitialId != nil {
-                loadInterstitialAd()
-            }
-            if config.appOpenId != nil {
-                isLoadingAppOpen = true
-                loadAppOpenAd()
+        guard !SCEPMonetization.shared.isPremium else { return }
+        if config.interstitialId != nil {
+            loadInterstitialAd()
+        }
+        if config.appOpenId != nil {
+            isLoadingAppOpen = true
+            loadAppOpenAd()
+            if !SCEPKitInternal.shared.isApplicationShown {
+                willShowAppOpen = true
             }
         }
     }
     
     @MainActor @objc func applicationDidBecomeActive() {
         showAppOpenAd()
-        start()
     }
     
     @MainActor @objc func applicationShown() {
-        if needsToShowAppOpenOnApplicationShown {
-            showAppOpenAd()
-        }
+        showAppOpenAd()
     }
     
     @MainActor @objc func premiumStatusUpdated() {
@@ -75,6 +75,7 @@ class SCEPAdManager: NSObject {
             }
             bannerAdViews.removeAll()
         }
+        load()
     }
     
     private func loadInterstitialAd() {
@@ -82,11 +83,13 @@ class SCEPAdManager: NSObject {
         guard interstitial == nil else { return }
         let unitId = isDebug ? debugInterstitialId : config.interstitialId!
         let request = GADRequest()
+        print(#function, "start")
         GADInterstitialAd.load(withAdUnitID: unitId, request: request) { ad, error in
             guard let ad else {
-                print("Failed to load interstitial ad with error: \(error?.localizedDescription ?? "none")")
+                print(#function, "Failed to load interstitial ad with error: \(error?.localizedDescription ?? "none")")
                 return
             }
+            print(#function, "done")
             self.interstitial = ad
             self.interstitial?.fullScreenContentDelegate = self
         }
@@ -112,28 +115,30 @@ class SCEPAdManager: NSObject {
     @MainActor func showInterstitialAd(from viewController: UIViewController? = nil, placement: String?) -> Bool {
         guard canShowAds else { return false }
         let interstitialInterval: TimeInterval = config.interstitialInterval ?? 60
-        if let interstitial = interstitial, Date() > lastInterstitialShowDate + interstitialInterval {
-            interstitial.present(fromRootViewController: viewController)
-            lastInterstitialShowDate = Date()
-            SCEPKitInternal.shared.trackEvent("[SCEPKit] interstitial_ad_shown", properties: ["placement": placement ?? ""])
-            return true
+        if let interstitial = interstitial {
+            if Date() > lastInterstitialShowDate + interstitialInterval {
+                interstitial.present(fromRootViewController: viewController)
+                lastInterstitialShowDate = Date()
+                SCEPKitInternal.shared.trackEvent("[SCEPKit] interstitial_ad_shown", properties: ["placement": placement ?? ""])
+                return true
+            } else {
+                print("Interstitial ad skipped due to interval")
+                return false
+            }
         } else {
+            print("Interstitial ad not loaded")
             return false
         }
     }
     
     @MainActor func showAppOpenAd(from viewController: UIViewController? = nil) {
-        guard self.canShowAds else { return }
+        guard self.canShowAds, SCEPKitInternal.shared.isApplicationShown, !isShowingAppOpen else { return }
         isShowingAppOpen = true
-        if SCEPKitInternal.shared.isApplicationShown {
-            if let appOpenAd = self.appOpenAd {
-                appOpenAd.present(fromRootViewController: viewController)
-                SCEPKitInternal.shared.trackEvent("[SCEPKit] app_open_ad_shown")
-            } else {
-                isShowingAppOpen = false
-            }
+        if let appOpenAd = self.appOpenAd {
+            appOpenAd.present(fromRootViewController: viewController)
+            SCEPKitInternal.shared.trackEvent("[SCEPKit] app_open_ad_shown")
         } else {
-            needsToShowAppOpenOnApplicationShown = true
+            isShowingAppOpen = false
         }
     }
     
@@ -202,6 +207,7 @@ extension SCEPAdManager: GADFullScreenContentDelegate {
             appOpenAd = nil
             loadAppOpenAd()
             isShowingAppOpen = false
+            willShowAppOpen = false
             NotificationCenter.default.post(Self.appOpenDismissedNotification)
         }
     }
@@ -214,6 +220,7 @@ extension SCEPAdManager: GADFullScreenContentDelegate {
             appOpenAd = nil
             loadAppOpenAd()
             isShowingAppOpen = false
+            willShowAppOpen = false
             NotificationCenter.default.post(Self.appOpenDismissedNotification)
         } else if ad is GADRewardedAd {
             rewardedAdCompletion?(rewardedAdDidReward)

@@ -113,8 +113,7 @@ public class SCEPSettingsController: UIViewController {
     }
     
     @IBAction func bannerButtonTapped(_ sender: SCEPMainButton) {
-        let paywallController = SCEPKitInternal.shared.paywallController(for: .main, successHandler: nil)
-        present(paywallController, animated: true)
+        SCEPKitInternal.shared.showPaywallController(from: self, placement: .main)
     }
     
     @IBAction func closeTapped(_ sender: UIButton) {
@@ -176,6 +175,20 @@ public class SCEPSettingsController: UIViewController {
             SCEPMonetization.shared.incrementAdditionalCredits(by: value)
             self?.showInfoAlert(title: "Additional Credits Added", message: "New value is \(SCEPMonetization.shared.additionalCredits)")
         }
+    }
+    
+    @IBAction func paywallsTapped(_ sender: SCEPSecondaryButton) {
+        let ids = SCEPKitInternal.shared.config.monetization.paywalls.keys.sorted()
+        let alert = UIAlertController(title: "Select Paywall", message: nil, preferredStyle: .actionSheet)
+        for id in ids {
+            let action = UIAlertAction(title: id, style: .default) { _ in
+                SCEPKitInternal.shared.showDebugPaywallController(from: self, id: id)
+            }
+            alert.addAction(action)
+        }
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel)
+        alert.addAction(cancel)
+        present(alert, animated: true)
     }
     
     func showNumberFieldAlert(title: String, message: String? = nil, placeholder: Int, completion: @escaping (Int) -> Void) {

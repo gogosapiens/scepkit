@@ -51,6 +51,7 @@ class SCEPMonetization {
     }
     
     @MainActor @objc func applicationDidBecomeActive() {
+        print("applicationDidBecomeActive", "SCEPMonetization")
         updateCreditsIfNeeded()
     }
     

@@ -14,8 +14,8 @@ final public class SCEPKit {
         SCEPKitInternal.shared.isOnboardingCompleted
     }
     
-    public static var isShowingAppOpenAd: Bool {
-        SCEPAdManager.shared.isShowingAppOpen
+    public static var willShowAppOpenAd: Bool {
+        SCEPAdManager.shared.willShowAppOpen
     }
     
     public static var onboardingCompletedNotification: Notification.Name {
@@ -88,6 +88,10 @@ final public class SCEPKit {
     
     public static func performWhenRootScreenIsVisible(_ block: @escaping () -> Void) {
         SCEPKitInternal.shared.performWhenRootScreenIsVisible(block)
+    }
+    
+    public static func font(ofSize size: CGFloat, weight: UIFont.Weight) -> UIFont {
+        SCEPKitInternal.shared.font.uiFont(ofSize: size, weight: weight) ?? .systemFont(ofSize: size, weight: weight)
     }
 }
 

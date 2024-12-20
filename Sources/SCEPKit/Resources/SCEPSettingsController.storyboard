@@ -58,10 +58,10 @@
                                 <rect key="frame" x="0.0" y="115" width="393" height="737"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SVz-VM-Bs2">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="805.66666666666663"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="870.66666666666663"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="qJX-6g-Xvk">
-                                                <rect key="frame" x="16" y="16" width="361" height="773.66666666666663"/>
+                                                <rect key="frame" x="16" y="16" width="361" height="838.66666666666663"/>
                                                 <subviews>
                                                     <view clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="245" translatesAutoresizingMaskIntoConstraints="NO" id="UO1-Ec-JhH" customClass="SCEPBackgroundView" customModule="SCEPKit">
                                                         <rect key="frame" x="0.0" y="0.0" width="361" height="305.66666666666669"/>
@@ -484,7 +484,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="KSj-ld-CLf">
-                                                        <rect key="frame" x="0.0" y="626.66666666666663" width="361" height="147"/>
+                                                        <rect key="frame" x="0.0" y="626.66666666666663" width="361" height="212"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DEBUG" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZOd-he-7Yx" customClass="SCEPLabel" customModule="SCEPKit">
                                                                 <rect key="frame" x="0.0" y="0.0" width="361" height="17"/>
@@ -599,6 +599,29 @@
                                                                     </view>
                                                                 </subviews>
                                                             </stackView>
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kBj-IG-EmJ">
+                                                                <rect key="frame" x="0.0" y="159" width="361" height="53"/>
+                                                                <subviews>
+                                                                    <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="253" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fjG-wA-E17" customClass="SCEPSecondaryButton" customModule="SCEPKit">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="361" height="53"/>
+                                                                        <inset key="contentEdgeInsets" minX="18" minY="0.0" maxX="16" maxY="0.0"/>
+                                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                                        <state key="normal" title="All paywalls">
+                                                                            <color key="titleColor" name="SCEPTextColor"/>
+                                                                        </state>
+                                                                        <connections>
+                                                                            <action selector="paywallsTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="Fo1-GK-8S0"/>
+                                                                        </connections>
+                                                                    </button>
+                                                                </subviews>
+                                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <constraints>
+                                                                    <constraint firstItem="fjG-wA-E17" firstAttribute="top" secondItem="kBj-IG-EmJ" secondAttribute="top" id="8qt-f5-qfP"/>
+                                                                    <constraint firstAttribute="bottom" secondItem="fjG-wA-E17" secondAttribute="bottom" id="QJq-wG-Ee2"/>
+                                                                    <constraint firstItem="fjG-wA-E17" firstAttribute="leading" secondItem="kBj-IG-EmJ" secondAttribute="leading" id="f08-dp-6q7"/>
+                                                                    <constraint firstAttribute="trailing" secondItem="fjG-wA-E17" secondAttribute="trailing" id="qev-48-z7u"/>
+                                                                </constraints>
+                                                            </view>
                                                         </subviews>
                                                     </stackView>
                                                 </subviews>

@@ -204,6 +204,7 @@ class SCEPKitInternal: NSObject {
                 }
             }
         }
+        SCEPAdManager.shared.load()
         if SCEPAdManager.shared.isLoadingAppOpen {
             group.enter()
             NotificationCenter.default.addOneTimeObserver(forName: SCEPAdManager.appOpenLoadedNotification) { _ in
@@ -257,11 +258,9 @@ class SCEPKitInternal: NSObject {
         adaptyProducts["custom"]?.first(where: { $0.vendorProductId == id })
     }
     
-    func paywallController(for placement: SCEPPaywallPlacement, successHandler: (() -> Void)?) -> SCEPPaywallController {
-        let paywallConfig = SCEPKitInternal.shared.paywallConfig(for: placement)
+    func paywallController(config: SCEPPaywallConfig, placement: SCEPPaywallPlacement, successHandler: (() -> Void)?) -> SCEPPaywallController {
         let paywallController: SCEPPaywallController
-        
-        switch paywallConfig {
+        switch config {
         case .adapty(let placementId):
             if let paywall = adaptyPaywalls[placementId],
                paywall.hasViewConfiguration,
@@ -293,7 +292,8 @@ class SCEPKitInternal: NSObject {
     
     func onboardingPaywallController() -> SCEPPaywallController? {
         if config.monetization.placements[SCEPPaywallPlacement.onboarding.id]!.credits != nil || !SCEPMonetization.shared.isPremium {
-            return SCEPKitInternal.shared.paywallController(for: .onboarding, successHandler: nil)
+            let config = paywallConfig(for: .onboarding)
+            return paywallController(config: config, placement: .onboarding, successHandler: nil)
         } else {
             return nil
         }
@@ -337,7 +337,14 @@ class SCEPKitInternal: NSObject {
     }
     
     func showPaywallController(from controller: UIViewController, placement: SCEPPaywallPlacement, successHandler: (() -> Void)? = nil) {
-        let paywallController = paywallController(for: placement, successHandler: successHandler)
+        let config = SCEPKitInternal.shared.paywallConfig(for: placement)
+        let paywallController = paywallController(config: config, placement: placement, successHandler: successHandler)
+        controller.present(paywallController, animated: true)
+    }
+    
+    func showDebugPaywallController(from controller: UIViewController, id: String, successHandler: (() -> Void)? = nil) {
+        let config = SCEPKitInternal.shared.config.monetization.paywalls[id]!
+        let paywallController = paywallController(config: config, placement: .main, successHandler: successHandler)
         controller.present(paywallController, animated: true)
     }
     
@@ -444,7 +451,7 @@ class SCEPKitInternal: NSObject {
                 group.leave()
             }
         }
-        if SCEPKit.isShowingAppOpenAd {
+        if SCEPKit.willShowAppOpenAd {
             group.enter()
             NotificationCenter.default.addOneTimeObserver(forName: SCEPAdManager.appOpenDismissedNotification) { _ in
                 group.leave()
