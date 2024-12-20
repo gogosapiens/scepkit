@@ -16,14 +16,14 @@ class SCEPOnboardingController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         config = SCEPKitInternal.shared.onboardingConfig
-        let style = SCEPKitInternal.shared.config.style
-        pageStackView.isHidden = style.onboardingIsPageHidden
+        let design = SCEPKitInternal.shared.config.style.design
+        pageStackView.isHidden = design.onboardingIsPageHidden
         showSlideController(slideController(with: config.slides.first!, index: 0), animated: false)
         continueButton.title = .init(localized: "Continue", bundle: .module)
     }
     
     func showSlideController(_ controller: UIViewController, animated: Bool, completion: (() -> Void)? = nil) {
-        let style = SCEPKitInternal.shared.config.style
+        let design = SCEPKitInternal.shared.config.style.design
         let currentIndex = slidesStackView.arrangedSubviews.count
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         addChild(controller)
@@ -34,7 +34,7 @@ class SCEPOnboardingController: UIViewController {
         slidesLeadingConstraint.constant = CGFloat(slidesStackView.arrangedSubviews.count - 1) * view.frame.width
         for (index, constraint) in [page0WidthConstraint, page1WidthConstraint, page2WidthConstraint].enumerated() {
             let isCurrent = index == currentIndex
-            constraint?.constant = isCurrent ? style.onboardingSelectedPageWidth : 8
+            constraint?.constant = isCurrent ? design.onboardingSelectedPageWidth : 8
             pageStackView.arrangedSubviews[index].backgroundColor = isCurrent ? .scepTextColor : .scepShade1
         }
         UIView.animate(withDuration: animated ? 0.66 : 0, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0) {
@@ -80,23 +80,23 @@ class SCEPOnboardingController: UIViewController {
 }
 
 
-extension SCEPConfig.InterfaceStyle {
+extension SCEPConfig.InterfaceStyle.Design {
     
     var onboardingSelectedPageWidth: CGFloat {
         switch self {
-        case .classicoDark, .classicoLight: return 8
-        case .salsicciaDark, .salsicciaLight: return 8
-        case .buratinoDark, .buratinoLight: return 24
-        case .giornaleDark, .giornaleLight: return 24
+        case .classico: return 8
+        case .salsiccia: return 8
+        case .buratino: return 24
+        case .giornale: return 24
         }
     }
     
     var onboardingIsPageHidden: Bool {
         switch self {
-        case .classicoDark, .classicoLight: return false
-        case .salsicciaDark, .salsicciaLight: return true
-        case .buratinoDark, .buratinoLight: return false
-        case .giornaleDark, .giornaleLight: return false
+        case .classico: return false
+        case .salsiccia: return true
+        case .buratino: return false
+        case .giornale: return false
         }
     }
 }

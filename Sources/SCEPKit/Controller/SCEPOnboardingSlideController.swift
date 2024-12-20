@@ -17,19 +17,19 @@ class SCEPOnboardingSlideController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let style = SCEPKitInternal.shared.config.style
+        let design = SCEPKitInternal.shared.config.style.design
         
         titleLabel.text = config.title.localized()
         Downloader.downloadImage(from: config.imageURL) { [weak self] image in
             self?.imageView.image = image
         }
         
-        titleTopConstraint.isActive = style.onboardingTitlePosition == .top
-        titleBottomConstraint.isActive = style.onboardingTitlePosition == .bottom
-        titleImageBottomConstraint.isActive = style.onboardingTitlePosition == .imageBottom
-        imageTopConstraint.constant = style.onboardingIsImageAtTop ? 0 : 100
-        imageBottomConstraint.isActive = style.onboardingIsImageAtTop
-        overlayImageView.isHidden = style.onboardingOverlayHidden
+        titleTopConstraint.isActive = design.onboardingTitlePosition == .top
+        titleBottomConstraint.isActive = design.onboardingTitlePosition == .bottom
+        titleImageBottomConstraint.isActive = design.onboardingTitlePosition == .imageBottom
+        imageTopConstraint.constant = design.onboardingIsImageAtTop ? 0 : 100
+        imageBottomConstraint.isActive = design.onboardingIsImageAtTop
+        overlayImageView.isHidden = design.onboardingOverlayHidden
     }
     
     enum TitlePosition {
@@ -37,32 +37,32 @@ class SCEPOnboardingSlideController: UIViewController {
     }
 }
 
-extension SCEPConfig.InterfaceStyle {
+extension SCEPConfig.InterfaceStyle.Design {
     
     var onboardingTitlePosition: SCEPOnboardingSlideController.TitlePosition {
         switch self {
-        case .classicoDark, .classicoLight: return .bottom
-        case .salsicciaDark, .salsicciaLight: return .top
-        case .buratinoDark, .buratinoLight: return .bottom
-        case .giornaleDark, .giornaleLight: return .imageBottom
+        case .classico: return .bottom
+        case .salsiccia: return .top
+        case .buratino: return .bottom
+        case .giornale: return .imageBottom
         }
     }
     
     var onboardingOverlayHidden: Bool {
         switch self {
-        case .classicoDark, .classicoLight: return false
-        case .salsicciaDark, .salsicciaLight: return false
-        case .buratinoDark, .buratinoLight: return false
-        case .giornaleDark, .giornaleLight: return true
+        case .classico: return false
+        case .salsiccia: return false
+        case .buratino: return false
+        case .giornale: return true
         }
     }
     
     var onboardingIsImageAtTop: Bool {
         switch self {
-        case .classicoDark, .classicoLight: return true
-        case .salsicciaDark, .salsicciaLight: return false
-        case .buratinoDark, .buratinoLight: return true
-        case .giornaleDark, .giornaleLight: return true
+        case .classico: return true
+        case .salsiccia: return false
+        case .buratino: return true
+        case .giornale: return true
         }
     }
 }

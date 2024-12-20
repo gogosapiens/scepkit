@@ -20,14 +20,14 @@ class SCEPSplashController: UIViewController {
         super.viewDidAppear(animated)
         iconImageView.image = .init(named: "SCEPAppIcon")
         appNameLabel.text = Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ?? ""
-        let style = SCEPKitInternal.shared.config.style
+        let design = SCEPKitInternal.shared.config.style.design
         loaderOneView.isHidden = true
         loaderTwoView.isHidden = true
         loaderTwoView.color = .scepAccent
         loaderThreeImageView.isHidden = true
         loaderFourView.isHidden = true
-        switch style {
-        case .classicoDark, .classicoLight:
+        switch design {
+        case .classico:
             loaderOneView.isHidden = false
             let rotation = CABasicAnimation(keyPath: "transform.rotation")
             rotation.fromValue = 0
@@ -35,10 +35,10 @@ class SCEPSplashController: UIViewController {
             rotation.duration = 2
             rotation.repeatCount = Float.infinity
             loaderOneImageView.layer.add(rotation, forKey: "rotationAnimation")
-        case .salsicciaDark, .salsicciaLight:
+        case .salsiccia:
             loaderTwoView.isHidden = false
             loaderTwoView.startAnimating()
-        case .buratinoDark, .buratinoLight:
+        case .buratino:
             loaderThreeImageView.isHidden = false
             let rotation = CABasicAnimation(keyPath: "transform.rotation")
             rotation.fromValue = 0
@@ -49,18 +49,18 @@ class SCEPSplashController: UIViewController {
             UIView.animate(withDuration: 2, delay: 0, options: [.repeat, .autoreverse, .curveEaseInOut]) {
                 self.loaderThreeImageView.transform = .init(scaleX: 0.6, y: 0.6)
             }
-        case .giornaleDark, .giornaleLight:
+        case .giornale:
             loaderFourView.isHidden = false
             loaderFourLeadingConstraint.constant = 60
             UIView.animate(withDuration: 2, delay: 0, options: [.repeat, .autoreverse, .curveEaseInOut]) {
                 self.loaderFourView.layoutIfNeeded()
             }
         }
-        appNameLabel.isHidden = style.splashTitlePosition == .none
-        titleToTopConstraint.isActive = style.splashTitlePosition == .top
-        titleToImageConstraint.isActive = style.splashTitlePosition != .top
-        iconWidthConstraint.constant = style.splashIconWidth
-        iconCenterYConstraint.constant = style.splashTitlePosition == .imageBottom ? -30 : 0
+        appNameLabel.isHidden = design.splashTitlePosition == .none
+        titleToTopConstraint.isActive = design.splashTitlePosition == .top
+        titleToImageConstraint.isActive = design.splashTitlePosition != .top
+        iconWidthConstraint.constant = design.splashIconWidth
+        iconCenterYConstraint.constant = design.splashTitlePosition == .imageBottom ? -30 : 0
         
         if SCEPKitInternal.shared.config.legal.requestTracking {
             ATTrackingManager.requestTrackingAuthorization { status in
@@ -76,23 +76,23 @@ class SCEPSplashController: UIViewController {
     }
 }
 
-extension SCEPConfig.InterfaceStyle {
+extension SCEPConfig.InterfaceStyle.Design {
     
     var splashTitlePosition: SCEPSplashController.TitlePosition {
         switch self {
-        case .classicoDark, .classicoLight: return .imageBottom
-        case .salsicciaDark, .salsicciaLight: return .imageBottom
-        case .buratinoDark, .buratinoLight: return .none
-        case .giornaleDark, .giornaleLight: return .top
+        case .classico: return .imageBottom
+        case .salsiccia: return .imageBottom
+        case .buratino: return .none
+        case .giornale: return .top
         }
     }
     
     var splashIconWidth: CGFloat {
         switch self {
-        case .classicoDark, .classicoLight: return 122
-        case .salsicciaDark, .salsicciaLight: return 122
-        case .buratinoDark, .buratinoLight: return 84
-        case .giornaleDark, .giornaleLight: return 122
+        case .classico: return 122
+        case .salsiccia: return 122
+        case .buratino: return 84
+        case .giornale: return 122
         }
     }
 }

@@ -41,7 +41,7 @@ public class SCEPSettingsController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         config = SCEPKitInternal.shared.config.settings
-        let style = SCEPKitInternal.shared.config.style
+        let design = SCEPKitInternal.shared.config.style.design
         bannerTitleLabel.text = config.title.localized()
         bannerTitleLabel.styleTextWithBraces()
         bannerSubtitleLabel.text = config.subtitle?.localized()
@@ -61,19 +61,19 @@ public class SCEPSettingsController: UIViewController {
         bannerImageView.image = .init(named: "SCEPAppIcon")
         
         bannerView.layer.cornerRadius = 24
-        bannerTopStackView.axis = style.settingsTopAxis
-        bannerTopStackView.alignment = style.settingsTopAxis == .horizontal ? .fill : .center
-        bannerFeaturesStackViews.forEach { $0.axis = style.settingsFeatureAxis }
+        bannerTopStackView.axis = design.settingsTopAxis
+        bannerTopStackView.alignment = design.settingsTopAxis == .horizontal ? .fill : .center
+        bannerFeaturesStackViews.forEach { $0.axis = design.settingsFeatureAxis }
         bannerTopStackView.removeArrangedSubview(bannerImageView)
-        bannerTopStackView.insertArrangedSubview(bannerImageView, at: style.settingsImageIndex)
-        bannerTitleLabel.textAlignment = style.settingsTextAlignment
-        bannerSubtitleLabel.textAlignment = style.settingsTextAlignment
-        buttonStackViews.forEach { $0.axis = style.settingsButtonAxis }
-        [rateChevronImageView, feedbackChevronImageView, privacyChevronImageView, termsChevronImageView].forEach { $0?.isHidden = style.settingsButtonAxis == .horizontal }
-        rateImageView.image = style.settingsRateImage
-        feedbackImageView.image = style.settingsFeedbackImage
-        privacyImageView.image = style.settingsPrivacyImage
-        termsImageView.image = style.settingsTermsImage
+        bannerTopStackView.insertArrangedSubview(bannerImageView, at: design.settingsImageIndex)
+        bannerTitleLabel.textAlignment = design.settingsTextAlignment
+        bannerSubtitleLabel.textAlignment = design.settingsTextAlignment
+        buttonStackViews.forEach { $0.axis = design.settingsButtonAxis }
+        [rateChevronImageView, feedbackChevronImageView, privacyChevronImageView, termsChevronImageView].forEach { $0?.isHidden = design.settingsButtonAxis == .horizontal }
+        rateImageView.image = design.settingsRateImage
+        feedbackImageView.image = design.settingsFeedbackImage
+        privacyImageView.image = design.settingsPrivacyImage
+        termsImageView.image = design.settingsTermsImage
         
         titleLabel.text = .init(localized: "Settings", bundle: .module)
         bannerButton.title = .init(localized: "Get started", bundle: .module)
@@ -204,86 +204,86 @@ public class SCEPSettingsController: UIViewController {
     }
 }
 
-fileprivate extension SCEPConfig.InterfaceStyle {
+fileprivate extension SCEPConfig.InterfaceStyle.Design {
     
     var settingsTopAxis: NSLayoutConstraint.Axis {
         switch self {
-        case .classicoDark, .classicoLight: return .horizontal
-        case .salsicciaDark, .salsicciaLight: return .horizontal
-        case .buratinoDark, .buratinoLight: return .horizontal
-        case .giornaleDark, .giornaleLight: return .vertical
+        case .classico: return .horizontal
+        case .salsiccia: return .horizontal
+        case .buratino: return .horizontal
+        case .giornale: return .vertical
         }
     }
     
     var settingsFeatureAxis: NSLayoutConstraint.Axis {
         switch self {
-        case .classicoDark, .classicoLight: return .horizontal
-        case .salsicciaDark, .salsicciaLight: return .horizontal
-        case .buratinoDark, .buratinoLight: return .vertical
-        case .giornaleDark, .giornaleLight: return .horizontal
+        case .classico: return .horizontal
+        case .salsiccia: return .horizontal
+        case .buratino: return .vertical
+        case .giornale: return .horizontal
         }
     }
     
     var settingsImageIndex: Int {
         switch self {
-        case .classicoDark, .classicoLight: return 1
-        case .salsicciaDark, .salsicciaLight: return 0
-        case .buratinoDark, .buratinoLight: return 0
-        case .giornaleDark, .giornaleLight: return 0
+        case .classico: return 1
+        case .salsiccia: return 0
+        case .buratino: return 0
+        case .giornale: return 0
         }
     }
     
     var settingsTextAlignment: NSTextAlignment {
         switch self {
-        case .classicoDark, .classicoLight: return .left
-        case .salsicciaDark, .salsicciaLight: return .left
-        case .buratinoDark, .buratinoLight: return .left
-        case .giornaleDark, .giornaleLight: return .center
+        case .classico: return .left
+        case .salsiccia: return .left
+        case .buratino: return .left
+        case .giornale: return .center
         }
     }
     
     var settingsButtonAxis: NSLayoutConstraint.Axis {
         switch self {
-        case .classicoDark, .classicoLight: return .vertical
-        case .salsicciaDark, .salsicciaLight: return .vertical
-        case .buratinoDark, .buratinoLight: return .vertical
-        case .giornaleDark, .giornaleLight: return .horizontal
+        case .classico: return .vertical
+        case .salsiccia: return .vertical
+        case .buratino: return .vertical
+        case .giornale: return .horizontal
         }
     }
     
     var settingsRateImage: UIImage {
         switch self {
-        case .classicoDark, .classicoLight: return .init(named: "SCEPSettingsRate-screensOne", in: .module, with: nil)!
-        case .salsicciaDark, .salsicciaLight: return .init(named: "SCEPSettingsRate-screensTwo", in: .module, with: nil)!
-        case .buratinoDark, .buratinoLight: return .init(named: "SCEPSettingsRate-screensThree", in: .module, with: nil)!
-        case .giornaleDark, .giornaleLight: return .init(named: "SCEPSettingsRate-screensFour", in: .module, with: nil)!
+        case .classico: return .init(named: "SCEPSettingsRate-screensOne", in: .module, with: nil)!
+        case .salsiccia: return .init(named: "SCEPSettingsRate-screensTwo", in: .module, with: nil)!
+        case .buratino: return .init(named: "SCEPSettingsRate-screensThree", in: .module, with: nil)!
+        case .giornale: return .init(named: "SCEPSettingsRate-screensFour", in: .module, with: nil)!
         }
     }
     
     var settingsFeedbackImage: UIImage {
         switch self {
-        case .classicoDark, .classicoLight: return .init(named: "SCEPSettingsFeedback-screensOne", in: .module, with: nil)!
-        case .salsicciaDark, .salsicciaLight: return .init(named: "SCEPSettingsFeedback-screensTwo", in: .module, with: nil)!
-        case .buratinoDark, .buratinoLight: return .init(named: "SCEPSettingsFeedback-screensThree", in: .module, with: nil)!
-        case .giornaleDark, .giornaleLight: return .init(named: "SCEPSettingsFeedback-screensFour", in: .module, with: nil)!
+        case .classico: return .init(named: "SCEPSettingsFeedback-screensOne", in: .module, with: nil)!
+        case .salsiccia: return .init(named: "SCEPSettingsFeedback-screensTwo", in: .module, with: nil)!
+        case .buratino: return .init(named: "SCEPSettingsFeedback-screensThree", in: .module, with: nil)!
+        case .giornale: return .init(named: "SCEPSettingsFeedback-screensFour", in: .module, with: nil)!
         }
     }
     
     var settingsPrivacyImage: UIImage {
         switch self {
-        case .classicoDark, .classicoLight: return .init(named: "SCEPSettingsPrivacy-screensOne", in: .module, with: nil)!
-        case .salsicciaDark, .salsicciaLight: return .init(named: "SCEPSettingsPrivacy-screensTwo", in: .module, with: nil)!
-        case .buratinoDark, .buratinoLight: return .init(named: "SCEPSettingsPrivacy-screensThree", in: .module, with: nil)!
-        case .giornaleDark, .giornaleLight: return .init(named: "SCEPSettingsPrivacy-screensFour", in: .module, with: nil)!
+        case .classico: return .init(named: "SCEPSettingsPrivacy-screensOne", in: .module, with: nil)!
+        case .salsiccia: return .init(named: "SCEPSettingsPrivacy-screensTwo", in: .module, with: nil)!
+        case .buratino: return .init(named: "SCEPSettingsPrivacy-screensThree", in: .module, with: nil)!
+        case .giornale: return .init(named: "SCEPSettingsPrivacy-screensFour", in: .module, with: nil)!
         }
     }
     
     var settingsTermsImage: UIImage {
         switch self {
-        case .classicoDark, .classicoLight: return .init(named: "SCEPSettingsTerms-screensOne", in: .module, with: nil)!
-        case .salsicciaDark, .salsicciaLight: return .init(named: "SCEPSettingsTerms-screensTwo", in: .module, with: nil)!
-        case .buratinoDark, .buratinoLight: return .init(named: "SCEPSettingsTerms-screensThree", in: .module, with: nil)!
-        case .giornaleDark, .giornaleLight: return .init(named: "SCEPSettingsTerms-screensFour", in: .module, with: nil)!
+        case .classico: return .init(named: "SCEPSettingsTerms-screensOne", in: .module, with: nil)!
+        case .salsiccia: return .init(named: "SCEPSettingsTerms-screensTwo", in: .module, with: nil)!
+        case .buratino: return .init(named: "SCEPSettingsTerms-screensThree", in: .module, with: nil)!
+        case .giornale: return .init(named: "SCEPSettingsTerms-screensFour", in: .module, with: nil)!
         }
     }
 }

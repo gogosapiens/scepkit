@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-struct SCEPConfig: Codable {
+struct SCEPConfig: Decodable {
     
     let style: InterfaceStyle
     let legal: Legal
@@ -75,21 +75,38 @@ struct SCEPConfig: Codable {
         let features: [LocalizedString]
     }
     
-    enum InterfaceStyle: String, Codable {
-        case classicoDark = "classico.dark"
-        case salsicciaDark = "salsiccia.dark"
-        case buratinoDark = "buratino.dark"
-        case giornaleDark = "giornale.dark"
-        case classicoLight = "classico.light"
-        case salsicciaLight = "salsiccia.light"
-        case buratinoLight = "buratino.light"
-        case giornaleLight = "giornale.light"
+    struct InterfaceStyle: Decodable {
+        
+        let design: Design
+        let theme: Theme
+        
+        enum Design: String, Codable {
+            case classico
+            case salsiccia
+            case buratino
+            case giornale
+        }
+        enum Theme: String, Codable {
+            case dark
+            case light
+        }
+        
+        init(from decoder: any Decoder) throws {
+            let container: SingleValueDecodingContainer = try decoder.singleValueContainer()
+            let id = try container.decode(String.self)
+            let components = id.split(separator: ".")
+            guard components.count == 2 else {
+                throw DecodingError.dataCorruptedError(in: container, debugDescription: "Invalid interface style ID")
+            }
+            design = .init(rawValue: String(components[0]))!
+            theme = .init(rawValue: String(components[1]))!
+        }
         
         var uiUserInterfaceStyle: UIUserInterfaceStyle {
-            switch self {
-            case .classicoDark, .salsicciaDark, .buratinoDark, .giornaleDark:
+            switch theme {
+            case .dark:
                 return .dark
-            case .classicoLight, .salsicciaLight, .buratinoLight, .giornaleLight:
+            case .light:
                 return .light
             }
         }

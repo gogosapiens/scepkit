@@ -299,9 +299,9 @@ class SCEPKitInternal: NSObject {
         }
     }
     
-    func settingsController() -> SCEPSettingsController {
-        let controller = SCEPSettingsController.instantiate(bundle: .module)
-        return controller
+    func showSettingsController(from controller: UIViewController) {
+        let settingsController = SCEPSettingsController.instantiate(bundle: .module)
+        controller.present(settingsController, animated: true)
     }
     
     func showApplication() {
@@ -336,45 +336,30 @@ class SCEPKitInternal: NSObject {
         trackEvent("[SCEPKit] onboarding_finished")
     }
     
-    func showPaywallController(for placement: SCEPPaywallPlacement, from controller: UIViewController, successHandler: (() -> Void)? = nil) {
+    func showPaywallController(from controller: UIViewController, placement: SCEPPaywallPlacement, successHandler: (() -> Void)? = nil) {
         let paywallController = paywallController(for: placement, successHandler: successHandler)
         controller.present(paywallController, animated: true)
     }
     
-    func canAccessContent(for requirement: SCEPContentRequirement) -> Bool {
-        switch requirement {
-        case .premium:
-            guard
-                config.monetization.placements.values.contains(where: { $0.premium != nil })
-            else {
-                fatalError("Premium requirement not supported for this application")
-            }
-            return SCEPMonetization.shared.isPremium
-        case .credits(let credits):
-            guard
-                config.monetization.placements.values.contains(where: { $0.credits != nil })
-            else {
-                fatalError("Credits requirement not supported for this application")
-            }
-            return SCEPMonetization.shared.credits >= credits
-            
-        }
-    }
-    
-    func requestAccessToContent(for requirement: SCEPContentRequirement, from controller: UIViewController, placement: SCEPPaywallPlacement, handler: @escaping () -> Void) {
-        if canAccessContent(for: requirement) {
+    func accessPremiumContent(from controller: UIViewController, placement: SCEPPaywallPlacement, handler: @escaping () -> Void) {
+        if SCEPMonetization.shared.isPremium {
             handler()
         } else {
-            showPaywallController(for: placement, from: controller, successHandler: handler)
+            showPaywallController(from: controller, placement: placement, successHandler: handler)
         }
     }
     
-    
-    func provideContent(for requirement: SCEPContentRequirement, from controller: UIViewController, placement: SCEPPaywallPlacement, handler: @escaping () -> Void) {
-        requestAccessToContent(for: requirement, from: controller, placement: placement) {
-            handler()
-            if case .credits(let value) = requirement {
-                SCEPMonetization.shared.decrementCredits(by: value)
+    func accessCreditsContent(amount: Int, from controller: UIViewController, placement: SCEPPaywallPlacement, handler: @escaping (SCEPCreditsChargeHandler) -> Void) {
+        let chargeHandler = {
+            SCEPMonetization.shared.decrementCredits(by: amount)
+        }
+        if SCEPMonetization.shared.credits >= amount {
+            handler(chargeHandler)
+        } else {
+            showPaywallController(from: controller, placement: placement) {
+                if SCEPMonetization.shared.credits < amount {
+                    handler(chargeHandler)
+                }
             }
         }
     }
@@ -451,7 +436,7 @@ class SCEPKitInternal: NSObject {
         return font.uiFont(ofSize: size, weight: weight) ?? .systemFont(ofSize: size, weight: weight)
     }
     
-    func performWhenApplicationIsVisible(_ block: @escaping () -> Void) {
+    func performWhenRootScreenIsVisible(_ block: @escaping () -> Void) {
         let group = DispatchGroup()
         if !SCEPKit.isOnboardingCompleted {
             group.enter()

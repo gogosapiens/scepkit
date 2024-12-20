@@ -18,7 +18,6 @@ class SCEPPaywallShopController: SCEPPaywallController {
         struct Texts: Codable { }
         struct Meta: Codable {
             let imageURL: URL
-            let balanceImageURL: URL
         }
     }
     var config: Config!
@@ -41,9 +40,6 @@ class SCEPPaywallShopController: SCEPPaywallController {
         Downloader.downloadImage(from: config.meta.imageURL) { [weak self] image in
             self?.imageView.image = image
         }
-        Downloader.downloadImage(from: config.meta.balanceImageURL) { [weak self] image in
-            self?.balanceImageView.image = image
-        }
         
         titleLabel.text = .init(localized: "Store", bundle: .module)
         termsButton.title = .init(localized: "Terms", bundle: .module)
@@ -52,8 +48,9 @@ class SCEPPaywallShopController: SCEPPaywallController {
         
         balanceLabel.text = SCEPMonetization.shared.credits.formatted()
         
-        let style = SCEPKitInternal.shared.config.style
-        imageView.layer.cornerRadius = style.paywallShopImageCornerRadius
+        let design = SCEPKitInternal.shared.config.style.design
+        imageView.layer.cornerRadius = design.paywallShopImageCornerRadius
+        balanceImageView.image = design.paywallShopBalanceImage
         
         if let rewardedAdId = config.positions.reduce(nil, { $1.rewardedAdId ?? $0 }) {
             SCEPAdManager.shared.loadRewardedAd(id: rewardedAdId) { [weak self] ad in
@@ -122,9 +119,8 @@ extension SCEPPaywallShopController: UICollectionViewDataSource {
             cell.badgeView.isHidden = indexPath.item != 2
         }
         
-        Downloader.downloadImage(from: config.meta.balanceImageURL) { image in
-            cell.balanceImageView.image = image
-        }
+        let design = SCEPKitInternal.shared.config.style.design
+        cell.balanceImageView.image = design.paywallShopBalanceImage
         
         return cell
     }
@@ -160,14 +156,18 @@ extension SCEPPaywallShopController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension SCEPConfig.InterfaceStyle {
+extension SCEPConfig.InterfaceStyle.Design {
     
     var paywallShopImageCornerRadius: CGFloat {
         switch self {
-        case .classicoDark, .classicoLight: return 16
-        case .salsicciaDark, .salsicciaLight: return 32
-        case .buratinoDark, .buratinoLight: return 8
-        case .giornaleDark, .giornaleLight: return 12
+        case .classico: return 16
+        case .salsiccia: return 32
+        case .buratino: return 8
+        case .giornale: return 12
         }
+    }
+    
+    var paywallShopBalanceImage: UIImage {
+        return .init(moduleAssetName: "PaywallShopBalance", design: self)!
     }
 }

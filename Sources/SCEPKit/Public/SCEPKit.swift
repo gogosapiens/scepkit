@@ -3,7 +3,10 @@ import Adapty
 import AdaptyUI
 import GoogleMobileAds
 
+public typealias SCEPCreditsChargeHandler = () -> Void
+
 final public class SCEPKit {
+    
     
     private init() {}
     
@@ -32,39 +35,46 @@ final public class SCEPKit {
         SCEPKitInternal.shared.launch(rootViewController: rootViewController)
     }
     
-    public static func paywallController(for placement: SCEPPaywallPlacement, source: String, successHandler: (() -> Void)? = nil) -> SCEPPaywallController {
-        SCEPKitInternal.shared.paywallController(for: placement, successHandler: successHandler)
+    public static func showPaywallController(from controller: UIViewController, placement: String? = nil, successHandler: (() -> Void)? = nil) {
+        let placement = placement.map(SCEPPaywallPlacement.custom) ?? .main
+        SCEPKitInternal.shared.showPaywallController(from: controller, placement: placement, successHandler: successHandler)
     }
     
-    public static func canAccessContent(for requirement: SCEPContentRequirement) -> Bool {
-        SCEPKitInternal.shared.canAccessContent(for: requirement)
+    public static var isPremium: Bool {
+        SCEPMonetization.shared.isPremium
     }
     
-//    public func requestAccessToContent(for requirement: SCEPContentRequirement, from controller: UIViewController, placement: SCEPPaywallPlacement, handler: @escaping () -> Void) {
-//        SCEPKitInternal.shared.requestAccessToContent(for: requirement, from: controller, placement: placement, handler: handler)
-//    }
+    public static func hasCredits(_ amount: Int) -> Bool {
+        return SCEPMonetization.shared.credits >= amount
+    }
     
-    public static func provideContent(for requirement: SCEPContentRequirement, from controller: UIViewController, placement: SCEPPaywallPlacement, handler: @escaping () -> Void) {
-        SCEPKitInternal.shared.provideContent(for: requirement, from: controller, placement: placement, handler: handler)
+    public static func accessPremiumContent(from controller: UIViewController, placement: String? = nil, handler: @escaping () -> Void) {
+        let placement = placement.map(SCEPPaywallPlacement.custom) ?? .main
+        SCEPKitInternal.shared.accessPremiumContent(from: controller, placement: placement, handler: handler)
+    }
+    
+    public static func accessCreditsContent(amount: Int, controller: UIViewController, placement: String? = nil, handler: @escaping (SCEPCreditsChargeHandler) -> Void) {
+        let placement = placement.map(SCEPPaywallPlacement.custom) ?? .main
+        SCEPKitInternal.shared.accessCreditsContent(amount: amount, from: controller, placement: placement, handler: handler)
     }
     
     public static var creditsString: String {
         SCEPKitInternal.shared.creditsString
     }
     
-    public static func settingsController() -> SCEPSettingsController {
-        SCEPKitInternal.shared.settingsController()
+    public static func showSettingsController(from controller: UIViewController) {
+        SCEPKitInternal.shared.showSettingsController(from: controller)
     }
     
-    @discardableResult @MainActor public static func showInterstitialAd(from controller: UIViewController?, placement: String) -> Bool {
+    @discardableResult @MainActor public static func showInterstitialAd(from controller: UIViewController?, placement: String? = nil) -> Bool {
         SCEPAdManager.shared.showInterstitialAd(from: controller, placement: placement)
     }
     
-    @MainActor public static func showRewardedAd(from controller: UIViewController, placement: String, customLoadingCompletion: ((Bool) -> Void)? = nil, completion: @escaping (Bool) -> Void) {
+    @MainActor public static func showRewardedAd(from controller: UIViewController, placement: String? = nil, customLoadingCompletion: ((Bool) -> Void)? = nil, completion: @escaping (Bool) -> Void) {
         SCEPAdManager.shared.loadAndShowRewardedAd(from: controller, placement: placement, customLoadingCompletion: customLoadingCompletion, completion: completion)
     }
     
-    @MainActor public static func getBannerView(placement: String, completion: (SCEPBannerAdView) -> Void, dismissHandler: @escaping (SCEPBannerAdView) -> Void) {
+    @MainActor public static func getBannerView(placement: String? = nil, completion: (SCEPBannerAdView) -> Void, dismissHandler: @escaping (SCEPBannerAdView) -> Void) {
         SCEPAdManager.shared.getBannerAdView(placement: placement, completion: completion, dismissHandler: dismissHandler)
     }
     
@@ -76,8 +86,8 @@ final public class SCEPKit {
         SCEPKitInternal.shared.setUserProperties(properties)
     }
     
-    public static func performWhenApplicationIsVisible(_ block: @escaping () -> Void) {
-        SCEPKitInternal.shared.performWhenApplicationIsVisible(block)
+    public static func performWhenRootScreenIsVisible(_ block: @escaping () -> Void) {
+        SCEPKitInternal.shared.performWhenRootScreenIsVisible(block)
     }
 }
 

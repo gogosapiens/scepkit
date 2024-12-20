@@ -109,13 +109,13 @@ class SCEPAdManager: NSObject {
             NotificationCenter.default.post(name: Self.appOpenLoadedNotification, object: nil)
         }
     }
-    @MainActor func showInterstitialAd(from viewController: UIViewController? = nil, placement: String) -> Bool {
+    @MainActor func showInterstitialAd(from viewController: UIViewController? = nil, placement: String?) -> Bool {
         guard canShowAds else { return false }
         let interstitialInterval: TimeInterval = config.interstitialInterval ?? 60
         if let interstitial = interstitial, Date() > lastInterstitialShowDate + interstitialInterval {
             interstitial.present(fromRootViewController: viewController)
             lastInterstitialShowDate = Date()
-            SCEPKitInternal.shared.trackEvent("[SCEPKit] interstitial_ad_shown", properties: ["placement": placement])
+            SCEPKitInternal.shared.trackEvent("[SCEPKit] interstitial_ad_shown", properties: ["placement": placement ?? ""])
             return true
         } else {
             return false
@@ -137,12 +137,12 @@ class SCEPAdManager: NSObject {
         }
     }
     
-    @MainActor func getBannerAdView(placement: String, completion: (SCEPBannerAdView) -> Void, dismissHandler: @escaping (SCEPBannerAdView) -> Void) {
+    @MainActor func getBannerAdView(placement: String?, completion: (SCEPBannerAdView) -> Void, dismissHandler: @escaping (SCEPBannerAdView) -> Void) {
         guard canShowAds else { return }
         let unitId = isDebug ? debugBannerId : config.bannerId!
         let bannerView = SCEPBannerAdView(unitId: unitId, dismissHandler: dismissHandler)
         bannerAdViews.insert(bannerView)
-        SCEPKitInternal.shared.trackEvent("[SCEPKit] banner_ad_shown", properties: ["placement": placement])
+        SCEPKitInternal.shared.trackEvent("[SCEPKit] banner_ad_shown", properties: ["placement": placement ?? ""])
         completion(bannerView)
     }
     
@@ -157,7 +157,7 @@ class SCEPAdManager: NSObject {
         }
     }
     
-    @MainActor func showRewardedAd(_ ad: GADRewardedAd, from viewController: UIViewController, placement: String, completion: @escaping (Bool) -> Void) {
+    @MainActor func showRewardedAd(_ ad: GADRewardedAd, from viewController: UIViewController, placement: String?, completion: @escaping (Bool) -> Void) {
         rewardedAdCompletion = completion
         rewardedAdDidReward = false
         shownRewardedAd = ad
@@ -165,10 +165,10 @@ class SCEPAdManager: NSObject {
         ad.present(fromRootViewController: viewController) {
             self.rewardedAdDidReward = true
         }
-        SCEPKitInternal.shared.trackEvent("[SCEPKit] rewarded_ad_shown", properties: ["placement": placement])
+        SCEPKitInternal.shared.trackEvent("[SCEPKit] rewarded_ad_shown", properties: ["placement": placement ?? ""])
     }
     
-    @MainActor func loadAndShowRewardedAd(from viewController: UIViewController, placement: String, customLoadingCompletion: ((Bool) -> Void)?, completion: @escaping (Bool) -> Void) {
+    @MainActor func loadAndShowRewardedAd(from viewController: UIViewController, placement: String?, customLoadingCompletion: ((Bool) -> Void)?, completion: @escaping (Bool) -> Void) {
         var activityController: SCEPActivityController?
         if customLoadingCompletion == nil {
             activityController = SCEPActivityController.instantiate(bundle: .module)

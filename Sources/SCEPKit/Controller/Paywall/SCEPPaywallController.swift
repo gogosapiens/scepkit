@@ -73,32 +73,32 @@ public class SCEPPaywallController: UIViewController {
     }
 }
 
-extension SCEPConfig.InterfaceStyle {
+extension SCEPConfig.InterfaceStyle.Design {
     
     var paywallTrialSwitchCornerRadius: CGFloat {
         switch self {
-        case .classicoDark, .classicoLight: return 12
-        case .salsicciaDark, .salsicciaLight: return 24
-        case .buratinoDark, .buratinoLight: return 8
-        case .giornaleDark, .giornaleLight: return 12
+        case .classico: return 12
+        case .salsiccia: return 24
+        case .buratino: return 8
+        case .giornale: return 12
         }
     }
     
     var paywallProductCornerRadius: CGFloat {
         switch self {
-        case .classicoDark, .classicoLight: return 16
-        case .salsicciaDark, .salsicciaLight: return 33
-        case .buratinoDark, .buratinoLight: return 8
-        case .giornaleDark, .giornaleLight: return 12
+        case .classico: return 16
+        case .salsiccia: return 33
+        case .buratino: return 8
+        case .giornale: return 12
         }
     }
     
     var paywallProductLeftPadding: CGFloat {
         switch self {
-        case .classicoDark, .classicoLight: return 16
-        case .salsicciaDark, .salsicciaLight: return 24
-        case .buratinoDark, .buratinoLight: return 16
-        case .giornaleDark, .giornaleLight: return 16
+        case .classico: return 16
+        case .salsiccia: return 24
+        case .buratino: return 16
+        case .giornale: return 16
         }
     }
 }

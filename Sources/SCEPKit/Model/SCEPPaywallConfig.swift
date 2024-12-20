@@ -28,7 +28,7 @@ enum SCEPPaywallConfig {
         case .cat(let config):
             return [config.meta.imageURL]
         case .shop(let config):
-            return [config.meta.imageURL, config.meta.balanceImageURL]
+            return [config.meta.imageURL]
         case .adapty:
             return []
         }

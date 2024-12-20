@@ -67,7 +67,7 @@ class SCEPPaywallRobotController: SCEPPaywallController {
         trialSwitch.thumbTintColor = .scepTextColor
         trialView.layer.borderColor = UIColor.scepShade2.cgColor
         trialView.layer.borderWidth = 2
-        trialView.layer.cornerRadius = SCEPKitInternal.shared.config.style.paywallTrialSwitchCornerRadius
+        trialView.layer.cornerRadius = SCEPKitInternal.shared.config.style.design.paywallTrialSwitchCornerRadius
         trialView.isHidden = trialProducts.allSatisfy { $0 == nil }
         
         setupTexts()

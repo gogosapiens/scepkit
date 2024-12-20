@@ -7,7 +7,7 @@ class SCEPSecondaryButton: UIButton {
                 
         backgroundColor = .scepShade3
         clipsToBounds = true
-        layer.cornerRadius = SCEPKitInternal.shared.config.style.secondaryButtonCornerRadius
+        layer.cornerRadius = SCEPKitInternal.shared.config.style.design.secondaryButtonCornerRadius
         heightAnchor.constraint(equalToConstant: 56).isActive = true
         
         setTitleColor(.scepTextColor, for: .normal)
@@ -15,14 +15,14 @@ class SCEPSecondaryButton: UIButton {
     }
 }
 
-fileprivate extension SCEPConfig.InterfaceStyle {
+fileprivate extension SCEPConfig.InterfaceStyle.Design {
     
     var secondaryButtonCornerRadius: CGFloat {
         switch self {
-        case .classicoDark, .classicoLight: return 16
-        case .salsicciaDark, .salsicciaLight: return 28
-        case .buratinoDark, .buratinoLight: return 8
-        case .giornaleDark, .giornaleLight: return 12
+        case .classico: return 16
+        case .salsiccia: return 28
+        case .buratino: return 8
+        case .giornale: return 12
         }
     }
 }
