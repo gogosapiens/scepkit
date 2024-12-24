@@ -9,7 +9,7 @@ import UIKit
 
 extension UIImage {
     
-    convenience init?(moduleAssetName: String, design: SCEPConfig.InterfaceStyle.Design?) {
+    convenience init?(moduleAssetName: String, design: SCEPConfig.InterfaceStyle.Design? = nil) {
         var name = ""
         if !moduleAssetName.hasPrefix("SCEP") {
             name = "SCEP"

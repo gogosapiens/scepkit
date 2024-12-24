@@ -14,7 +14,21 @@ public class SCEPPaywallController: UIViewController {
     func showContinueButton() {}
     
     func purchase(_ product: AdaptyPaywallProduct) {
-        if isDebug {
+        if SCEPKitInternal.shared.environment == .production {
+            SCEPKitInternal.shared.trackEvent("[SCEPKit] subscribe_started", properties: ["product_id": product.vendorProductId, "placenemt": placement.id])
+            Adapty.makePurchase(product: product) { [weak self] result in
+                guard let self else { return }
+                switch result {
+                case .success(let info):
+                    logger.debug("Purchase success \(String(describing: info))")
+                    close(success: true)
+                    SCEPKitInternal.shared.trackEvent("[SCEPKit] subscribed", properties: ["product_id": product.vendorProductId, "placenemt": placement.id])
+                case .failure(let error):
+                    logger.error("Purchase error \(error)")
+                    SCEPKitInternal.shared.trackEvent("[SCEPKit] subscribe_error", properties: ["product_id": product.vendorProductId, "placenemt": placement.id, "error": error.description])
+                }
+            }
+        } else {
             let isTrial = product.introductoryDiscount?.paymentMode == .freeTrial
             let credits = SCEPMonetization.shared.credits(for: product.vendorProductId)
             let title = credits > 0 ? "Increment credits by \(credits)?" : "Enable \(isTrial ? "trial" : "paid") status?"
@@ -31,20 +45,6 @@ public class SCEPPaywallController: UIViewController {
             let cancel = UIAlertAction(title: "Cancel", style: .cancel)
             alert.addAction(cancel)
             present(alert, animated: true)
-        } else {
-            SCEPKitInternal.shared.trackEvent("[SCEPKit] subscribe_started", properties: ["product_id": product.vendorProductId, "placenemt": placement.id])
-            Adapty.makePurchase(product: product) { [weak self] result in
-                guard let self else { return }
-                switch result {
-                case .success(let info):
-                    logger.debug("Purchase success \(String(describing: info))")
-                    close(success: true)
-                    SCEPKitInternal.shared.trackEvent("[SCEPKit] subscribed", properties: ["product_id": product.vendorProductId, "placenemt": placement.id])
-                case .failure(let error):
-                    logger.error("Purchase error \(error)")
-                    SCEPKitInternal.shared.trackEvent("[SCEPKit] subscribe_error", properties: ["product_id": product.vendorProductId, "placenemt": placement.id, "error": error.description])
-                }
-            }
         }
     }
     

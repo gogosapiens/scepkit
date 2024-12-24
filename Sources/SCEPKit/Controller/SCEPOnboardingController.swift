@@ -1,6 +1,8 @@
 import UIKit
 
 class SCEPOnboardingController: UIViewController {
+    
+    let numberOfSlides: Int = 3
 
     @IBOutlet weak var continueButton: SCEPMainButton!
     @IBOutlet weak var slidesStackView: UIStackView!
@@ -18,7 +20,7 @@ class SCEPOnboardingController: UIViewController {
         config = SCEPKitInternal.shared.onboardingConfig
         let design = SCEPKitInternal.shared.config.style.design
         pageStackView.isHidden = design.onboardingIsPageHidden
-        showSlideController(slideController(with: config.slides.first!, index: 0), animated: false)
+        showSlideController(slideController(index: 0), animated: false)
         continueButton.title = .init(localized: "Continue", bundle: .module)
     }
     
@@ -46,8 +48,8 @@ class SCEPOnboardingController: UIViewController {
     
     @IBAction func continueTapped(_ sender: UIButton) {
         let nextSlideIndex = slideIndex + 1
-        if nextSlideIndex < config.slides.count {
-            let slideController = slideController(with: config.slides[nextSlideIndex], index: nextSlideIndex)
+        if nextSlideIndex < numberOfSlides {
+            let slideController = slideController(index: nextSlideIndex)
             showSlideController(slideController, animated: true)
             slideIndex = nextSlideIndex
         } else {
@@ -71,9 +73,12 @@ class SCEPOnboardingController: UIViewController {
         }
     }
     
-    func slideController(with config: SCEPConfig.Onboarding.Slide, index: Int) -> SCEPOnboardingSlideController {
+    func slideController(index: Int) -> SCEPOnboardingSlideController {
         let controller = SCEPOnboardingSlideController.instantiate(bundle: .module)
-        controller.config = config
+        let titles = [config.texts.title0, config.texts.title1, config.texts.title2]
+        let imageURLs = [config.meta.imageURL0, config.meta.imageURL1, config.meta.imageURL2]
+        controller.configTitle = titles[index]
+        controller.configImageURL = imageURLs[index]
         controller.index = index
         return controller
     }

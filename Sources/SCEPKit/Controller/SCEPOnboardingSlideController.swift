@@ -2,7 +2,8 @@ import UIKit
 
 class SCEPOnboardingSlideController: UIViewController {
     
-    var config: SCEPConfig.Onboarding.Slide!
+    var configTitle: LocalizedString!
+    var configImageURL: URL!
     var index: Int!
     
     @IBOutlet weak var imageView: UIImageView!
@@ -19,8 +20,8 @@ class SCEPOnboardingSlideController: UIViewController {
         
         let design = SCEPKitInternal.shared.config.style.design
         
-        titleLabel.text = config.title.localized()
-        Downloader.downloadImage(from: config.imageURL) { [weak self] image in
+        titleLabel.text = configTitle.localized()
+        Downloader.downloadImage(from: configImageURL) { [weak self] image in
             self?.imageView.image = image
         }
         

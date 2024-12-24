@@ -81,7 +81,7 @@ class SCEPAdManager: NSObject {
     private func loadInterstitialAd() {
         guard config.isEnabled else { return }
         guard interstitial == nil else { return }
-        let unitId = isDebug ? debugInterstitialId : config.interstitialId!
+        let unitId = SCEPKitInternal.shared.environment == .production ? config.interstitialId! : debugInterstitialId
         let request = GADRequest()
         print(#function, "start")
         GADInterstitialAd.load(withAdUnitID: unitId, request: request) { ad, error in
@@ -89,7 +89,6 @@ class SCEPAdManager: NSObject {
                 print(#function, "Failed to load interstitial ad with error: \(error?.localizedDescription ?? "none")")
                 return
             }
-            print(#function, "done")
             self.interstitial = ad
             self.interstitial?.fullScreenContentDelegate = self
         }
@@ -98,7 +97,7 @@ class SCEPAdManager: NSObject {
     private func loadAppOpenAd() {
         guard config.isEnabled else { return }
         guard appOpenAd == nil else { return }
-        let unitId = isDebug ? debugAppOpenId : config.appOpenId!
+        let unitId = SCEPKitInternal.shared.environment == .production ? config.appOpenId! : debugAppOpenId
         let request = GADRequest()
         GADAppOpenAd.load(withAdUnitID: unitId, request: request) { ad, error in
             self.isLoadingAppOpen = false
@@ -144,7 +143,7 @@ class SCEPAdManager: NSObject {
     
     @MainActor func getBannerAdView(placement: String?, completion: (SCEPBannerAdView) -> Void, dismissHandler: @escaping (SCEPBannerAdView) -> Void) {
         guard canShowAds else { return }
-        let unitId = isDebug ? debugBannerId : config.bannerId!
+        let unitId = SCEPKitInternal.shared.environment == .production ? config.bannerId! : debugBannerId
         let bannerView = SCEPBannerAdView(unitId: unitId, dismissHandler: dismissHandler)
         bannerAdViews.insert(bannerView)
         SCEPKitInternal.shared.trackEvent("[SCEPKit] banner_ad_shown", properties: ["placement": placement ?? ""])
@@ -153,7 +152,7 @@ class SCEPAdManager: NSObject {
     
     @MainActor func loadRewardedAd(id: String? = nil, completion: @escaping (GADRewardedAd?) -> Void) {
         let request = GADRequest()
-        let unitId = isDebug ? debudRewardedId : id ?? config.rewardedId!
+        let unitId = id ?? (SCEPKitInternal.shared.environment == .production ? config.rewardedId! : debudRewardedId)
         GADRewardedAd.load(withAdUnitID: unitId, request: request) { ad, error in
             if let error {
                 print("Failed to load rewarded ad with error: \(error.localizedDescription)")

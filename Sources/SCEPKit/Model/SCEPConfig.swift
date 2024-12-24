@@ -46,6 +46,9 @@ struct SCEPConfig: Decodable {
             var all: [String] {
                 [premium, credits, noTrialPremium].compactMap(\.self)
             }
+            
+            var hasPremium: Bool { premium != nil || noTrialPremium != nil }
+            var hasCredits: Bool { credits != nil }
         }
         
         struct Ads: Codable {
@@ -60,19 +63,34 @@ struct SCEPConfig: Decodable {
     }
     
     struct Onboarding: Codable {
+        let texts: Texts
+        let meta: Meta
         
-        let slides: [Slide]
-        
-        struct Slide: Codable {
-            let imageURL: URL
-            let title: LocalizedString
+        struct Texts: Codable {
+            let title0: LocalizedString
+            let title1: LocalizedString
+            let title2: LocalizedString
+        }
+        struct Meta: Codable {
+            let imageURL0: URL
+            let imageURL1: URL
+            let imageURL2: URL
         }
     }
     
     struct Settings: Codable {
-        let title: LocalizedString
-        let subtitle: LocalizedString?
-        let features: [LocalizedString]
+        let texts: Texts
+        let meta: Meta
+        
+        struct Texts: Codable {
+            let title: LocalizedString
+            let subtitle: LocalizedString?
+            let feature0: LocalizedString
+            let feature1: LocalizedString
+            let feature2: LocalizedString
+            let feature3: LocalizedString
+        }
+        struct Meta: Codable {}
     }
     
     struct InterfaceStyle: Decodable {

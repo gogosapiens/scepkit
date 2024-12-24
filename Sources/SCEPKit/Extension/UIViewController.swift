@@ -10,7 +10,7 @@ extension UIViewController {
     }
 }
 
-extension UIViewController: SFSafariViewControllerDelegate {
+extension UIViewController {
     
     static var safariDismissHandler: (() -> Void)?
     
@@ -20,6 +20,7 @@ extension UIViewController: SFSafariViewControllerDelegate {
         } else {
             Self.safariDismissHandler = dismissHandler
             let safariController = SFSafariViewController(url: url)
+            safariController.modalPresentationStyle = .formSheet
             present(safariController, animated: true)
         }
     }

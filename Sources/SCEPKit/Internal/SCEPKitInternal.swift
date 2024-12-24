@@ -9,20 +9,14 @@ import Firebase
 import FirebaseRemoteConfig
 import AmplitudeSwift
 
-public var isDebug: Bool {
-#if DEBUG
-    return true
-#else
-    return false
-#endif
-}
-
 let logger = Logger(subsystem: "SCEPKit", category: "SCEPKitInternal")
 
 class SCEPKitInternal: NSObject {
     
     public static let shared = SCEPKitInternal()
     private override init() {}
+    
+    var environment: SCEPEnvironment!
     
     var rootViewController: UIViewController!
     var window: UIWindow!
@@ -47,6 +41,10 @@ class SCEPKitInternal: NSObject {
     let applicationShownNotification = Notification.Name("SCEPKitInternal.applicationShownNotification")
     
     @MainActor func launch(rootViewController: UIViewController) {
+        
+        environment = .init(
+            rawValue: Bundle.main.object(forInfoDictionaryKey: "SCEPEnvironment") as! String
+        )
         
         FirebaseApp.configure()
         let remoteConfig = RemoteConfig.remoteConfig()
@@ -74,8 +72,8 @@ class SCEPKitInternal: NSObject {
                 }
             }
         }
-        
-        font = SCEPFont.allCases.first(where: { $0.uiFont(ofSize: 10, weight: .medium) != nil }) ?? .system
+
+        font = SCEPFont.allCases.first(where: { $0.uiFont(ofSize: 10, weight: SCEPFont.Weight.medium) != nil }) ?? .system
         
         let group = DispatchGroup()
         
@@ -182,7 +180,9 @@ class SCEPKitInternal: NSObject {
             }
         }
         if !isOnboardingCompleted {
-            for imageURL in config.onboarding.slides.map(\.imageURL) {
+            let meta = config.onboarding.meta
+            let onboardingImageURLs = [meta.imageURL0, meta.imageURL1, meta.imageURL2]
+            for imageURL in onboardingImageURLs {
                 group.enter()
                 Downloader.downloadImage(from: imageURL) { image in
                     if image == nil {
@@ -193,8 +193,8 @@ class SCEPKitInternal: NSObject {
             }
             let placement = config.monetization.placements[SCEPPaywallPlacement.onboarding.id]
             let paywallIds = [placement?.premium, placement?.credits].compactMap({ $0 })
-            let imageURLs = Set(paywallIds.flatMap { config.monetization.paywalls[$0]!.imageURLs })
-            for imageURL in imageURLs {
+            let paywallImageURLs = Set(paywallIds.flatMap { config.monetization.paywalls[$0]!.imageURLs })
+            for imageURL in paywallImageURLs {
                 group.enter()
                 Downloader.downloadImage(from: imageURL) { image in
                     if image == nil {
@@ -349,6 +349,9 @@ class SCEPKitInternal: NSObject {
     }
     
     func accessPremiumContent(from controller: UIViewController, placement: SCEPPaywallPlacement, handler: @escaping () -> Void) {
+        guard config.monetization.placements.values.contains(where: { $0.hasPremium }) else {
+            fatalError("This app does not support premium content")
+        }
         if SCEPMonetization.shared.isPremium {
             handler()
         } else {
@@ -357,6 +360,9 @@ class SCEPKitInternal: NSObject {
     }
     
     func accessCreditsContent(amount: Int, from controller: UIViewController, placement: SCEPPaywallPlacement, handler: @escaping (SCEPCreditsChargeHandler) -> Void) {
+        guard config.monetization.placements.values.contains(where: { $0.hasPremium }) else {
+            fatalError("This app does not support credits content")
+        }
         let chargeHandler = {
             SCEPMonetization.shared.decrementCredits(by: amount)
         }
@@ -376,7 +382,7 @@ class SCEPKitInternal: NSObject {
     }
     
     func trackEvent(_ name: String, properties: [String: Any]? = nil) {
-        guard !isDebug else {
+        guard environment == .production else {
             logger.log("Track event: \(name), properties: \(properties?.debugDescription ?? "[:]")")
             return
         }
@@ -385,7 +391,7 @@ class SCEPKitInternal: NSObject {
     }
     
     func setUserProperties(_ properties: [String: Any]) {
-        guard !isDebug else {
+        guard environment == .production else {
             logger.log("Set user properties: \(properties.debugDescription)")
             return
         }
@@ -403,6 +409,7 @@ class SCEPKitInternal: NSObject {
             let data = RemoteConfig.remoteConfig().defaultValue(forKey: key)?.dataValue,
             let value = try? JSONDecoder().decode(Type.self, from: data)
         else {
+//            try! JSONDecoder().decode(Type.self, from: RemoteConfig.remoteConfig().defaultValue(forKey: key)!.dataValue)
             return nil
         }
         return value
@@ -464,6 +471,7 @@ class SCEPKitInternal: NSObject {
 extension SCEPKitInternal: AdaptyDelegate {
     
     func didLoadLatestProfile(_ profile: AdaptyProfile) {
+        guard environment == .production else { return }
         DispatchQueue.main.async {
             SCEPMonetization.shared.update(for: profile)
         }

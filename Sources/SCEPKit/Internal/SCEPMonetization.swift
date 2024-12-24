@@ -65,7 +65,6 @@ class SCEPMonetization {
     }
     
     @MainActor func update(for profile: AdaptyProfile) {
-        guard !isDebug else { return }
         
         if let subscription = profile.subscriptions.first(
             where: { $0.value.isActive && $0.key.split(separator: ".").contains("premium") }
@@ -187,7 +186,7 @@ class SCEPMonetization {
         SCEPKitInternal.shared.setUserProperties(properties)
     }
     
-    enum PremiumStatus: Codable {
+    enum PremiumStatus: String, Codable {
         case free, trial, paid
     }
 }
