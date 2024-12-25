@@ -184,11 +184,13 @@ class SCEPKitInternal: NSObject {
             let onboardingImageURLs = [meta.imageURL0, meta.imageURL1, meta.imageURL2]
             for imageURL in onboardingImageURLs {
                 group.enter()
-                Downloader.downloadImage(from: imageURL) { image in
-                    if image == nil {
-                        self.isOnboardingResourcesLoadFailed = true
+                DispatchQueue.main.async {
+                    Downloader.downloadImage(from: imageURL) { image in
+                        if image == nil {
+                            self.isOnboardingResourcesLoadFailed = true
+                        }
+                        group.leave()
                     }
-                    group.leave()
                 }
             }
             let placement = config.monetization.placements[SCEPPaywallPlacement.onboarding.id]
@@ -299,8 +301,9 @@ class SCEPKitInternal: NSObject {
         }
     }
     
-    func showSettingsController(from controller: UIViewController) {
+    func showSettingsController(from controller: UIViewController, customActions: [SCEPSettingsController.Action]) {
         let settingsController = SCEPSettingsController.instantiate(bundle: .module)
+        settingsController.actions = customActions
         controller.present(settingsController, animated: true)
     }
     
@@ -361,7 +364,7 @@ class SCEPKitInternal: NSObject {
     
     func accessCreditsContent(amount: Int, from controller: UIViewController, placement: SCEPPaywallPlacement, handler: @escaping (SCEPCreditsChargeHandler) -> Void) {
         guard config.monetization.placements.values.contains(where: { $0.hasPremium }) else {
-            fatalError("This app does not support credits content")
+            fatalError("This app does not support redits content")
         }
         let chargeHandler = {
             SCEPMonetization.shared.decrementCredits(by: amount)

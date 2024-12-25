@@ -2,10 +2,16 @@ import UIKit
 
 public class SCEPSettingsController: UIViewController {
     
-    struct Action {
+    public struct Action {
         var title: String
         var image: UIImage
-        var handler: () -> Void
+        var handler: (SCEPSettingsController) -> Void
+        
+        public init(title: String, image: UIImage, handler: @escaping (SCEPSettingsController) -> Void) {
+            self.title = title
+            self.image = image
+            self.handler = handler
+        }
     }
     
     var actions: [Action] = []
@@ -129,39 +135,39 @@ public class SCEPSettingsController: UIViewController {
             sections.append(.actions(header: nil, actions: actions))
         }
         let mainActions: [Action] = [
-            .init(title: .init(localized: "Rate us", bundle: .module), image: design.settingsRateImage) { [weak self] in
-                self?.openURL(SCEPKitInternal.shared.reviewURL)
+            .init(title: .init(localized: "Rate us", bundle: .module), image: design.settingsRateImage) { controller in
+                controller.openURL(SCEPKitInternal.shared.reviewURL)
             },
-            .init(title: .init(localized: "Feedback", bundle: .module), image: design.settingsFeedbackImage) { [weak self] in
-                self?.openURL(SCEPKitInternal.shared.feedbackURL)
+            .init(title: .init(localized: "Feedback", bundle: .module), image: design.settingsFeedbackImage) { controller in
+                controller.openURL(SCEPKitInternal.shared.feedbackURL)
             },
         ]
         sections.append(.actions(header: .init(localized: "MAIN", bundle: .module), actions: mainActions))
         let legalActions: [Action] = [
-            .init(title: .init(localized: "Privacy Policy", bundle: .module), image: design.settingsPrivacyImage) { [weak self] in
-                self?.openURL(SCEPKitInternal.shared.privacyURL)
+            .init(title: .init(localized: "Privacy Policy", bundle: .module), image: design.settingsPrivacyImage) { controller in
+                controller.openURL(SCEPKitInternal.shared.privacyURL)
             },
-            .init(title: .init(localized: "Terms of Use", bundle: .module), image: design.settingsTermsImage) { [weak self] in
-                self?.openURL(SCEPKitInternal.shared.termsURL)
+            .init(title: .init(localized: "Terms of Use", bundle: .module), image: design.settingsTermsImage) { controller in
+                controller.openURL(SCEPKitInternal.shared.termsURL)
             },
         ]
         sections.append(.actions(header: .init(localized: "LEGAL", bundle: .module), actions: legalActions))
         if SCEPKitInternal.shared.environment != .production {
             let debugActions: [Action] = [
-                .init(title: "Premium status: \(SCEPMonetization.shared.premuimStatus.rawValue)", image: .init(moduleAssetName: "SettingsDebug")!) { [unowned self] in
-                    changePremiumStatus()
+                .init(title: "Premium status: \(SCEPMonetization.shared.premuimStatus.rawValue)", image: .init(moduleAssetName: "SettingsDebug")!) { controller in
+                    controller.changePremiumStatus()
                 },
-                .init(title: "Reset onboarding", image: .init(moduleAssetName: "SettingsDebug")!) { [unowned self] in
-                    resetOnboarding()
+                .init(title: "Reset onboarding", image: .init(moduleAssetName: "SettingsDebug")!) { controller in
+                    controller.resetOnboarding()
                 },
-                .init(title: "Recurring credits: \(SCEPMonetization.shared.recurringCredits)", image: .init(moduleAssetName: "SettingsDebug")!) { [unowned self] in
-                    changeRecurringCredits()
+                .init(title: "Recurring credits: \(SCEPMonetization.shared.recurringCredits)", image: .init(moduleAssetName: "SettingsDebug")!) { controller in
+                    controller.changeRecurringCredits()
                 },
-                .init(title: "Additional credits: \(SCEPMonetization.shared.recurringCredits)", image: .init(moduleAssetName: "SettingsDebug")!) { [unowned self] in
-                    changeAdditionalCredits()
+                .init(title: "Additional credits: \(SCEPMonetization.shared.recurringCredits)", image: .init(moduleAssetName: "SettingsDebug")!) { controller in
+                    controller.changeAdditionalCredits()
                 },
-                .init(title: "Show paywalls", image: .init(moduleAssetName: "SettingsDebug")!) { [unowned self] in
-                    showPaywalls()
+                .init(title: "Show paywalls", image: .init(moduleAssetName: "SettingsDebug")!) { controller in
+                    controller.showPaywalls()
                 }
             ]
             sections.append(.actions(header: "DEBUG", actions: debugActions))
@@ -225,7 +231,7 @@ extension SCEPSettingsController: UICollectionViewDelegateFlowLayout {
             SCEPKitInternal.shared.showPaywallController(from: self, placement: .main)
         case .actions(_, let actions):
             let action = actions[indexPath.item]
-            action.handler()
+            action.handler(self)
         }
     }
     

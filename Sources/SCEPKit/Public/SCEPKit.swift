@@ -62,8 +62,8 @@ final public class SCEPKit {
         SCEPKitInternal.shared.creditsString
     }
     
-    public static func showSettingsController(from controller: UIViewController) {
-        SCEPKitInternal.shared.showSettingsController(from: controller)
+    public static func showSettingsController(from controller: UIViewController, customActions: [SCEPSettingsController.Action] = []) {
+        SCEPKitInternal.shared.showSettingsController(from: controller, customActions: customActions)
     }
     
     @discardableResult @MainActor public static func showInterstitialAd(from controller: UIViewController?, placement: String? = nil) -> Bool {
