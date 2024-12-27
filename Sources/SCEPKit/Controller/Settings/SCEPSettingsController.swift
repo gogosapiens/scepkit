@@ -26,6 +26,7 @@ public class SCEPSettingsController: UIViewController {
         super.viewDidLoad()
         
         titleLabel.text = .init(localized: "Settings", bundle: .module)
+        
                         
         premiumStatusUpdated()
         NotificationCenter.default.addObserver(self, selector: #selector(premiumStatusUpdated), name: SCEPMonetization.shared.premiumStatusUpdatedNotification, object: nil)

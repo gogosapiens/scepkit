@@ -40,11 +40,26 @@ class SCEPKitInternal: NSObject {
     let onboardingCompletedNotification = Notification.Name("SCEPKitInternal.onboardingCompletedNotification")
     let applicationShownNotification = Notification.Name("SCEPKitInternal.applicationShownNotification")
     
+    func getSupportedLanguages() -> [String] {
+        let paths = Bundle.main.paths(forResourcesOfType: "lproj", inDirectory: nil)
+        
+        return paths.compactMap { path -> String? in
+            let languageCode = (path as NSString).lastPathComponent.replacingOccurrences(of: ".lproj", with: "")
+            return Locale(identifier: languageCode).localizedString(forIdentifier: languageCode) ?? languageCode
+        }
+    }
+    
     @MainActor func launch(rootViewController: UIViewController) {
         
         environment = .init(
-            rawValue: Bundle.main.object(forInfoDictionaryKey: "SCEPEnvironment") as! String
+            rawValue: Bundle.main.object(forInfoDictionaryKey: "SCEPKitEnvironment") as! String
         )
+        
+        print(getSupportedLanguages())
+        print(Bundle.main.localizations)
+        print(Bundle.module.localizations)
+        print(Bundle.allBundles)
+        print(Bundle.main.preferredLocalizations)
         
         FirebaseApp.configure()
         let remoteConfig = RemoteConfig.remoteConfig()
