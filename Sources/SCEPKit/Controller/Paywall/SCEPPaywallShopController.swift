@@ -41,10 +41,10 @@ class SCEPPaywallShopController: SCEPPaywallController {
             self?.imageView.image = image
         }
         
-        titleLabel.text = .init(localized: "Store", bundle: .module)
-        termsButton.title = .init(localized: "Terms", bundle: .module)
-        privacyButton.title = .init(localized: "Privacy", bundle: .module)
-        restoreButton.title = .init(localized: "Restore", bundle: .module)
+        titleLabel.text = "Store".localized()
+        termsButton.title = "Terms".localized()
+        privacyButton.title = "Privacy".localized()
+        restoreButton.title = "Restore".localized()
         
         balanceLabel.text = SCEPMonetization.shared.credits.formatted()
         
@@ -97,24 +97,24 @@ extension SCEPPaywallShopController: UICollectionViewDataSource {
         case .rewardedAdId(let id):
             if let reward = rewardedAd?.adReward.amount.intValue {
                 cell.creditsLabel.text = "\(reward)"
-                cell.textLabel.text = .init(localized: "Watch an ad, earn {0} credits!", bundle: .module).insertingArguments(reward)
-                cell.actionLabel.text = .init(localized: "Watch ad", bundle: .module)
+                cell.textLabel.text = "Watch an ad, earn {0} credits!".localized().insertingArguments(reward)
+                cell.actionLabel.text = "Watch ad".localized()
             } else {
                 cell.creditsLabel.text = "-"
-                cell.textLabel.text = .init(localized: "Ad is loading. Please wait.", bundle: .module).insertingArguments("-")
-                cell.actionLabel.text = .init(localized: "No ad yet", bundle: .module)
+                cell.textLabel.text = "Ad is loading. Please wait.".localized().insertingArguments("-")
+                cell.actionLabel.text = "No ad yet".localized()
             }
             cell.badgeView.isHidden = true
         case .productId(let id):
             let titles = [
-                "The perfect starting point.",
-                "Perfect for regular use.",
-                "Boost your experience.",
-                "Go all in with max credits!"
+                "The perfect starting point.".localized(),
+                "Perfect for regular use.".localized(),
+                "Boost your experience.".localized(),
+                "Go all in with max credits!".localized()
             ]
             let credits = SCEPMonetization.shared.credits(for: id)
             cell.creditsLabel.text = String(credits)
-            cell.textLabel.text = String(localized: .init(titles[indexPath.item]), bundle: .module)
+            cell.textLabel.text = titles[indexPath.item]
             cell.actionLabel.text = position.product?.skProduct.localizedPrice
             cell.badgeView.isHidden = indexPath.item != 2
         }

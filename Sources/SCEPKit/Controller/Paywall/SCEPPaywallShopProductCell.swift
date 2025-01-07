@@ -15,7 +15,7 @@ class SCEPPaywallShopProductCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        badgeLabel.text = .init(localized: "POPULAR", bundle: .module)
+        badgeLabel.text = "POPULAR".localized()
         badgeView.layer.maskedCorners = .layerMinXMaxYCorner
         badgeView.layer.cornerRadius = 8
         

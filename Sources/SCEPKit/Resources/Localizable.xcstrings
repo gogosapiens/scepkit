@@ -609,6 +609,595 @@
                 "ar": { "stringUnit": { "state": "translated", "value": "سنوي" }},
                 "he": { "stringUnit": { "state": "translated", "value": "שנתי" }}
             }
+        },
+        "Store": {
+            "extractionState": "manual",
+            "localizations": {
+                "ru": { "stringUnit": { "state": "translated", "value": "Магазин" }},
+                "fr": { "stringUnit": { "state": "translated", "value": "Shop" }},
+                "de": { "stringUnit": { "state": "translated", "value": "Shop" }},
+                "zh": { "stringUnit": { "state": "translated", "value": "商店" }},
+                "es": { "stringUnit": { "state": "translated", "value": "Shop" }},
+                "nl": { "stringUnit": { "state": "translated", "value": "Shop" }},
+                "ko": { "stringUnit": { "state": "translated", "value": "숍" }},
+                "ja": { "stringUnit": { "state": "translated", "value": "店" }},
+                "hi": { "stringUnit": { "state": "translated", "value": "शॉप" }},
+                "pt": { "stringUnit": { "state": "translated", "value": "Loja" }},
+                "it": { "stringUnit": { "state": "translated", "value": "Shop" }},
+                "sv": { "stringUnit": { "state": "translated", "value": "Shop" }},
+                "da": { "stringUnit": { "state": "translated", "value": "Shop" }},
+                "pl": { "stringUnit": { "state": "translated", "value": "Shop" }},
+                "ar": { "stringUnit": { "state": "translated", "value": "متجر" }},
+                "he": { "stringUnit": { "state": "translated", "value": "חנות" }}
+            }
+        },
+        "Watch an ad, earn {0} credits!": {
+            "extractionState": "manual",
+            "localizations": {
+                "ru": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Смотри рекламу, +{0}!"
+                    }
+                },
+                "fr": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Regarde pub, +{0}!"
+                    }
+                },
+                "de": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Sieh Werbung, +{0}!"
+                    }
+                },
+                "zh": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "看广告，得+{0}!"
+                    }
+                },
+                "es": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Mira anuncio y +{0}!"
+                    }
+                },
+                "nl": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Bekijk advertentie, +{0}!"
+                    }
+                },
+                "ko": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "광고 보면 +{0}!"
+                    }
+                },
+                "ja": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "広告を見て+{0}!"
+                    }
+                },
+                "hi": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Ad देखें, +{0} पाएं!"
+                    }
+                },
+                "pt": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Veja anúncio, +{0}!"
+                    }
+                },
+                "it": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Guarda spot, +{0}!"
+                    }
+                },
+                "sv": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Se annons, +{0}!"
+                    }
+                },
+                "da": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Se reklame, +{0}!"
+                    }
+                },
+                "pl": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Obejrzyj reklamę i +{0}!"
+                    }
+                },
+                "ar": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "شاهد إعلان، +{0}!"
+                    }
+                },
+                "he": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "צפה בפרסומת, +{0}!"
+                    }
+                }
+            }
+        },
+        "Watch ad": {
+            "extractionState": "manual",
+            "localizations": {
+                "ru": { "stringUnit": { "state": "translated", "value": "Смотреть" }},
+                "fr": { "stringUnit": { "state": "translated", "value": "Voir pub" }},
+                "de": { "stringUnit": { "state": "translated", "value": "Werbung" }},
+                "zh": { "stringUnit": { "state": "translated", "value": "看广告" }},
+                "es": { "stringUnit": { "state": "translated", "value": "Ver ad" }},
+                "nl": { "stringUnit": { "state": "translated", "value": "Bekijk" }},
+                "ko": { "stringUnit": { "state": "translated", "value": "광고보기" }},
+                "ja": { "stringUnit": { "state": "translated", "value": "広告視聴" }},
+                "hi": { "stringUnit": { "state": "translated", "value": "Ad देखें" }},
+                "pt": { "stringUnit": { "state": "translated", "value": "Ver anúncio" }},
+                "it": { "stringUnit": { "state": "translated", "value": "Vedi spot" }},
+                "sv": { "stringUnit": { "state": "translated", "value": "Se annons" }},
+                "da": { "stringUnit": { "state": "translated", "value": "Se reklame" }},
+                "pl": { "stringUnit": { "state": "translated", "value": "Obejrzyj" }},
+                "ar": { "stringUnit": { "state": "translated", "value": "شاهد إعلان" }},
+                "he": { "stringUnit": { "state": "translated", "value": "צפה במודעה" }}
+            }
+        },
+        "Ad is loading. Please wait.": {
+            "extractionState": "manual",
+            "localizations": {
+                "ru": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Загрузка рекламы... Ждите."
+                    }
+                },
+                "fr": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Pub en cours... Patientez."
+                    }
+                },
+                "de": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Werbung lädt... Bitte warten."
+                    }
+                },
+                "zh": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "广告加载中，请稍等。"
+                    }
+                },
+                "es": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Cargando anuncio... espera."
+                    }
+                },
+                "nl": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Advertentie laadt... Even wachten."
+                    }
+                },
+                "ko": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "광고 로딩 중... 잠시만요."
+                    }
+                },
+                "ja": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "広告を読み込み中…お待ちください。"
+                    }
+                },
+                "hi": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "विज्ञापन लोड हो रहा... कृपया प्रतीक्षा।"
+                    }
+                },
+                "pt": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Carregando anúncio... aguarde."
+                    }
+                },
+                "it": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Annuncio in carica... attendi."
+                    }
+                },
+                "sv": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Annons laddas... vänta."
+                    }
+                },
+                "da": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Annonce indlæses... vent."
+                    }
+                },
+                "pl": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Reklama się ładuje... proszę czekać."
+                    }
+                },
+                "ar": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "جارٍ تحميل الإعلان... انتظر."
+                    }
+                },
+                "he": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "המודעה נטענת... נא להמתין."
+                    }
+                }
+            }
+        },
+        "No ad yet": {
+            "extractionState": "manual",
+            "localizations": {
+                "ru": { "stringUnit": { "state": "translated", "value": "Нет рекламы сейчас" }},
+                "fr": { "stringUnit": { "state": "translated", "value": "Pas de pub pour l’instant" }},
+                "de": { "stringUnit": { "state": "translated", "value": "Noch keine Werbung" }},
+                "zh": { "stringUnit": { "state": "translated", "value": "暂无广告" }},
+                "es": { "stringUnit": { "state": "translated", "value": "Aún sin anuncio" }},
+                "nl": { "stringUnit": { "state": "translated", "value": "Nog geen advertentie" }},
+                "ko": { "stringUnit": { "state": "translated", "value": "아직 광고 없음" }},
+                "ja": { "stringUnit": { "state": "translated", "value": "まだ広告がありません" }},
+                "hi": { "stringUnit": { "state": "translated", "value": "अभी कोई विज्ञापन नहीं" }},
+                "pt": { "stringUnit": { "state": "translated", "value": "Ainda sem anúncio" }},
+                "it": { "stringUnit": { "state": "translated", "value": "Nessun annuncio ora" }},
+                "sv": { "stringUnit": { "state": "translated", "value": "Ingen annons ännu" }},
+                "da": { "stringUnit": { "state": "translated", "value": "Ingen annonce endnu" }},
+                "pl": { "stringUnit": { "state": "translated", "value": "Brak reklamy obecnie" }},
+                "ar": { "stringUnit": { "state": "translated", "value": "لا يوجد إعلان الآن" }},
+                "he": { "stringUnit": { "state": "translated", "value": "אין פרסומת כרגע" }}
+            }
+        },
+        "The perfect starting point.": {
+            "extractionState": "manual",
+            "localizations": {
+                "ru": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Отличная точка старта."
+                    }
+                },
+                "fr": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Le point de départ idéal."
+                    }
+                },
+                "de": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Der perfekte Einstieg."
+                    }
+                },
+                "zh": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "绝佳起点。"
+                    }
+                },
+                "es": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Punto de partida perfecto."
+                    }
+                },
+                "nl": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Het perfecte startpunt."
+                    }
+                },
+                "ko": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "완벽한 시작 지점."
+                    }
+                },
+                "ja": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "完璧なスタート地点。"
+                    }
+                },
+                "hi": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "एक बेहतरीन शुरुआत।"
+                    }
+                },
+                "pt": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "O ponto inicial perfeito."
+                    }
+                },
+                "it": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Punto di partenza ideale."
+                    }
+                },
+                "sv": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "En perfekt startpunkt."
+                    }
+                },
+                "da": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Det perfekte udgangspunkt."
+                    }
+                },
+                "pl": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Świetny punkt startowy."
+                    }
+                },
+                "ar": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "نقطة بداية ممتازة."
+                    }
+                },
+                "he": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "נקודת התחלה מצוינת."
+                    }
+                }
+            }
+        },
+        "Perfect for regular use.": {
+            "extractionState": "manual",
+            "localizations": {
+                "ru": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Отлично для частого пользования."
+                    }
+                },
+                "fr": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Parfait pour un usage régulier."
+                    }
+                },
+                "de": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Ideal für den Alltag."
+                    }
+                },
+                "zh": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "日常使用的理想之选。"
+                    }
+                },
+                "es": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Perfecto para uso habitual."
+                    }
+                },
+                "nl": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Ideaal voor regelmatig gebruik."
+                    }
+                },
+                "ko": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "자주 쓰기에 완벽합니다."
+                    }
+                },
+                "ja": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "日常的に最適です。"
+                    }
+                },
+                "hi": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "नियमित उपयोग के लिए बढ़िया।"
+                    }
+                },
+                "pt": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Perfeito para uso frequente."
+                    }
+                },
+                "it": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Perfetto per uso regolare."
+                    }
+                },
+                "sv": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Perfekt för regelbundet bruk."
+                    }
+                },
+                "da": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Perfekt til dagligt brug."
+                    }
+                },
+                "pl": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Idealny do częstego użytku."
+                    }
+                },
+                "ar": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "مثالي للاستخدام المتكرر."
+                    }
+                },
+                "he": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "מושלם לשימוש קבוע."
+                    }
+                }
+            }
+        },
+        "Boost your experience.": {
+            "extractionState": "manual",
+            "localizations": {
+                "ru": { "stringUnit": { "state": "translated", "value": "Улучшите ваши впечатления." }},
+                "fr": { "stringUnit": { "state": "translated", "value": "Améliorez votre expérience." }},
+                "de": { "stringUnit": { "state": "translated", "value": "Verbessern Sie Ihr Erlebnis." }},
+                "zh": { "stringUnit": { "state": "translated", "value": "提升你的体验。" }},
+                "es": { "stringUnit": { "state": "translated", "value": "Mejora tu experiencia." }},
+                "nl": { "stringUnit": { "state": "translated", "value": "Verhoog je beleving." }},
+                "ko": { "stringUnit": { "state": "translated", "value": "경험을 높여보세요." }},
+                "ja": { "stringUnit": { "state": "translated", "value": "体験を向上させよう。" }},
+                "hi": { "stringUnit": { "state": "translated", "value": "अपना अनुभव बेहतर करें।" }},
+                "pt": { "stringUnit": { "state": "translated", "value": "Melhore sua experiência." }},
+                "it": { "stringUnit": { "state": "translated", "value": "Migliora la tua esperienza." }},
+                "sv": { "stringUnit": { "state": "translated", "value": "Förbättra din upplevelse." }},
+                "da": { "stringUnit": { "state": "translated", "value": "Forbedr din oplevelse." }},
+                "pl": { "stringUnit": { "state": "translated", "value": "Ulepsz swoje wrażenia." }},
+                "ar": { "stringUnit": { "state": "translated", "value": "ارتقِ بتجربتك." }},
+                "he": { "stringUnit": { "state": "translated", "value": "שפר את החוויה שלך." }}
+            }
+        },
+        "Go all in with max credits!": {
+            "extractionState": "manual",
+            "localizations": {
+                "ru": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Идите ва-банк, максимум кредитов!"
+                    }
+                },
+                "fr": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Misez tout, crédits au max !"
+                    }
+                },
+                "de": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Gehen Sie aufs Ganze mit Max-Credits!"
+                    }
+                },
+                "zh": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "全力出击，用满额度！"
+                    }
+                },
+                "es": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "¡Ve con todo, créditos al máximo!"
+                    }
+                },
+                "nl": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Ga voluit met maximale credits!"
+                    }
+                },
+                "ko": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "최대 크레딧으로 올인!"
+                    }
+                },
+                "ja": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "最大クレジットでオールイン！"
+                    }
+                },
+                "hi": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "अधिकतम क्रेडिट के साथ पूरा दम लगाएँ!"
+                    }
+                },
+                "pt": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Vá com tudo: créditos no máximo!"
+                    }
+                },
+                "it": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Punta tutto: crediti al massimo!"
+                    }
+                },
+                "sv": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Satsa allt, maxa dina krediter!"
+                    }
+                },
+                "da": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Gå all-in med maks. credits!"
+                    }
+                },
+                "pl": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Rzuć wszystko na stół, max kredyty!"
+                    }
+                },
+                "ar": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "راهن بكل شيء برصيدك الأقصى!"
+                    }
+                },
+                "he": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "לך עד הסוף עם מקסימום קרדיטים!"
+                    }
+                }
+            }
         }
     },
     "version" : "1.0"

@@ -75,12 +75,12 @@ class SCEPPaywallRobotController: SCEPPaywallController {
             self?.imageView.image = image
         }
         
-        trialLabel.text = .init(localized: "Enable free trial", bundle: .module)
-        cancelAnytimeLabel.text = .init(localized: "CANCEL ANYTIME", bundle: .module)
-        termsButton.title = .init(localized: "Terms", bundle: .module)
-        privacyButton.title = .init(localized: "Privacy", bundle: .module)
-        restoreButton.title = .init(localized: "Restore", bundle: .module)
-        continueButton.title = .init(localized: "Continue", bundle: .module)
+        trialLabel.text = "Enable free trial".localized()
+        cancelAnytimeLabel.text = "CANCEL ANYTIME".localized()
+        termsButton.title = "Terms".localized()
+        privacyButton.title = "Privacy".localized()
+        restoreButton.title = "Restore".localized()
+        continueButton.title = "Continue".localized()
     }
     
     func setupTexts() {
@@ -149,25 +149,25 @@ extension SCEPPaywallRobotController: UITableViewDataSource {
         if indexPath.row == 0 {
             cell.badgeShadowView.isHidden = isSelected
             cell.badgeView.isHidden = false
-            cell.badgeLabel.text = .init(localized: "BEST OFFER", bundle: .module)
-            cell.leftTitleLabel.text = .init(localized: "{0} ACCESS", bundle: .module).insertingArguments(period.displayUnitLocalizedAdjective.uppercased())
-            cell.leftSubtitleLabel.text = .init(localized: "Just {0} per {1}", bundle: .module).insertingArguments(product.skProduct.localizedPrice, period.displayUnitLocalizedNoun)
+            cell.badgeLabel.text = "BEST OFFER".localized()
+            cell.leftTitleLabel.text = "{0} ACCESS".localized().insertingArguments(period.displayUnitLocalizedAdjective.uppercased())
+            cell.leftSubtitleLabel.text = "Just {0} per {1}".localized().insertingArguments(product.skProduct.localizedPrice, period.displayUnitLocalizedNoun)
             cell.leftSubtitleLabel.isHidden = false
             cell.rightTitleLabel.text = product.skProduct.localizedPrice(for: shortPeroid)
-            cell.rightSubtitleLabel.text = .init(localized: "per {0}", bundle: .module).insertingArguments(shortPeroid.displayUnitLocalizedNoun.lowercased())
+            cell.rightSubtitleLabel.text = "per {0}".localized().insertingArguments(shortPeroid.displayUnitLocalizedNoun.lowercased())
             cell.rightSubtitleLabel.isHidden = false
         } else {
             
             cell.badgeShadowView.isHidden = true
             cell.badgeView.isHidden = true
             if let introductoryPeriod {
-                cell.leftTitleLabel.text = .init(localized: "{0}-DAY FREE TRIAL", bundle: .module).insertingArguments(introductoryPeriod.displayNumberOfUnits)
+                cell.leftTitleLabel.text = "{0}-DAY FREE TRIAL".localized().insertingArguments(introductoryPeriod.displayNumberOfUnits)
             } else {
-                cell.leftTitleLabel.text = .init(localized: "{0} ACCESS", bundle: .module).insertingArguments(period.displayUnitLocalizedAdjective.uppercased())
+                cell.leftTitleLabel.text = "{0} ACCESS".localized().insertingArguments(period.displayUnitLocalizedAdjective.uppercased())
             }
             cell.leftSubtitleLabel.isHidden = true
             cell.rightTitleLabel.text = product.skProduct.localizedPrice(for: shortPeroid)
-            cell.rightSubtitleLabel.text = .init(localized: "per {0}", bundle: .module).insertingArguments(shortPeroid.displayUnitLocalizedNoun.lowercased())
+            cell.rightSubtitleLabel.text = "per {0}".localized().insertingArguments(shortPeroid.displayUnitLocalizedNoun.lowercased())
             cell.rightSubtitleLabel.isHidden = false
         }
         

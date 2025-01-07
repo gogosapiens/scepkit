@@ -12,6 +12,7 @@ typealias LocalizedString = [String: String]
 extension LocalizedString {
     
     func localized() -> String {
+        guard Locale.isCurrentLanguageLocalized else { return self["en"] ?? "" }
         for language in Locale.preferredLanguages {
             guard let code = language.split(separator: "-").first else { continue }
             if let localizedValue = self[String(code)] {

@@ -81,12 +81,12 @@ class SCEPPaywallCatController: SCEPPaywallController {
         }
         updatePriceLabel()
         
-        trialLabel.text = .init(localized: "Enable free trial", bundle: .module)
-        cancelAnytimeLabel.text = .init(localized: "CANCEL ANYTIME", bundle: .module)
-        termsButton.title = .init(localized: "Terms", bundle: .module)
-        privacyButton.title = .init(localized: "Privacy", bundle: .module)
-        restoreButton.title = .init(localized: "Restore", bundle: .module)
-        continueButton.title = .init(localized: "Continue", bundle: .module)
+        trialLabel.text = "Enable free trial".localized()
+        cancelAnytimeLabel.text = "CANCEL ANYTIME".localized()
+        termsButton.title = "Terms".localized()
+        privacyButton.title = "Privacy".localized()
+        restoreButton.title = "Restore".localized()
+        continueButton.title = "Continue".localized()
     }
     
     func setupTexts() {
@@ -102,10 +102,10 @@ class SCEPPaywallCatController: SCEPPaywallController {
     
     func updatePriceLabel() {
         guard let subscriptionPeriod = displayProduct.skProduct.subscriptionPeriod else {
-            priceLabel.text = .init(localized: "Error", bundle: .module)
+            priceLabel.text = "Error".localized()
             return
         }
-        priceLabel.text = "\(subscriptionPeriod.displayUnitLocalizedAdjective), \(displayProduct.skProduct.localizedPrice)/\(subscriptionPeriod.displayUnitLocalizedNoun.lowercased())\n" + .init(localized: "Auto-renewable. Cancel anytime", bundle: .module)
+        priceLabel.text = "\(subscriptionPeriod.displayUnitLocalizedAdjective), \(displayProduct.skProduct.localizedPrice)/\(subscriptionPeriod.displayUnitLocalizedNoun.lowercased())\n" + "Auto-renewable. Cancel anytime".localized()
     }
     
     @IBAction func trialSwitchValueChanged(_ sender: UISwitch) {

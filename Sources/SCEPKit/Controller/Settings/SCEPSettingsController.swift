@@ -4,10 +4,10 @@ public class SCEPSettingsController: UIViewController {
     
     public struct Action {
         var title: String
-        var image: UIImage
+        var image: UIImage?
         var handler: (SCEPSettingsController) -> Void
         
-        public init(title: String, image: UIImage, handler: @escaping (SCEPSettingsController) -> Void) {
+        public init(title: String, image: UIImage?, handler: @escaping (SCEPSettingsController) -> Void) {
             self.title = title
             self.image = image
             self.handler = handler
@@ -25,9 +25,8 @@ public class SCEPSettingsController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        titleLabel.text = .init(localized: "Settings", bundle: .module)
-        
-                        
+        titleLabel.text = "Settings".localized()
+             
         premiumStatusUpdated()
         NotificationCenter.default.addObserver(self, selector: #selector(premiumStatusUpdated), name: SCEPMonetization.shared.premiumStatusUpdatedNotification, object: nil)
         
@@ -129,30 +128,30 @@ public class SCEPSettingsController: UIViewController {
     
     var sections: [Section] {
         var sections: [Section] = []
-        if !SCEPMonetization.shared.isPremium {
+        if !SCEPMonetization.shared.isPremium, !SCEPKitInternal.shared.hasCreditsPaywalls {
             sections.append(.banner)
         }
         if !actions.isEmpty {
             sections.append(.actions(header: nil, actions: actions))
         }
         let mainActions: [Action] = [
-            .init(title: .init(localized: "Rate us", bundle: .module), image: design.settingsRateImage) { controller in
+            .init(title: "Rate us".localized(), image: design.settingsRateImage) { controller in
                 controller.openURL(SCEPKitInternal.shared.reviewURL)
             },
-            .init(title: .init(localized: "Feedback", bundle: .module), image: design.settingsFeedbackImage) { controller in
+            .init(title: "Feedback".localized(), image: design.settingsFeedbackImage) { controller in
                 controller.openURL(SCEPKitInternal.shared.feedbackURL)
             },
         ]
-        sections.append(.actions(header: .init(localized: "MAIN", bundle: .module), actions: mainActions))
+        sections.append(.actions(header: "MAIN".localized(), actions: mainActions))
         let legalActions: [Action] = [
-            .init(title: .init(localized: "Privacy Policy", bundle: .module), image: design.settingsPrivacyImage) { controller in
+            .init(title: "Privacy Policy".localized(), image: design.settingsPrivacyImage) { controller in
                 controller.openURL(SCEPKitInternal.shared.privacyURL)
             },
-            .init(title: .init(localized: "Terms of Use", bundle: .module), image: design.settingsTermsImage) { controller in
+            .init(title: "Terms of Use".localized(), image: design.settingsTermsImage) { controller in
                 controller.openURL(SCEPKitInternal.shared.termsURL)
             },
         ]
-        sections.append(.actions(header: .init(localized: "LEGAL", bundle: .module), actions: legalActions))
+        sections.append(.actions(header: "LEGAL".localized(), actions: legalActions))
         if SCEPKitInternal.shared.environment != .production {
             let debugActions: [Action] = [
                 .init(title: "Premium status: \(SCEPMonetization.shared.premuimStatus.rawValue)", image: .init(moduleAssetName: "SettingsDebug")!) { controller in
@@ -206,6 +205,7 @@ extension SCEPSettingsController: UICollectionViewDataSource {
             let cell = collectionView.dequeueReusableCell(of: SCEPSettingsActionCell.self, for: indexPath)
             let action = actions[indexPath.item]
             cell.imageView.image = action.image
+            cell.imageView.isHidden = action.image == nil
             cell.titleLabel.text = action.title
             return cell
         }

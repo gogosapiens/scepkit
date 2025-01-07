@@ -97,20 +97,20 @@ fileprivate extension SKProduct.PeriodUnit {
     
     var localizedNoun: String {
         switch self {
-        case .day: return .init(localized: "Day", bundle: .module)
-        case .week: return .init(localized: "Week", bundle: .module)
-        case .month: return .init(localized: "Month", bundle: .module)
-        case .year: return .init(localized: "Year", bundle: .module)
+        case .day: return "Day".localized()
+        case .week: return "Week".localized()
+        case .month: return "Month".localized()
+        case .year: return "Year".localized()
         @unknown default: return "-"
         }
     }
     
     var localizedAdjective: String {
         switch self {
-        case .day: return .init(localized: "Daily", bundle: .module)
-        case .week: return .init(localized: "Weekly", bundle: .module)
-        case .month: return .init(localized: "Monthly", bundle: .module)
-        case .year: return .init(localized: "Yearly", bundle: .module)
+        case .day: return "Daily".localized()
+        case .week: return "Weekly".localized()
+        case .month: return "Monthly".localized()
+        case .year: return "Yearly".localized()
         @unknown default: return "-"
         }
     }

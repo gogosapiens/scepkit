@@ -39,14 +39,13 @@ class SCEPKitInternal: NSObject {
     
     let onboardingCompletedNotification = Notification.Name("SCEPKitInternal.onboardingCompletedNotification")
     let applicationShownNotification = Notification.Name("SCEPKitInternal.applicationShownNotification")
+
+    var hasCreditsPaywalls: Bool {
+        config.monetization.placements.values.contains(where: { $0.hasCredits })
+    }
     
-    func getSupportedLanguages() -> [String] {
-        let paths = Bundle.main.paths(forResourcesOfType: "lproj", inDirectory: nil)
-        
-        return paths.compactMap { path -> String? in
-            let languageCode = (path as NSString).lastPathComponent.replacingOccurrences(of: ".lproj", with: "")
-            return Locale(identifier: languageCode).localizedString(forIdentifier: languageCode) ?? languageCode
-        }
+    var hasPremiumPaywalls: Bool {
+        config.monetization.placements.values.contains(where: { $0.hasCredits })
     }
     
     @MainActor func launch(rootViewController: UIViewController) {
@@ -54,12 +53,6 @@ class SCEPKitInternal: NSObject {
         environment = .init(
             rawValue: Bundle.main.object(forInfoDictionaryKey: "SCEPKitEnvironment") as! String
         )
-        
-        print(getSupportedLanguages())
-        print(Bundle.main.localizations)
-        print(Bundle.module.localizations)
-        print(Bundle.allBundles)
-        print(Bundle.main.preferredLocalizations)
         
         FirebaseApp.configure()
         let remoteConfig = RemoteConfig.remoteConfig()
@@ -367,8 +360,11 @@ class SCEPKitInternal: NSObject {
     }
     
     func accessPremiumContent(from controller: UIViewController, placement: SCEPPaywallPlacement, handler: @escaping () -> Void) {
-        guard config.monetization.placements.values.contains(where: { $0.hasPremium }) else {
-            fatalError("This app does not support premium content")
+        guard hasPremiumPaywalls else {
+            let alert = UIAlertController(title: "Error", message: "This app does not support premium content", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            controller.present(alert, animated: true)
+            return
         }
         if SCEPMonetization.shared.isPremium {
             handler()
@@ -378,8 +374,11 @@ class SCEPKitInternal: NSObject {
     }
     
     func accessCreditsContent(amount: Int, from controller: UIViewController, placement: SCEPPaywallPlacement, handler: @escaping (SCEPCreditsChargeHandler) -> Void) {
-        guard config.monetization.placements.values.contains(where: { $0.hasPremium }) else {
-            fatalError("This app does not support redits content")
+        guard hasCreditsPaywalls else {
+            let alert = UIAlertController(title: "Error", message: "This app does not support credits content", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            controller.present(alert, animated: true)
+            return
         }
         let chargeHandler = {
             SCEPMonetization.shared.decrementCredits(by: amount)

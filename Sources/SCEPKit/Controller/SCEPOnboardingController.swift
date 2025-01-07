@@ -21,7 +21,7 @@ class SCEPOnboardingController: UIViewController {
         let design = SCEPKitInternal.shared.config.style.design
         pageStackView.isHidden = design.onboardingIsPageHidden
         showSlideController(slideController(index: 0), animated: false)
-        continueButton.title = .init(localized: "Continue", bundle: .module)
+        continueButton.title = "Continue".localized()
     }
     
     func showSlideController(_ controller: UIViewController, animated: Bool, completion: (() -> Void)? = nil) {

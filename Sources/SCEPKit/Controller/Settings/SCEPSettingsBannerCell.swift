@@ -27,7 +27,7 @@ class SCEPSettingsBannerCell: SCEPAnimatedCollectionViewCell {
         let config = SCEPKitInternal.shared.config.settings
         let texts = config.texts
         
-        bannerButton.title = .init(localized: "Get started", bundle: .module)
+        bannerButton.title = "Get started".localized()
         
         bannerTitleLabel.text = texts.title.localized()
         bannerTitleLabel.styleTextWithBraces()

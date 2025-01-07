@@ -16,4 +16,9 @@ extension String {
         }
         return string
     }
+    
+    func localized() -> String {
+        guard Locale.isCurrentLanguageLocalized else { return self }
+        return String(localized: .init(self), bundle: .module)
+    }
 }
