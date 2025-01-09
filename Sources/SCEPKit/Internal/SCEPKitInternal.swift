@@ -56,7 +56,7 @@ class SCEPKitInternal: NSObject {
         
         FirebaseApp.configure()
         let remoteConfig = RemoteConfig.remoteConfig()
-        remoteConfig.setDefaults(fromPlist: "remote_config_defaults")
+        remoteConfig.setDefaults(fromPlist: "RemoteConfig-Info")
         remoteConfig.activate()
         
         let isFirstLaunch = firstLaunchDate == nil
@@ -206,11 +206,13 @@ class SCEPKitInternal: NSObject {
             let paywallImageURLs = Set(paywallIds.flatMap { config.monetization.paywalls[$0]!.imageURLs })
             for imageURL in paywallImageURLs {
                 group.enter()
-                Downloader.downloadImage(from: imageURL) { image in
-                    if image == nil {
-                        self.isOnboardingPaywallResourcesLoadFailed = true
+                DispatchQueue.main.async {
+                    Downloader.downloadImage(from: imageURL) { image in
+                        if image == nil {
+                            self.isOnboardingPaywallResourcesLoadFailed = true
+                        }
+                        group.leave()
                     }
-                    group.leave()
                 }
             }
         }

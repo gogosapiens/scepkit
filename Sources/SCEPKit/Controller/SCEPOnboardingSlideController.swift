@@ -12,8 +12,8 @@ class SCEPOnboardingSlideController: UIViewController {
     @IBOutlet weak var titleBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var titleTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var overlayImageView: UIImageView!
-    @IBOutlet weak var imageTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var imageBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var imageLargeConstraint: NSLayoutConstraint!
+    @IBOutlet weak var imageSmallConstraint: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,9 +28,10 @@ class SCEPOnboardingSlideController: UIViewController {
         titleTopConstraint.isActive = design.onboardingTitlePosition == .top
         titleBottomConstraint.isActive = design.onboardingTitlePosition == .bottom
         titleImageBottomConstraint.isActive = design.onboardingTitlePosition == .imageBottom
-        imageTopConstraint.constant = design.onboardingIsImageAtTop ? 0 : 100
-        imageBottomConstraint.isActive = design.onboardingIsImageAtTop
-        overlayImageView.isHidden = design.onboardingOverlayHidden
+        imageLargeConstraint.isActive = design.onboardingImageIsLarge
+        imageSmallConstraint.isActive = !design.onboardingImageIsLarge
+        
+        overlayImageView.image = .init(moduleAssetName: "OnboardingSlideOverlay", design: design)
     }
     
     enum TitlePosition {
@@ -49,12 +50,12 @@ extension SCEPConfig.InterfaceStyle.Design {
         }
     }
     
-    var onboardingOverlayHidden: Bool {
+    var onboardingImageIsLarge: Bool {
         switch self {
-        case .classico: return false
-        case .salsiccia: return false
-        case .buratino: return false
-        case .giornale: return true
+        case .classico: return true
+        case .salsiccia: return true
+        case .buratino: return true
+        case .giornale: return false
         }
     }
     
