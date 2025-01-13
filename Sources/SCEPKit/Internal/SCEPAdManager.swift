@@ -116,7 +116,9 @@ class SCEPAdManager: NSObject {
         let interstitialInterval: TimeInterval = config.interstitialInterval ?? 60
         if let interstitial = interstitial {
             if Date() > lastInterstitialShowDate + interstitialInterval {
-                interstitial.present(fromRootViewController: viewController)
+                Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { [weak viewController] _ in
+                    interstitial.present(fromRootViewController: viewController)
+                }
                 lastInterstitialShowDate = Date()
                 SCEPKitInternal.shared.trackEvent("[SCEPKit] interstitial_ad_shown", properties: ["placement": placement ?? ""])
                 return true
