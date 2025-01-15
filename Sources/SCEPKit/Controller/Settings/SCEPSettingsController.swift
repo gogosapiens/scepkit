@@ -163,7 +163,7 @@ public class SCEPSettingsController: UIViewController {
                 .init(title: "Recurring credits: \(SCEPMonetization.shared.recurringCredits)", image: .init(moduleAssetName: "SettingsDebug")!) { controller in
                     controller.changeRecurringCredits()
                 },
-                .init(title: "Additional credits: \(SCEPMonetization.shared.recurringCredits)", image: .init(moduleAssetName: "SettingsDebug")!) { controller in
+                .init(title: "Additional credits: \(SCEPMonetization.shared.additionalCredits)", image: .init(moduleAssetName: "SettingsDebug")!) { controller in
                     controller.changeAdditionalCredits()
                 },
                 .init(title: "Show paywalls", image: .init(moduleAssetName: "SettingsDebug")!) { controller in

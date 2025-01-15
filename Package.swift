@@ -13,7 +13,7 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(name: "Amplitude-Swift", url: "https://github.com/amplitude/Amplitude-Swift", .exact("1.9.1")),
+        .package(name: "Amplitude-Swift", url: "https://github.com/amplitude/Amplitude-Swift", .exact("1.11.2")),
         .package(name: "Adapty", url: "https://github.com/adaptyteam/AdaptySDK-iOS", .exact("3.0.0-beta.2")),
         .package(name: "Firebase", url: "https://github.com/firebase/firebase-ios-sdk", .exact("10.23.0")),
         .package(name: "GoogleMobileAds", url: "https://github.com/googleads/swift-package-manager-google-mobile-ads.git", .exact("11.8.0")),
