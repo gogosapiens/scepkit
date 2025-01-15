@@ -389,7 +389,7 @@ class SCEPKitInternal: NSObject {
             handler(chargeHandler)
         } else {
             showPaywallController(from: controller, placement: placement) {
-                if SCEPMonetization.shared.credits < amount {
+                if amount <= SCEPMonetization.shared.credits  {
                     handler(chargeHandler)
                 }
             }
