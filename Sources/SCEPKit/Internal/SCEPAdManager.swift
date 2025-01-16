@@ -83,10 +83,9 @@ class SCEPAdManager: NSObject {
         guard interstitial == nil else { return }
         let unitId = SCEPKitInternal.shared.environment == .production ? config.interstitialId! : debugInterstitialId
         let request = GADRequest()
-        print(#function, "start")
         GADInterstitialAd.load(withAdUnitID: unitId, request: request) { ad, error in
             guard let ad else {
-                print(#function, "Failed to load interstitial ad with error: \(error?.localizedDescription ?? "none")")
+                logger.error("Failed to load interstitial ad with error: \(error?.localizedDescription ?? "none")")
                 return
             }
             self.interstitial = ad
@@ -102,7 +101,7 @@ class SCEPAdManager: NSObject {
         GADAppOpenAd.load(withAdUnitID: unitId, request: request) { ad, error in
             self.isLoadingAppOpen = false
             if let error = error {
-                print("Failed to load app open ad with error: \(error.localizedDescription)")
+                logger.error("Failed to load app open ad with error: \(error.localizedDescription)")
                 NotificationCenter.default.post(name: Self.appOpenLoadedNotification, object: nil)
                 return
             }
@@ -123,11 +122,11 @@ class SCEPAdManager: NSObject {
                 SCEPKitInternal.shared.trackEvent("[SCEPKit] interstitial_ad_shown", properties: ["placement": placement ?? ""])
                 return true
             } else {
-                print("Interstitial ad skipped due to interval")
+                logger.info("Interstitial ad skipped due to interval")
                 return false
             }
         } else {
-            print("Interstitial ad not loaded")
+            logger.info("Interstitial ad not loaded")
             return false
         }
     }
@@ -157,7 +156,7 @@ class SCEPAdManager: NSObject {
         let unitId = id ?? (SCEPKitInternal.shared.environment == .production ? config.rewardedId! : debudRewardedId)
         GADRewardedAd.load(withAdUnitID: unitId, request: request) { ad, error in
             if let error {
-                print("Failed to load rewarded ad with error: \(error.localizedDescription)")
+                logger.error("Failed to load rewarded ad with error: \(error.localizedDescription)")
             }
             completion(ad)
         }

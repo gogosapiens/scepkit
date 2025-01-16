@@ -154,7 +154,6 @@ class SCEPKitInternal: NSObject {
                 case .success(let paywall):
                     DispatchQueue.main.async {
                         self.adaptyPaywalls[placementId] = paywall
-                        print("PAYWALL:", placementId, paywall)
                     }
                     if paywall.hasViewConfiguration {
                         AdaptyUI.getViewConfiguration(forPaywall: paywall) { result in
@@ -411,7 +410,7 @@ class SCEPKitInternal: NSObject {
     
     func setUserProperties(_ properties: [String: Any]) {
         guard environment == .production else {
-            logger.log("Set user properties: \(properties.debugDescription)")
+            logger.log("Set user properties: \(properties.keys.joined(separator: ", "))")
             return
         }
         amplitude.identify(userProperties: properties)

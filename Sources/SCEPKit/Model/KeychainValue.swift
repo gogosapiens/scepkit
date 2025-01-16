@@ -41,7 +41,7 @@ struct KeychainValue<Value> where Value: Codable {
             let status = SecItemAdd(query, nil)
             
             if status != errSecSuccess {
-                print("Keychain save failed with status: \(status)")
+                logger.error("Keychain save failed with status: \(status)")
             }
         }
     }

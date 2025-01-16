@@ -52,9 +52,9 @@ public class SCEPPaywallController: UIViewController {
         Adapty.restorePurchases { result in
             switch result {
             case .success(let profile):
-                print(profile)
+                logger.info("Restored purchases: \(profile)")
             case .failure(let error):
-                print(error)
+                logger.error("Restoring purchases failed: \(error)")
             }
         }
     }
