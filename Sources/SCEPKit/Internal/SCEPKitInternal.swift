@@ -233,7 +233,7 @@ class SCEPKitInternal: NSObject {
     
     var config: SCEPConfig {
         if let variations: [String: SCEPConfig] = remoteConfigValue(for: "scepkit_config"),
-           let id: String = remoteConfigValue(for: "scepkit_variation_id"),
+           let id: String = remoteConfigValue(for: "scepkit_config_var"),
            let config = variations[id] {
             return config
         } else {
