@@ -2,6 +2,16 @@
 
 This guide provides instructions on how to configure the Swift Package using Firebase Remote Config. The configuration is stored in the `scepkit_config` key, and the current version is specified in the `scepkit_config_var` key.
 
+## Product & Ad ids
+
+| Git Branch & SCEPEnvironment | Ad ids prefix | Product ids & Adapty key prefix |
+| ---- | ----- | ---------------- |
+| main | test | test |
+| testflight | test | test |
+| camouflage | test | test |
+| prodtest | test | prod |
+| appstore | prod | prod |
+
 ## Configuration Overview
 
 Below is the JSON configuration for the Swift Package. Please note that API keys, font names, and certain localization data have been replaced with placeholders or limited to English and French for clarity.
