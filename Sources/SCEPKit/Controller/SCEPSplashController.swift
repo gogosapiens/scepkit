@@ -16,8 +16,8 @@ class SCEPSplashController: UIViewController {
     @IBOutlet weak var iconWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var iconCenterYConstraint: NSLayoutConstraint!
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewDidLoad() {
+        super.viewDidLoad()
         iconImageView.image = .init(named: "SCEPAppIcon")
         appNameLabel.text = Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ?? ""
         let design = SCEPKitInternal.shared.config.style.design
@@ -26,6 +26,16 @@ class SCEPSplashController: UIViewController {
         loaderTwoView.color = .scepAccent
         loaderThreeImageView.isHidden = true
         loaderFourView.isHidden = true
+        appNameLabel.isHidden = design.splashTitlePosition == .none
+        titleToTopConstraint.isActive = design.splashTitlePosition == .top
+        titleToImageConstraint.isActive = design.splashTitlePosition != .top
+        iconWidthConstraint.constant = design.splashIconWidth
+        iconCenterYConstraint.constant = design.splashTitlePosition == .imageBottom ? -30 : 0
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        let design = SCEPKitInternal.shared.config.style.design
         switch design {
         case .classico:
             loaderOneView.isHidden = false
@@ -56,12 +66,6 @@ class SCEPSplashController: UIViewController {
                 self.loaderFourView.layoutIfNeeded()
             }
         }
-        appNameLabel.isHidden = design.splashTitlePosition == .none
-        titleToTopConstraint.isActive = design.splashTitlePosition == .top
-        titleToImageConstraint.isActive = design.splashTitlePosition != .top
-        iconWidthConstraint.constant = design.splashIconWidth
-        iconCenterYConstraint.constant = design.splashTitlePosition == .imageBottom ? -30 : 0
-        
         if SCEPKitInternal.shared.config.legal.requestTracking {
             ATTrackingManager.requestTrackingAuthorization { status in
                 if case .authorized = status {
