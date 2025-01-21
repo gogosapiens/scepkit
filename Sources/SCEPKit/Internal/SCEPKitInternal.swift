@@ -426,14 +426,12 @@ class SCEPKitInternal: NSObject {
     }
     
     private func defaultRemoteConfigValue<Type: Decodable>(for key: String) -> Type? {
-        guard
-            let data = RemoteConfig.remoteConfig().defaultValue(forKey: key)?.dataValue,
-            let value = try? JSONDecoder().decode(Type.self, from: data)
-        else {
-//            try! JSONDecoder().decode(Type.self, from: RemoteConfig.remoteConfig().defaultValue(forKey: key)!.dataValue)
-            return nil
+        if Type.self == String.self {
+            return RemoteConfig.remoteConfig().defaultValue(forKey: key)?.stringValue as? Type
+        } else {
+            guard let data = RemoteConfig.remoteConfig().defaultValue(forKey: key)?.dataValue else { return nil }
+            return try? JSONDecoder().decode(Type.self, from: data)
         }
-        return value
     }
     
     private func getUserDefaultsValue<T: Decodable>(for key: String) -> T? {
