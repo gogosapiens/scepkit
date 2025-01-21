@@ -52,7 +52,7 @@ class SCEPKitInternal: NSObject {
         
         environment = .init(
             rawValue: Bundle.main.object(forInfoDictionaryKey: "SCEPKitEnvironment") as! String
-        )
+        )!
         
         FirebaseApp.configure()
         let remoteConfig = RemoteConfig.remoteConfig()
@@ -417,9 +417,12 @@ class SCEPKitInternal: NSObject {
     }
     
     private func remoteConfigValue<Type: Decodable>(for key: String) -> Type? {
-        let data = RemoteConfig.remoteConfig().configValue(forKey: key).dataValue
-        guard let value = try? JSONDecoder().decode(Type.self, from: data) else { return nil }
-        return value
+        if Type.self == String.self {
+            return RemoteConfig.remoteConfig().configValue(forKey: key).stringValue as? Type
+        } else {
+            let data = RemoteConfig.remoteConfig().configValue(forKey: key).dataValue
+            return try? JSONDecoder().decode(Type.self, from: data)
+        }
     }
     
     private func defaultRemoteConfigValue<Type: Decodable>(for key: String) -> Type? {
