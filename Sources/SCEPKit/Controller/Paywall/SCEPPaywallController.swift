@@ -14,7 +14,7 @@ public class SCEPPaywallController: UIViewController {
     func showContinueButton() {}
     
     func purchase(_ product: AdaptyPaywallProduct) {
-        if SCEPKitInternal.shared.environment == .production {
+        if SCEPKitInternal.shared.environment.isUsingProductionProducts {
             SCEPKitInternal.shared.trackEvent("[SCEPKit] subscribe_started", properties: ["product_id": product.vendorProductId, "placenemt": placement.id])
             Adapty.makePurchase(product: product) { [weak self] result in
                 guard let self else { return }

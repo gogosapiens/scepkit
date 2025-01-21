@@ -152,7 +152,7 @@ public class SCEPSettingsController: UIViewController {
             },
         ]
         sections.append(.actions(header: "LEGAL".localized(), actions: legalActions))
-        if SCEPKitInternal.shared.environment != .production {
+        if SCEPKitInternal.shared.environment != .appstore {
             let debugActions: [Action] = [
                 .init(title: "Premium status: \(SCEPMonetization.shared.premuimStatus.rawValue)", image: .init(moduleAssetName: "SettingsDebug")!) { controller in
                     controller.changePremiumStatus()

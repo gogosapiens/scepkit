@@ -26,8 +26,13 @@ struct SCEPConfig: Decodable {
     
     struct Integrations: Codable {
         let appleAppId: String
-        let adaptyApiKey: String
+        let testAdaptyApiKey: String?
+        let prodAdaptyApiKey: String?
         let amplitudeApiKey: String
+        
+        var adaptyApiKey: String {
+            SCEPKitInternal.shared.environment.isUsingProductionProducts ? prodAdaptyApiKey! : testAdaptyApiKey!
+        }
     }
     
     struct Monetization: Codable {
@@ -55,10 +60,30 @@ struct SCEPConfig: Decodable {
             let isEnabled: Bool
             let startDelay: TimeInterval?
             let interstitialInterval: TimeInterval?
-            let interstitialId: String?
-            let appOpenId: String?
-            let bannerId: String?
-            let rewardedId: String?
+            
+            let testInterstitialId: String?
+            let prodInterstitialId: String?
+            var interstitialId: String? {
+                SCEPKitInternal.shared.environment.isUsingProductionAds ? prodInterstitialId : testInterstitialId
+            }
+            
+            let testAppOpenId: String?
+            let prodAppOpenId: String?
+            var appOpenId: String? {
+                SCEPKitInternal.shared.environment.isUsingProductionAds ? prodAppOpenId : testAppOpenId
+            }
+            
+            let testBannerId: String?
+            let prodBannerId: String?
+            var bannerId: String? {
+                SCEPKitInternal.shared.environment.isUsingProductionAds ? prodBannerId : testBannerId
+            }
+            
+            let testRewardedId: String?
+            let prodRewardedId: String?
+            var rewardedId: String? {
+                SCEPKitInternal.shared.environment.isUsingProductionAds ? prodRewardedId : testRewardedId
+            }
         }
     }
     

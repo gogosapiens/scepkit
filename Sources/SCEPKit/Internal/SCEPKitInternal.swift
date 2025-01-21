@@ -400,7 +400,7 @@ class SCEPKitInternal: NSObject {
     }
     
     func trackEvent(_ name: String, properties: [String: Any]? = nil) {
-        guard environment == .production else {
+        guard environment != .main else {
             logger.log("Track event: \(name), properties: \(properties?.debugDescription ?? "[:]")")
             return
         }
@@ -409,7 +409,7 @@ class SCEPKitInternal: NSObject {
     }
     
     func setUserProperties(_ properties: [String: Any]) {
-        guard environment == .production else {
+        guard environment != .main else {
             logger.log("Set user properties: \(properties.keys.joined(separator: ", "))")
             return
         }
@@ -489,7 +489,7 @@ class SCEPKitInternal: NSObject {
 extension SCEPKitInternal: AdaptyDelegate {
     
     func didLoadLatestProfile(_ profile: AdaptyProfile) {
-        guard environment == .production else { return }
+        guard environment.isUsingProductionProducts else { return }
         DispatchQueue.main.async {
             SCEPMonetization.shared.update(for: profile)
         }

@@ -92,9 +92,8 @@ extension SCEPPaywallShopController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(of: SCEPPaywallShopProductCell.self, for: indexPath)
         
         let position = config.positions[indexPath.item]
-        
-        switch position {
-        case .rewardedAdId(let id):
+            
+        if position.rewardedAdId != nil {
             if let reward = rewardedAd?.adReward.amount.intValue {
                 cell.creditsLabel.text = "\(reward)"
                 cell.textLabel.text = "Watch an ad, earn {0} credits!".localized().insertingArguments(reward)
@@ -105,14 +104,14 @@ extension SCEPPaywallShopController: UICollectionViewDataSource {
                 cell.actionLabel.text = "No ad yet".localized()
             }
             cell.badgeView.isHidden = true
-        case .productId(let id):
+        } else if let productId = position.productId {
             let titles = [
                 "The perfect starting point.".localized(),
                 "Perfect for regular use.".localized(),
                 "Boost your experience.".localized(),
                 "Go all in with max credits!".localized()
             ]
-            let credits = SCEPMonetization.shared.credits(for: id)
+            let credits = SCEPMonetization.shared.credits(for: productId)
             cell.creditsLabel.text = String(credits)
             cell.textLabel.text = titles[indexPath.item]
             cell.actionLabel.text = position.product?.skProduct.localizedPrice

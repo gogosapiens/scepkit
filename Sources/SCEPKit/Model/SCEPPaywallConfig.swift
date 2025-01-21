@@ -35,24 +35,26 @@ enum SCEPPaywallConfig {
     }
     
     enum Position: Codable {
-        case productId(String), rewardedAdId(String)
+        case productId(test: String?, prod: String?), rewardedAdId(test: String?, prod: String?)
         
         enum CodingKeys: CodingKey {
-            case productId
-            case rewardedAdId
+            case testProductId
+            case prodProductId
+            case testRewardedAdId
+            case prodRewardedAdId
         }
         
         var productId: String? {
-            if case .productId(let id) = self {
-                return id
+            if case .productId(let testId, let prodId) = self {
+                return SCEPKitInternal.shared.environment.isUsingProductionProducts ? prodId : testId
             } else {
                 return nil
             }
         }
         
         var rewardedAdId: String? {
-            if case .rewardedAdId(let id) = self {
-                return id
+            if case .rewardedAdId(let testId, let prodId) = self {
+                return SCEPKitInternal.shared.environment.isUsingProductionAds ? prodId : testId
             } else {
                 return nil
             }
@@ -64,23 +66,28 @@ enum SCEPPaywallConfig {
             guard let onlyKey = allKeys.popFirst(), allKeys.isEmpty else {
                 throw DecodingError.typeMismatch(SCEPPaywallConfig.Position.self, DecodingError.Context.init(codingPath: container.codingPath, debugDescription: "Invalid number of keys found, expected one.", underlyingError: nil))
             }
-            switch onlyKey {
-            case .productId:
-                let string = try container.decode(String.self, forKey: onlyKey)
-                self = .productId(string)
-            case .rewardedAdId:
-                let string = try container.decode(String.self, forKey: onlyKey)
-                self = .rewardedAdId(string)
+            if container.allKeys.contains(.testProductId) || container.allKeys.contains(.prodProductId) {
+                let testId = try container.decodeIfPresent(String.self, forKey: .testProductId)
+                let prodId = try container.decodeIfPresent(String.self, forKey: .prodProductId)
+                self = .productId(test: testId, prod: prodId)
+            } else if container.allKeys.contains(.testRewardedAdId) || container.allKeys.contains(.prodRewardedAdId) {
+                let testId = try container.decodeIfPresent(String.self, forKey: .testRewardedAdId)
+                let prodId = try container.decodeIfPresent(String.self, forKey: .prodRewardedAdId)
+                self = .rewardedAdId(test: testId, prod: prodId)
+            } else {
+                throw DecodingError.typeMismatch(SCEPPaywallConfig.Position.self, DecodingError.Context.init(codingPath: container.codingPath, debugDescription: "Invalid number of keys found", underlyingError: nil))
             }
         }
         
         func encode(to encoder: any Encoder) throws {
             var container = encoder.container(keyedBy: SCEPPaywallConfig.Position.CodingKeys.self)
             switch self {
-            case .productId(let string):
-                try container.encode(string, forKey: .productId)
-            case .rewardedAdId(let string):
-                try container.encode(string, forKey: .rewardedAdId)
+            case .productId(let test, let prod):
+                try container.encodeIfPresent(test, forKey: .testProductId)
+                try container.encodeIfPresent(prod, forKey: .prodProductId)
+            case .rewardedAdId(let test, let prod):
+                try container.encodeIfPresent(test, forKey: .testRewardedAdId)
+                try container.encodeIfPresent(prod, forKey: .prodRewardedAdId)
             }
         }
     }

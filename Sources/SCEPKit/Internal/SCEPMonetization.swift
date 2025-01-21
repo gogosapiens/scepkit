@@ -101,11 +101,11 @@ class SCEPMonetization {
     }
     
     func credits(for productId: String) -> Int {
-        for component in productId.split(separator: ".") {
-            if component.hasPrefix("credits"),
-               let creditsIncrement = Int(component.dropFirst(7)) {
-                return creditsIncrement
-            }
+        let components = productId.split(separator: ".")
+        if let index = components.firstIndex(of: "credits"),
+           components.count > index + 1,
+           let creditsIncrement = Int(components[index + 1]) {
+            return creditsIncrement
         }
         return 0
     }
