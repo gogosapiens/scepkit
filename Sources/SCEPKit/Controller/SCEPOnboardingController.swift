@@ -19,7 +19,7 @@ class SCEPOnboardingController: UIViewController {
         super.viewDidLoad()
         config = SCEPKitInternal.shared.onboardingConfig
         let design = SCEPKitInternal.shared.config.style.design
-        pageStackView.isHidden = design.onboardingIsPageHidden
+        pageStackView.superview!.isHidden = design.onboardingIsPageHidden
         showSlideController(slideController(index: 0), animated: false)
         continueButton.title = "Continue".localized()
     }
@@ -62,7 +62,7 @@ class SCEPOnboardingController: UIViewController {
                 if paywallController is SCEPPaywallAdaptyController {
                     self.continueButton.transform = .init(translationX: -self.view.frame.width, y: 0)
                 }
-                self.pageStackView.transform = .init(translationX: -self.view.frame.width, y: 0)
+                self.pageStackView.superview!.transform = .init(translationX: -self.view.frame.width, y: 0)
             }
             showSlideController(paywallController, animated: true) { [weak paywallController, weak self] in
                 UIView.animate(withDuration: 0.33) {
