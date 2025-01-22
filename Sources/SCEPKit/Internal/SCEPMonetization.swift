@@ -165,7 +165,7 @@ class SCEPMonetization {
             }
         case .paid:
             isTrialCreditsSet = false
-            if Date() > (lastPremiumCreditsSettingDate ?? .distantPast).addingTimeInterval(86_400) {
+            if Date() > (lastPremiumCreditsSettingDate ?? .distantPast).addingTimeInterval(604_800) {
                 credits = config.premiumWeeklyCredits
                 lastPremiumCreditsSettingDate = .init()
             }
