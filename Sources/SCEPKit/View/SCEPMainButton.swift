@@ -31,7 +31,7 @@ fileprivate extension SCEPConfig.InterfaceStyle.Design {
         case .classico: return 16
         case .salsiccia: return 28
         case .buratino: return 8
-        case .giornale: return 1
+        case .giornale: return 12
         }
     }
     
