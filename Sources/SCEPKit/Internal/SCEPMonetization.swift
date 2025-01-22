@@ -172,7 +172,6 @@ class SCEPMonetization {
         }
         if credits > 0 {
             setRecurringCredits(credits)
-            lastPremiumCreditsSettingDate = .init()
         }
     }
     
