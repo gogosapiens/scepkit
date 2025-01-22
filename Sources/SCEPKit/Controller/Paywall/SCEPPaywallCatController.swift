@@ -24,16 +24,16 @@ class SCEPPaywallCatController: SCEPPaywallController {
     
     var selectedProductIndex: Int!
     
-    var displayProduct: AdaptyPaywallProduct { trialSwitch.isOn ? trialProduct! : nonTrialProduct }
+    var displayProduct: SCEPPaywallProduct { trialSwitch.isOn ? trialProduct! : nonTrialProduct }
     
-    var trialProduct: AdaptyPaywallProduct? {
+    var trialProduct: SCEPPaywallProduct? {
         if config.positions.count > 1 {
             return config.positions[1].product
         } else {
             return nil
         }
     }
-    var nonTrialProduct: AdaptyPaywallProduct {
+    var nonTrialProduct: SCEPPaywallProduct {
         return config.positions[0].product!
     }
     
@@ -101,11 +101,11 @@ class SCEPPaywallCatController: SCEPPaywallController {
     }
     
     func updatePriceLabel() {
-        guard let subscriptionPeriod = displayProduct.skProduct.subscriptionPeriod else {
+        guard let subscriptionPeriod = displayProduct.subscriptionPeriod else {
             priceLabel.text = "Error".localized()
             return
         }
-        priceLabel.text = "\(subscriptionPeriod.displayUnitLocalizedAdjective), \(displayProduct.skProduct.localizedPrice)/\(subscriptionPeriod.displayUnitLocalizedNoun.lowercased())\n" + "Auto-renewable. Cancel anytime".localized()
+        priceLabel.text = "\(subscriptionPeriod.displayUnitLocalizedAdjective), \(displayProduct.localizedPrice)/\(subscriptionPeriod.displayUnitLocalizedNoun.lowercased())\n" + "Auto-renewable. Cancel anytime".localized()
     }
     
     @IBAction func trialSwitchValueChanged(_ sender: UISwitch) {

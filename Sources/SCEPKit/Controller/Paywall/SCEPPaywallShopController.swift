@@ -114,7 +114,7 @@ extension SCEPPaywallShopController: UICollectionViewDataSource {
             let credits = SCEPMonetization.shared.credits(for: productId)
             cell.creditsLabel.text = String(credits)
             cell.textLabel.text = titles[indexPath.item]
-            cell.actionLabel.text = position.product?.skProduct.localizedPrice
+            cell.actionLabel.text = position.product?.localizedPrice
             cell.badgeView.isHidden = indexPath.item != 2
         }
         

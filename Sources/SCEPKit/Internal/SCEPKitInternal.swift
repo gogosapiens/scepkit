@@ -499,8 +499,12 @@ extension SCEPKitInternal: AdaptyDelegate {
 
 extension SCEPPaywallConfig.Position {
     
-    var product: AdaptyPaywallProduct? {
+    var product: SCEPPaywallProduct? {
         guard let productId else { return nil }
-        return SCEPKitInternal.shared.product(with: productId)
+        if let product = SCEPKitInternal.shared.product(with: productId) {
+            return product
+        } else {
+            return SCEPFailedPaywallProduct()
+        }
     }
 }

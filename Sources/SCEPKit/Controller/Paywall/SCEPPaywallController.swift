@@ -13,7 +13,14 @@ public class SCEPPaywallController: UIViewController {
     
     func showContinueButton() {}
     
-    func purchase(_ product: AdaptyPaywallProduct) {
+    func purchase(_ product: SCEPPaywallProduct) {
+        guard let product = product as? AdaptyPaywallProduct else {
+            let alert = UIAlertController(title: "Failed to connect to AppStore", message: "Please check your internet connection and restart the app", preferredStyle: .alert)
+            let ok = UIAlertAction(title: "OK", style: .cancel)
+            alert.addAction(ok)
+            present(alert, animated: true)
+            return
+        }
         if SCEPKitInternal.shared.environment.isUsingProductionProducts {
             SCEPKitInternal.shared.trackEvent("[SCEPKit] subscribe_started", properties: ["product_id": product.vendorProductId, "placenemt": placement.id])
             Adapty.makePurchase(product: product) { [weak self] result in

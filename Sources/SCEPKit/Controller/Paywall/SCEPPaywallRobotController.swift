@@ -22,18 +22,18 @@ class SCEPPaywallRobotController: SCEPPaywallController {
     
     var selectedProductIndex: Int!
     
-    var displayProducts: [AdaptyPaywallProduct] { products.enumerated().map { $1 ?? otherProducts[$0]! } }
-    var products: [AdaptyPaywallProduct?] { trialSwitch.isOn ? trialProducts : nonTrialProducts }
-    var otherProducts: [AdaptyPaywallProduct?] { trialSwitch.isOn ? nonTrialProducts : trialProducts }
+    var displayProducts: [SCEPPaywallProduct] { products.enumerated().map { $1 ?? otherProducts[$0]! } }
+    var products: [SCEPPaywallProduct?] { trialSwitch.isOn ? trialProducts : nonTrialProducts }
+    var otherProducts: [SCEPPaywallProduct?] { trialSwitch.isOn ? nonTrialProducts : trialProducts }
     
-    var trialProducts: [AdaptyPaywallProduct?] {
+    var trialProducts: [SCEPPaywallProduct?] {
         if config.positions.count == 3 {
             return [ nil, config.positions[2].product ]
         } else {
             return [ nil, nil ]
         }
     }
-    var nonTrialProducts: [AdaptyPaywallProduct?] {
+    var nonTrialProducts: [SCEPPaywallProduct?] {
         [
             config.positions[0].product,
             config.positions[1].product
@@ -139,10 +139,10 @@ extension SCEPPaywallRobotController: UITableViewDataSource {
         let product = displayProducts[indexPath.row]
         let isSelected = indexPath.row == selectedProductIndex
         
-        let periods = displayProducts.map { $0.skProduct.subscriptionPeriod! }
+        let periods = displayProducts.map { $0.subscriptionPeriod! }
         let shortPeroid = periods.min(by: { $0.duration < $1.duration })!
-        let period = product.skProduct.subscriptionPeriod!
-        let introductoryPeriod = product.skProduct.introductoryPrice?.subscriptionPeriod
+        let period = product.subscriptionPeriod!
+        let introductoryPeriod = product.introductoryPeriod
         
         cell.outlineView.layer.borderColor = isSelected ? UIColor.scepAccent.cgColor : UIColor.scepShade2.cgColor
         
@@ -151,9 +151,9 @@ extension SCEPPaywallRobotController: UITableViewDataSource {
             cell.badgeView.isHidden = false
             cell.badgeLabel.text = "BEST OFFER".localized()
             cell.leftTitleLabel.text = "{0} ACCESS".localized().insertingArguments(period.displayUnitLocalizedAdjective.uppercased())
-            cell.leftSubtitleLabel.text = "Just {0} per {1}".localized().insertingArguments(product.skProduct.localizedPrice, period.displayUnitLocalizedNoun)
+            cell.leftSubtitleLabel.text = "Just {0} per {1}".localized().insertingArguments(product.localizedPrice, period.displayUnitLocalizedNoun)
             cell.leftSubtitleLabel.isHidden = false
-            cell.rightTitleLabel.text = product.skProduct.localizedPrice(for: shortPeroid)
+            cell.rightTitleLabel.text = product.localizedPrice(for: shortPeroid)
             cell.rightSubtitleLabel.text = "per {0}".localized().insertingArguments(shortPeroid.displayUnitLocalizedNoun.lowercased())
             cell.rightSubtitleLabel.isHidden = false
         } else {
@@ -166,7 +166,7 @@ extension SCEPPaywallRobotController: UITableViewDataSource {
                 cell.leftTitleLabel.text = "{0} ACCESS".localized().insertingArguments(period.displayUnitLocalizedAdjective.uppercased())
             }
             cell.leftSubtitleLabel.isHidden = true
-            cell.rightTitleLabel.text = product.skProduct.localizedPrice(for: shortPeroid)
+            cell.rightTitleLabel.text = product.localizedPrice(for: shortPeroid)
             cell.rightSubtitleLabel.text = "per {0}".localized().insertingArguments(shortPeroid.displayUnitLocalizedNoun.lowercased())
             cell.rightSubtitleLabel.isHidden = false
         }
