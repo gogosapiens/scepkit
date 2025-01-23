@@ -21,6 +21,7 @@ class SCEPOnboardingSlideController: UIViewController {
         let design = SCEPKitInternal.shared.config.style.design
         
         titleLabel.text = configTitle.localized()
+        imageView.image = nil
         Downloader.downloadImage(from: configImageURL) { [weak self] image in
             self?.imageView.image = image
         }

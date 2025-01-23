@@ -37,6 +37,7 @@ class SCEPPaywallShopController: SCEPPaywallController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        imageView.image = nil
         Downloader.downloadImage(from: config.meta.imageURL) { [weak self] image in
             self?.imageView.image = image
         }

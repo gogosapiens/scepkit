@@ -141,12 +141,13 @@ fileprivate class ItemDownloader<Item: DataConvertible & AnyObject> {
     
     private func getItem(from url: URL) -> Item? {
         let fileURL = Downloader.localURL(for: url)
-        
-        if let itemData = try? Data(contentsOf: fileURL), let item = Item.from(data: itemData) {
+        guard let itemData = try? Data(contentsOf: fileURL) else { return nil }
+        if let item = Item.from(data: itemData) {
             return item
+        } else {
+            try? FileManager.default.removeItem(at: fileURL)
+            return nil
         }
-        
-        return nil
     }
     
     private func saveItem(_ item: Item, with url: URL) {

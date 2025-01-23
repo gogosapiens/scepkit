@@ -76,6 +76,7 @@ class SCEPPaywallCatController: SCEPPaywallController {
         trialView.isHidden = trialProduct == nil
         
         setupTexts()
+        imageView.image = nil
         Downloader.downloadImage(from: config.meta.imageURL) { [weak self] image in
             self?.imageView.image = image
         }
