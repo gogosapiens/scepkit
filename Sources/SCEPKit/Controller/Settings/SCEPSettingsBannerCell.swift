@@ -19,6 +19,7 @@ class SCEPSettingsBannerCell: SCEPAnimatedCollectionViewCell {
     @IBOutlet weak var bannerImageView: UIImageView!
     @IBOutlet weak var bannerTopStackView: UIStackView!
     @IBOutlet var bannerFeaturesStackViews: [UIStackView]!
+    @IBOutlet weak var bannerTitleStackView: UIStackView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -44,7 +45,9 @@ class SCEPSettingsBannerCell: SCEPAnimatedCollectionViewCell {
         layer.cornerRadius = design.settingsBannerCornerRadius
         bannerTopStackView.axis = design.settingsTopAxis
         bannerTopStackView.alignment = design.settingsTopAxis == .horizontal ? .fill : .center
+        bannerTitleStackView.spacing = design.settingsTopAxis == .horizontal ? 0 : 8
         bannerFeaturesStackViews.forEach { $0.axis = design.settingsFeatureAxis }
+        bannerFeaturesStackViews.forEach { $0.spacing = design.settingsFeatureAxis == .horizontal ? 0 : 16 }
         bannerTopStackView.removeArrangedSubview(bannerImageView)
         bannerTopStackView.insertArrangedSubview(bannerImageView, at: design.settingsImageIndex)
         bannerTitleLabel.textAlignment = design.settingsTextAlignment

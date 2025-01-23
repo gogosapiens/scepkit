@@ -152,7 +152,7 @@
                                                                                                 </userDefinedRuntimeAttribute>
                                                                                             </userDefinedRuntimeAttributes>
                                                                                         </imageView>
-                                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E5h-xy-HlL" customClass="SCEPLabel" customModule="SCEPKit">
+                                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="256" verticalCompressionResistancePriority="752" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E5h-xy-HlL" customClass="SCEPLabel" customModule="SCEPKit">
                                                                                             <rect key="frame" x="32" y="0.0" width="115" height="24.333333333333332"/>
                                                                                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                                                                             <color key="textColor" name="SCEPTextColor"/>
@@ -175,7 +175,7 @@
                                                                                                 </userDefinedRuntimeAttribute>
                                                                                             </userDefinedRuntimeAttributes>
                                                                                         </imageView>
-                                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hh7-kP-U73" customClass="SCEPLabel" customModule="SCEPKit">
+                                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="256" verticalCompressionResistancePriority="752" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hh7-kP-U73" customClass="SCEPLabel" customModule="SCEPKit">
                                                                                             <rect key="frame" x="32" y="0.0" width="115" height="24.333333333333332"/>
                                                                                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                                                                             <color key="textColor" name="SCEPTextColor"/>
@@ -185,7 +185,7 @@
                                                                                 </stackView>
                                                                             </subviews>
                                                                         </stackView>
-                                                                        <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="tNy-bC-HWR">
+                                                                        <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" ambiguous="YES" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="tNy-bC-HWR">
                                                                             <rect key="frame" x="0.0" y="40.333333333333343" width="310" height="22.666666666666671"/>
                                                                             <subviews>
                                                                                 <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Thj-0c-NSb">
@@ -203,7 +203,7 @@
                                                                                                 </userDefinedRuntimeAttribute>
                                                                                             </userDefinedRuntimeAttributes>
                                                                                         </imageView>
-                                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GMY-kb-TbI" customClass="SCEPLabel" customModule="SCEPKit">
+                                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="256" verticalCompressionResistancePriority="752" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GMY-kb-TbI" customClass="SCEPLabel" customModule="SCEPKit">
                                                                                             <rect key="frame" x="32" y="0.0" width="115" height="22.666666666666668"/>
                                                                                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                                                                             <color key="textColor" name="SCEPTextColor"/>
@@ -226,7 +226,7 @@
                                                                                                 </userDefinedRuntimeAttribute>
                                                                                             </userDefinedRuntimeAttributes>
                                                                                         </imageView>
-                                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xvd-fg-osU" customClass="SCEPLabel" customModule="SCEPKit">
+                                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="256" verticalCompressionResistancePriority="752" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xvd-fg-osU" customClass="SCEPLabel" customModule="SCEPKit">
                                                                                             <rect key="frame" x="32" y="0.0" width="115" height="22.666666666666668"/>
                                                                                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                                                                             <color key="textColor" name="SCEPTextColor"/>
@@ -279,6 +279,7 @@
                                             <outlet property="bannerImageView" destination="eFV-YM-pIC" id="S6s-Fq-boa"/>
                                             <outlet property="bannerSubtitleLabel" destination="zsx-jo-pxl" id="zv9-er-YvB"/>
                                             <outlet property="bannerTitleLabel" destination="uMn-dY-b4g" id="n1D-sU-fb9"/>
+                                            <outlet property="bannerTitleStackView" destination="X5d-6S-gVS" id="MZL-1q-Zm1"/>
                                             <outlet property="bannerTopStackView" destination="12q-QK-1Rt" id="UxM-PY-iEo"/>
                                             <outletCollection property="bannerFeaturesStackViews" destination="I0G-jg-ON4" collectionClass="NSMutableArray" id="n5r-Km-Jrj"/>
                                             <outletCollection property="bannerFeaturesStackViews" destination="tNy-bC-HWR" collectionClass="NSMutableArray" id="Y8d-T4-xSc"/>
