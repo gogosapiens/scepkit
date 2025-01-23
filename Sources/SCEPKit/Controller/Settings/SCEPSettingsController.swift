@@ -152,24 +152,30 @@ public class SCEPSettingsController: UIViewController {
             },
         ]
         sections.append(.actions(header: "LEGAL".localized(), actions: legalActions))
-        if !SCEPKitInternal.shared.environment.isUsingProductionProducts {
-            let debugActions: [Action] = [
-                .init(title: "Premium status: \(SCEPMonetization.shared.premuimStatus.rawValue)", image: .init(moduleAssetName: "SettingsDebug")!) { controller in
-                    controller.changePremiumStatus()
-                },
+        if SCEPKitInternal.shared.environment != .appstore {
+            var debugActions: [Action] = [
                 .init(title: "Reset onboarding", image: .init(moduleAssetName: "SettingsDebug")!) { controller in
                     controller.resetOnboarding()
-                },
-                .init(title: "Recurring credits: \(SCEPMonetization.shared.recurringCredits)", image: .init(moduleAssetName: "SettingsDebug")!) { controller in
-                    controller.changeRecurringCredits()
-                },
-                .init(title: "Additional credits: \(SCEPMonetization.shared.additionalCredits)", image: .init(moduleAssetName: "SettingsDebug")!) { controller in
-                    controller.changeAdditionalCredits()
                 },
                 .init(title: "Show paywalls", image: .init(moduleAssetName: "SettingsDebug")!) { controller in
                     controller.showPaywalls()
                 }
             ]
+            if !SCEPKitInternal.shared.environment.isUsingProductionProducts {
+                debugActions.append(
+                    contentsOf: [
+                        .init(title: "Premium status: \(SCEPMonetization.shared.premuimStatus.rawValue)", image: .init(moduleAssetName: "SettingsDebug")!) { controller in
+                            controller.changePremiumStatus()
+                        },
+                        .init(title: "Recurring credits: \(SCEPMonetization.shared.recurringCredits)", image: .init(moduleAssetName: "SettingsDebug")!) { controller in
+                            controller.changeRecurringCredits()
+                        },
+                        .init(title: "Additional credits: \(SCEPMonetization.shared.additionalCredits)", image: .init(moduleAssetName: "SettingsDebug")!) { controller in
+                            controller.changeAdditionalCredits()
+                        }
+                    ]
+                )
+            }
             sections.append(.actions(header: "DEBUG", actions: debugActions))
         }
         return sections

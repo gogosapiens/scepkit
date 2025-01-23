@@ -63,9 +63,6 @@ enum SCEPPaywallConfig {
         init(from decoder: any Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             var allKeys = ArraySlice(container.allKeys)
-            guard let onlyKey = allKeys.popFirst(), allKeys.isEmpty else {
-                throw DecodingError.typeMismatch(SCEPPaywallConfig.Position.self, DecodingError.Context.init(codingPath: container.codingPath, debugDescription: "Invalid number of keys found, expected one.", underlyingError: nil))
-            }
             if container.allKeys.contains(.testProductId) || container.allKeys.contains(.prodProductId) {
                 let testId = try container.decodeIfPresent(String.self, forKey: .testProductId)
                 let prodId = try container.decodeIfPresent(String.self, forKey: .prodProductId)
