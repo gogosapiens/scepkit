@@ -128,7 +128,7 @@ public class SCEPSettingsController: UIViewController {
     
     var sections: [Section] {
         var sections: [Section] = []
-        if !SCEPMonetization.shared.isPremium, !SCEPKitInternal.shared.hasCreditsPaywalls {
+        if !SCEPMonetization.shared.isPremium || !SCEPKitInternal.shared.hasPremiumPaywalls {
             sections.append(.banner)
         }
         if !actions.isEmpty {
@@ -152,7 +152,7 @@ public class SCEPSettingsController: UIViewController {
             },
         ]
         sections.append(.actions(header: "LEGAL".localized(), actions: legalActions))
-        if SCEPKitInternal.shared.environment != .appstore {
+        if !SCEPKitInternal.shared.environment.isUsingProductionProducts {
             let debugActions: [Action] = [
                 .init(title: "Premium status: \(SCEPMonetization.shared.premuimStatus.rawValue)", image: .init(moduleAssetName: "SettingsDebug")!) { controller in
                     controller.changePremiumStatus()

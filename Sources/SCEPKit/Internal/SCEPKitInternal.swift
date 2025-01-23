@@ -137,6 +137,7 @@ class SCEPKitInternal: NSObject {
             self.loadResources {
                 DispatchQueue.main.async {
                     self.showApplication()
+                    self.loadAdditionalResources()
                 }
             }
         }
@@ -195,13 +196,14 @@ class SCEPKitInternal: NSObject {
                     Downloader.downloadImage(from: imageURL) { image in
                         if image == nil {
                             self.isOnboardingResourcesLoadFailed = true
+                            self.trackEvent("[SCEPKit] onboarding_resource_load_error", properties: ["image_url": imageURL.absoluteString])
                         }
                         group.leave()
                     }
                 }
             }
             let placement = config.monetization.placements[SCEPPaywallPlacement.onboarding.id]
-            let paywallIds = [placement?.premium, placement?.credits].compactMap({ $0 })
+            let paywallIds = placement?.all ?? []
             let paywallImageURLs = Set(paywallIds.flatMap { config.monetization.paywalls[$0]!.imageURLs })
             for imageURL in paywallImageURLs {
                 group.enter()
@@ -209,6 +211,7 @@ class SCEPKitInternal: NSObject {
                     Downloader.downloadImage(from: imageURL) { image in
                         if image == nil {
                             self.isOnboardingPaywallResourcesLoadFailed = true
+                            self.trackEvent("[SCEPKit] onboarding_paywall_resource_load_error", properties: ["image_url": imageURL.absoluteString])
                         }
                         group.leave()
                     }
@@ -228,6 +231,18 @@ class SCEPKitInternal: NSObject {
                 logger.log("Adapty apywall load timed out")
             }
             completion()
+        }
+    }
+    
+    @MainActor func loadAdditionalResources() {
+        let paywallIds = config.monetization.placements.values.flatMap(\.all)
+        let paywallImageURLs = Set(paywallIds.flatMap { config.monetization.paywalls[$0]!.imageURLs })
+        for imageURL in paywallImageURLs {
+            Downloader.downloadImage(from: imageURL) { image in
+                if image == nil {
+                    self.trackEvent("[SCEPKit] paywall_resource_load_error", properties: ["image_url": imageURL.absoluteString])
+                }
+            }
         }
     }
     
