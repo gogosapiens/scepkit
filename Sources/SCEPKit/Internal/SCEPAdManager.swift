@@ -16,6 +16,7 @@ class SCEPAdManager: NSObject {
     var rewardedAdDidReward: Bool = false
     var shownRewardedAd: GADRewardedAd?
     var bannerAdViews: Set<SCEPBannerAdView> = []
+    var shouldIgnoreApplicationDidBecomeActive: Bool = false
     
     private var interstitial: GADInterstitialAd?
     private var appOpenAd: GADAppOpenAd?
@@ -56,6 +57,9 @@ class SCEPAdManager: NSObject {
     }
     
     @MainActor @objc func applicationDidBecomeActive() {
+        guard !shouldIgnoreApplicationDidBecomeActive else {
+            return
+        }
         showAppOpenAd()
     }
     

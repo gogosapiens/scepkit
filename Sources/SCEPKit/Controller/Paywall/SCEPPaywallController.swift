@@ -22,6 +22,7 @@ public class SCEPPaywallController: UIViewController {
             return
         }
         if SCEPKitInternal.shared.environment.isUsingProductionProducts {
+            SCEPAdManager.shared.shouldIgnoreApplicationDidBecomeActive = true
             SCEPKitInternal.shared.trackEvent("[SCEPKit] subscribe_started", properties: ["product_id": product.vendorProductId, "placenemt": placement.id])
             Adapty.makePurchase(product: product) { [weak self] result in
                 guard let self else { return }
@@ -34,6 +35,7 @@ public class SCEPPaywallController: UIViewController {
                     logger.error("Purchase error \(error)")
                     SCEPKitInternal.shared.trackEvent("[SCEPKit] subscribe_error", properties: ["product_id": product.vendorProductId, "placenemt": placement.id, "error": error.description])
                 }
+                SCEPAdManager.shared.shouldIgnoreApplicationDidBecomeActive = false
             }
         } else {
             let isTrial = product.introductoryDiscount?.paymentMode == .freeTrial
