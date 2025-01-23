@@ -298,7 +298,7 @@ fileprivate extension SCEPConfig.InterfaceStyle.Design {
     
     var settingsBannerHeight: CGFloat {
         switch self {
-        case .classico: return 304
+        case .classico: return 312
         case .salsiccia: return 296
         case .buratino: return 376
         case .giornale: return 400
