@@ -22,20 +22,24 @@ public class SCEPPaywallController: UIViewController {
             return
         }
         if SCEPKitInternal.shared.environment.isUsingProductionProducts {
+            let activityController = SCEPActivityController.instantiate(bundle: .module)
+            present(activityController, animated: true)
             SCEPAdManager.shared.shouldIgnoreApplicationDidBecomeActive = true
             SCEPKitInternal.shared.trackEvent("[SCEPKit] subscribe_started", properties: ["product_id": product.vendorProductId, "placenemt": placement.id])
-            Adapty.makePurchase(product: product) { [weak self] result in
-                guard let self else { return }
-                switch result {
-                case .success(let info):
-                    logger.debug("Purchase success \(String(describing: info))")
-                    close(success: true)
-                    SCEPKitInternal.shared.trackEvent("[SCEPKit] subscribed", properties: ["product_id": product.vendorProductId, "placenemt": placement.id])
-                case .failure(let error):
-                    logger.error("Purchase error \(error)")
-                    SCEPKitInternal.shared.trackEvent("[SCEPKit] subscribe_error", properties: ["product_id": product.vendorProductId, "placenemt": placement.id, "error": error.description])
+            Adapty.makePurchase(product: product) { result in
+                activityController.dismiss(animated: true) { [weak self] in
+                    guard let self else { return }
+                    switch result {
+                    case .success(let info):
+                        logger.debug("Purchase success \(String(describing: info))")
+                        close(success: true)
+                        SCEPKitInternal.shared.trackEvent("[SCEPKit] subscribed", properties: ["product_id": product.vendorProductId, "placenemt": placement.id])
+                    case .failure(let error):
+                        logger.error("Purchase error \(error)")
+                        SCEPKitInternal.shared.trackEvent("[SCEPKit] subscribe_error", properties: ["product_id": product.vendorProductId, "placenemt": placement.id, "error": error.description])
+                    }
+                    SCEPAdManager.shared.shouldIgnoreApplicationDidBecomeActive = false
                 }
-                SCEPAdManager.shared.shouldIgnoreApplicationDidBecomeActive = false
             }
         } else {
             let isTrial = product.introductoryDiscount?.paymentMode == .freeTrial

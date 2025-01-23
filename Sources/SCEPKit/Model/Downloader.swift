@@ -112,14 +112,14 @@ fileprivate class ItemDownloader<Item: DataConvertible & AnyObject> {
             }
         }
         
-        if Item.self is UIImage.Type, let image = UIImage(named: url.deletingPathExtension().lastPathComponent) {
-            complete(with: image as! Item?)
-            logger.log("Image \(url.deletingPathExtension().lastPathComponent) fetched from local assets")
+        if let item = getCachedOrLocalItem(from: url) {
+            complete(with: item)
             return
         }
         
-        if let item = getCachedOrLocalItem(from: url) {
-            complete(with: item)
+        if Item.self is UIImage.Type, let image = UIImage(named: url.deletingPathExtension().lastPathComponent) {
+            complete(with: image as! Item?)
+            logger.log("Image \(url.deletingPathExtension().lastPathComponent) fetched from local assets")
             return
         }
         
