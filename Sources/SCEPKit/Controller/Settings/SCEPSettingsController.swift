@@ -127,6 +127,7 @@ public class SCEPSettingsController: UIViewController {
             }
         }
         showInfoAlert(title: "Keychain Reset", message: "All SCEPKit values have been removed from keychain")
+        collectionView.reloadData()
     }
     
     func showNumberFieldAlert(title: String, message: String? = nil, placeholder: Int, completion: @escaping (Int) -> Void) {
