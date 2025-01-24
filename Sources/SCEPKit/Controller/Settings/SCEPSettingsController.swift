@@ -47,6 +47,7 @@ public class SCEPSettingsController: UIViewController {
     }
     
     func changePremiumStatus() {
+        guard !SCEPKitInternal.shared.environment.isUsingProductionProducts else { return }
         let alert = UIAlertController(title: "Change premium status", message: nil, preferredStyle: .alert)
         let free = UIAlertAction(title: "Free", style: .default) { [weak self] _ in
             SCEPMonetization.shared.setPremuimStatus(.free)
@@ -74,6 +75,7 @@ public class SCEPSettingsController: UIViewController {
     }
     
     func changeRecurringCredits() {
+        guard !SCEPKitInternal.shared.environment.isUsingProductionProducts else { return }
         showNumberFieldAlert(title: "Set Recurring Credits", message: "Enter NEW value for recurring credits", placeholder: SCEPMonetization.shared.recurringCredits) { [weak self] value in
             SCEPMonetization.shared.setRecurringCredits(value)
             self?.showInfoAlert(title: "Recurring Credits Set", message: "New value is \(SCEPMonetization.shared.recurringCredits)")
@@ -81,6 +83,7 @@ public class SCEPSettingsController: UIViewController {
     }
     
     func changeAdditionalCredits() {
+        guard !SCEPKitInternal.shared.environment.isUsingProductionProducts else { return }
         showNumberFieldAlert(title: "Add Additional Credits", message: "Enter value to ADD to additional credits. Enter negative value to decrement", placeholder: 0) { [weak self] value in
             SCEPMonetization.shared.incrementAdditionalCredits(by: value)
             self?.showInfoAlert(title: "Additional Credits Added", message: "New value is \(SCEPMonetization.shared.additionalCredits)")
@@ -99,6 +102,30 @@ public class SCEPSettingsController: UIViewController {
         let cancel = UIAlertAction(title: "Cancel", style: .cancel)
         alert.addAction(cancel)
         present(alert, animated: true)
+    }
+    
+    func resetKeychain() {
+        let fetchQuery: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecMatchLimit as String: kSecMatchLimitAll,
+            kSecReturnAttributes as String: kCFBooleanTrue as Any
+        ]
+        var fetchResult: AnyObject?
+        let status = SecItemCopyMatching(fetchQuery as CFDictionary, &fetchResult)
+        if status == errSecSuccess, let items = fetchResult as? [[String: Any]] {
+            for item in items {
+                if
+                    let account = item[kSecAttrAccount as String] as? String,
+                    account.hasPrefix("SCEPKit.")
+                {
+                    let deleteQuery: [String: Any] = [
+                        kSecClass as String: kSecClassGenericPassword,
+                        kSecAttrAccount as String: account
+                    ]
+                    SecItemDelete(deleteQuery as CFDictionary)
+                }
+            }
+        }
     }
     
     func showNumberFieldAlert(title: String, message: String? = nil, placeholder: Int, completion: @escaping (Int) -> Void) {
@@ -153,29 +180,26 @@ public class SCEPSettingsController: UIViewController {
         ]
         sections.append(.actions(header: "LEGAL".localized(), actions: legalActions))
         if SCEPKitInternal.shared.environment != .appstore {
-            var debugActions: [Action] = [
-                .init(title: "Reset onboarding", image: .init(moduleAssetName: "SettingsDebug")!) { controller in
-                    controller.resetOnboarding()
+            let debugActions: [Action] = [
+                .init(title: "Premium status: \(SCEPMonetization.shared.premuimStatus.rawValue)", image: .init(moduleAssetName: "SettingsDebug")!) { controller in
+                    controller.changePremiumStatus()
+                },
+                .init(title: "Recurring credits: \(SCEPMonetization.shared.recurringCredits)", image: .init(moduleAssetName: "SettingsDebug")!) { controller in
+                    controller.changeRecurringCredits()
+                },
+                .init(title: "Additional credits: \(SCEPMonetization.shared.additionalCredits)", image: .init(moduleAssetName: "SettingsDebug")!) { controller in
+                    controller.changeAdditionalCredits()
                 },
                 .init(title: "Show paywalls", image: .init(moduleAssetName: "SettingsDebug")!) { controller in
                     controller.showPaywalls()
+                },
+                .init(title: "Reset onboarding", image: .init(moduleAssetName: "SettingsDebug")!) { controller in
+                    controller.resetOnboarding()
+                },
+                .init(title: "Reset keychain", image: .init(moduleAssetName: "SettingsDebug")!) { controller in
+                    controller.resetKeychain()
                 }
             ]
-            if !SCEPKitInternal.shared.environment.isUsingProductionProducts {
-                debugActions.append(
-                    contentsOf: [
-                        .init(title: "Premium status: \(SCEPMonetization.shared.premuimStatus.rawValue)", image: .init(moduleAssetName: "SettingsDebug")!) { controller in
-                            controller.changePremiumStatus()
-                        },
-                        .init(title: "Recurring credits: \(SCEPMonetization.shared.recurringCredits)", image: .init(moduleAssetName: "SettingsDebug")!) { controller in
-                            controller.changeRecurringCredits()
-                        },
-                        .init(title: "Additional credits: \(SCEPMonetization.shared.additionalCredits)", image: .init(moduleAssetName: "SettingsDebug")!) { controller in
-                            controller.changeAdditionalCredits()
-                        }
-                    ]
-                )
-            }
             sections.append(.actions(header: "DEBUG", actions: debugActions))
         }
         return sections
