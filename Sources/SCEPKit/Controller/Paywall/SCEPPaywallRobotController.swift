@@ -16,6 +16,7 @@ class SCEPPaywallRobotController: SCEPPaywallController {
         }
         struct Meta: Codable {
             let imageURL: URL
+            let crossOpacity: Double
         }
     }
     var config: Config!
@@ -55,6 +56,7 @@ class SCEPPaywallRobotController: SCEPPaywallController {
     @IBOutlet weak var termsButton: SCEPButton!
     @IBOutlet weak var privacyButton: SCEPButton!
     @IBOutlet weak var restoreButton: SCEPButton!
+    @IBOutlet weak var crossButton: SCEPButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,6 +71,7 @@ class SCEPPaywallRobotController: SCEPPaywallController {
         trialView.layer.borderWidth = 2
         trialView.layer.cornerRadius = SCEPKitInternal.shared.config.style.design.paywallTrialSwitchCornerRadius
         trialView.isHidden = trialProducts.allSatisfy { $0 == nil }
+        crossButton.alpha = config.meta.crossOpacity
         
         setupTexts()
         imageView.image = nil

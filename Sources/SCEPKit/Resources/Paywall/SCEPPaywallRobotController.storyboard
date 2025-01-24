@@ -487,6 +487,7 @@
                     <connections>
                         <outlet property="cancelAnytimeLabel" destination="jTf-id-TSR" id="fbi-je-0zP"/>
                         <outlet property="continueButton" destination="SLd-Vz-J81" id="Hq7-gZ-QnI"/>
+                        <outlet property="crossButton" destination="uI7-w9-o2g" id="vLA-8h-z96"/>
                         <outlet property="feature0Label" destination="83z-UH-X1E" id="pb0-Xi-0Oo"/>
                         <outlet property="feature1Label" destination="pXx-yd-COc" id="OlS-R9-ohH"/>
                         <outlet property="feature2Label" destination="xuI-dI-WRC" id="MOC-ys-BSh"/>

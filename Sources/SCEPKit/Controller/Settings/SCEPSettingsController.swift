@@ -247,7 +247,7 @@ extension SCEPSettingsController: UICollectionViewDelegateFlowLayout {
         let width = collectionView.frame.width - layout.sectionInset.left - layout.sectionInset.right
         switch sections[indexPath.section] {
         case .banner:
-            return .init(width: width, height: design.settingsBannerHeight)
+            return .init(width: width, height: 360)
         case .actions:
             return .init(width: width, height: 56)
         }
@@ -299,15 +299,6 @@ fileprivate extension SCEPConfig.InterfaceStyle.Design {
         case .salsiccia: return .init(named: "SCEPSettingsTerms-screensTwo", in: .module, with: nil)!
         case .buratino: return .init(named: "SCEPSettingsTerms-screensThree", in: .module, with: nil)!
         case .giornale: return .init(named: "SCEPSettingsTerms-screensFour", in: .module, with: nil)!
-        }
-    }
-    
-    var settingsBannerHeight: CGFloat {
-        switch self {
-        case .classico: return 305
-        case .salsiccia: return 305
-        case .buratino: return 385
-        case .giornale: return 400
         }
     }
 }

@@ -67,17 +67,17 @@
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="SCEPSettingsBannerCell" id="0uo-pB-YN3" customClass="SCEPSettingsBannerCell" customModule="SCEPKit">
-                                        <rect key="frame" x="17.666666666666668" y="28" width="358" height="304"/>
+                                        <rect key="frame" x="17.666666666666668" y="28" width="358" height="360"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="FxC-b7-ScB">
-                                            <rect key="frame" x="0.0" y="0.0" width="358" height="304"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="358" height="360"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="245" translatesAutoresizingMaskIntoConstraints="NO" id="JMW-EL-7lR" customClass="SCEPBackgroundView" customModule="SCEPKit">
-                                                    <rect key="frame" x="0.0" y="0.0" width="358" height="304"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="358" height="360"/>
                                                     <subviews>
                                                         <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="253" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sJo-Nr-5ur" customClass="SCEPMainButton" customModule="SCEPKit">
-                                                            <rect key="frame" x="16" y="232" width="326" height="56"/>
+                                                            <rect key="frame" x="16" y="288" width="326" height="56"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="56" id="UZr-vH-mXg"/>
                                                             </constraints>
@@ -87,7 +87,7 @@
                                                             </state>
                                                         </button>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zQQ-el-k4Q" customClass="SCEPBackgroundView" customModule="SCEPKit">
-                                                            <rect key="frame" x="0.0" y="215" width="358" height="1"/>
+                                                            <rect key="frame" x="0.0" y="271" width="358" height="1"/>
                                                             <color key="backgroundColor" name="SCEPShade2Color"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="1" id="EkB-NW-bAO"/>
@@ -99,7 +99,7 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </view>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="O5f-8t-hC0">
-                                                            <rect key="frame" x="24" y="24" width="310" height="167"/>
+                                                            <rect key="frame" x="24" y="24" width="310" height="223"/>
                                                             <subviews>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="12q-QK-1Rt">
                                                                     <rect key="frame" x="0.0" y="0.0" width="310" height="80"/>
@@ -131,113 +131,103 @@
                                                                     </subviews>
                                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 </stackView>
-                                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="JRd-Ki-SUz">
-                                                                    <rect key="frame" x="0.0" y="104" width="310" height="63"/>
+                                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="JRd-Ki-SUz">
+                                                                    <rect key="frame" x="0.0" y="104" width="310" height="119"/>
                                                                     <subviews>
-                                                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="I0G-jg-ON4">
+                                                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="4ku-Kt-Rb6">
                                                                             <rect key="frame" x="0.0" y="0.0" width="310" height="24"/>
                                                                             <subviews>
-                                                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="4ku-Kt-Rb6">
-                                                                                    <rect key="frame" x="0.0" y="0.0" width="147" height="24"/>
-                                                                                    <subviews>
-                                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SCEPPaywallFeature" translatesAutoresizingMaskIntoConstraints="NO" id="oIO-wR-5jv" customClass="SCEPTemplateImageView" customModule="SCEPKit">
-                                                                                            <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
-                                                                                            <color key="tintColor" name="SCEPAccentColor"/>
-                                                                                            <constraints>
-                                                                                                <constraint firstAttribute="height" constant="24" id="ABz-iq-Ogp"/>
-                                                                                                <constraint firstAttribute="width" constant="24" id="Umj-Iy-sVk"/>
-                                                                                            </constraints>
-                                                                                            <userDefinedRuntimeAttributes>
-                                                                                                <userDefinedRuntimeAttribute type="number" keyPath="shadeIndex">
-                                                                                                    <integer key="value" value="5"/>
-                                                                                                </userDefinedRuntimeAttribute>
-                                                                                            </userDefinedRuntimeAttributes>
-                                                                                        </imageView>
-                                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="256" verticalCompressionResistancePriority="752" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E5h-xy-HlL" customClass="SCEPLabel" customModule="SCEPKit">
-                                                                                            <rect key="frame" x="32" y="0.0" width="115" height="24"/>
-                                                                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
-                                                                                            <color key="textColor" name="SCEPTextColor"/>
-                                                                                            <nil key="highlightedColor"/>
-                                                                                        </label>
-                                                                                    </subviews>
-                                                                                </stackView>
-                                                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="c5Y-2A-q5C">
-                                                                                    <rect key="frame" x="163" y="0.0" width="147" height="24"/>
-                                                                                    <subviews>
-                                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SCEPPaywallFeature" translatesAutoresizingMaskIntoConstraints="NO" id="x9y-98-XoL" customClass="SCEPTemplateImageView" customModule="SCEPKit">
-                                                                                            <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
-                                                                                            <color key="tintColor" name="SCEPAccentColor"/>
-                                                                                            <constraints>
-                                                                                                <constraint firstAttribute="width" constant="24" id="9Xd-d7-JML"/>
-                                                                                                <constraint firstAttribute="height" constant="24" id="uuF-de-l6R"/>
-                                                                                            </constraints>
-                                                                                            <userDefinedRuntimeAttributes>
-                                                                                                <userDefinedRuntimeAttribute type="number" keyPath="shadeIndex">
-                                                                                                    <integer key="value" value="5"/>
-                                                                                                </userDefinedRuntimeAttribute>
-                                                                                            </userDefinedRuntimeAttributes>
-                                                                                        </imageView>
-                                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="256" verticalCompressionResistancePriority="752" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hh7-kP-U73" customClass="SCEPLabel" customModule="SCEPKit">
-                                                                                            <rect key="frame" x="32" y="0.0" width="115" height="24"/>
-                                                                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
-                                                                                            <color key="textColor" name="SCEPTextColor"/>
-                                                                                            <nil key="highlightedColor"/>
-                                                                                        </label>
-                                                                                    </subviews>
-                                                                                </stackView>
+                                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SCEPPaywallFeature" translatesAutoresizingMaskIntoConstraints="NO" id="oIO-wR-5jv" customClass="SCEPTemplateImageView" customModule="SCEPKit">
+                                                                                    <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
+                                                                                    <color key="tintColor" name="SCEPAccentColor"/>
+                                                                                    <constraints>
+                                                                                        <constraint firstAttribute="height" constant="24" id="ABz-iq-Ogp"/>
+                                                                                        <constraint firstAttribute="width" constant="24" id="Umj-Iy-sVk"/>
+                                                                                    </constraints>
+                                                                                    <userDefinedRuntimeAttributes>
+                                                                                        <userDefinedRuntimeAttribute type="number" keyPath="shadeIndex">
+                                                                                            <integer key="value" value="5"/>
+                                                                                        </userDefinedRuntimeAttribute>
+                                                                                    </userDefinedRuntimeAttributes>
+                                                                                </imageView>
+                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="256" verticalCompressionResistancePriority="752" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E5h-xy-HlL" customClass="SCEPLabel" customModule="SCEPKit">
+                                                                                    <rect key="frame" x="32" y="0.0" width="278" height="24"/>
+                                                                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                                                                                    <color key="textColor" name="SCEPTextColor"/>
+                                                                                    <nil key="highlightedColor"/>
+                                                                                </label>
                                                                             </subviews>
                                                                         </stackView>
-                                                                        <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="tNy-bC-HWR">
-                                                                            <rect key="frame" x="0.0" y="40" width="310" height="23"/>
+                                                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="c5Y-2A-q5C">
+                                                                            <rect key="frame" x="0.0" y="31.666666666666657" width="310" height="24"/>
                                                                             <subviews>
-                                                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Thj-0c-NSb">
-                                                                                    <rect key="frame" x="0.0" y="0.0" width="147" height="23"/>
-                                                                                    <subviews>
-                                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SCEPPaywallFeature" translatesAutoresizingMaskIntoConstraints="NO" id="1kw-yz-gzK" customClass="SCEPTemplateImageView" customModule="SCEPKit">
-                                                                                            <rect key="frame" x="0.0" y="0.0" width="24" height="23"/>
-                                                                                            <color key="tintColor" name="SCEPAccentColor"/>
-                                                                                            <constraints>
-                                                                                                <constraint firstAttribute="height" constant="24" id="VkZ-ya-GBR"/>
-                                                                                                <constraint firstAttribute="width" constant="24" id="fya-hE-lIV"/>
-                                                                                            </constraints>
-                                                                                            <userDefinedRuntimeAttributes>
-                                                                                                <userDefinedRuntimeAttribute type="number" keyPath="shadeIndex">
-                                                                                                    <integer key="value" value="5"/>
-                                                                                                </userDefinedRuntimeAttribute>
-                                                                                            </userDefinedRuntimeAttributes>
-                                                                                        </imageView>
-                                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="256" verticalCompressionResistancePriority="752" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GMY-kb-TbI" customClass="SCEPLabel" customModule="SCEPKit">
-                                                                                            <rect key="frame" x="32" y="0.0" width="115" height="23"/>
-                                                                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
-                                                                                            <color key="textColor" name="SCEPTextColor"/>
-                                                                                            <nil key="highlightedColor"/>
-                                                                                        </label>
-                                                                                    </subviews>
-                                                                                </stackView>
-                                                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="i4s-Rp-mna">
-                                                                                    <rect key="frame" x="163" y="0.0" width="147" height="23"/>
-                                                                                    <subviews>
-                                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SCEPPaywallFeature" translatesAutoresizingMaskIntoConstraints="NO" id="15r-Fy-kbF" customClass="SCEPTemplateImageView" customModule="SCEPKit">
-                                                                                            <rect key="frame" x="0.0" y="0.0" width="24" height="23"/>
-                                                                                            <color key="tintColor" name="SCEPAccentColor"/>
-                                                                                            <constraints>
-                                                                                                <constraint firstAttribute="width" constant="24" id="UWB-Xk-oqY"/>
-                                                                                                <constraint firstAttribute="height" constant="24" id="uZ3-vY-qW7"/>
-                                                                                            </constraints>
-                                                                                            <userDefinedRuntimeAttributes>
-                                                                                                <userDefinedRuntimeAttribute type="number" keyPath="shadeIndex">
-                                                                                                    <integer key="value" value="5"/>
-                                                                                                </userDefinedRuntimeAttribute>
-                                                                                            </userDefinedRuntimeAttributes>
-                                                                                        </imageView>
-                                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="256" verticalCompressionResistancePriority="752" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xvd-fg-osU" customClass="SCEPLabel" customModule="SCEPKit">
-                                                                                            <rect key="frame" x="32" y="0.0" width="115" height="23"/>
-                                                                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
-                                                                                            <color key="textColor" name="SCEPTextColor"/>
-                                                                                            <nil key="highlightedColor"/>
-                                                                                        </label>
-                                                                                    </subviews>
-                                                                                </stackView>
+                                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SCEPPaywallFeature" translatesAutoresizingMaskIntoConstraints="NO" id="x9y-98-XoL" customClass="SCEPTemplateImageView" customModule="SCEPKit">
+                                                                                    <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
+                                                                                    <color key="tintColor" name="SCEPAccentColor"/>
+                                                                                    <constraints>
+                                                                                        <constraint firstAttribute="width" constant="24" id="9Xd-d7-JML"/>
+                                                                                        <constraint firstAttribute="height" constant="24" id="uuF-de-l6R"/>
+                                                                                    </constraints>
+                                                                                    <userDefinedRuntimeAttributes>
+                                                                                        <userDefinedRuntimeAttribute type="number" keyPath="shadeIndex">
+                                                                                            <integer key="value" value="5"/>
+                                                                                        </userDefinedRuntimeAttribute>
+                                                                                    </userDefinedRuntimeAttributes>
+                                                                                </imageView>
+                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="256" verticalCompressionResistancePriority="752" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hh7-kP-U73" customClass="SCEPLabel" customModule="SCEPKit">
+                                                                                    <rect key="frame" x="32" y="0.0" width="278" height="24"/>
+                                                                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                                                                                    <color key="textColor" name="SCEPTextColor"/>
+                                                                                    <nil key="highlightedColor"/>
+                                                                                </label>
+                                                                            </subviews>
+                                                                        </stackView>
+                                                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Thj-0c-NSb">
+                                                                            <rect key="frame" x="0.0" y="63.333333333333343" width="310" height="24"/>
+                                                                            <subviews>
+                                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SCEPPaywallFeature" translatesAutoresizingMaskIntoConstraints="NO" id="1kw-yz-gzK" customClass="SCEPTemplateImageView" customModule="SCEPKit">
+                                                                                    <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
+                                                                                    <color key="tintColor" name="SCEPAccentColor"/>
+                                                                                    <constraints>
+                                                                                        <constraint firstAttribute="height" constant="24" id="VkZ-ya-GBR"/>
+                                                                                        <constraint firstAttribute="width" constant="24" id="fya-hE-lIV"/>
+                                                                                    </constraints>
+                                                                                    <userDefinedRuntimeAttributes>
+                                                                                        <userDefinedRuntimeAttribute type="number" keyPath="shadeIndex">
+                                                                                            <integer key="value" value="5"/>
+                                                                                        </userDefinedRuntimeAttribute>
+                                                                                    </userDefinedRuntimeAttributes>
+                                                                                </imageView>
+                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="256" verticalCompressionResistancePriority="752" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GMY-kb-TbI" customClass="SCEPLabel" customModule="SCEPKit">
+                                                                                    <rect key="frame" x="32" y="0.0" width="278" height="24"/>
+                                                                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                                                                                    <color key="textColor" name="SCEPTextColor"/>
+                                                                                    <nil key="highlightedColor"/>
+                                                                                </label>
+                                                                            </subviews>
+                                                                        </stackView>
+                                                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="i4s-Rp-mna">
+                                                                            <rect key="frame" x="0.0" y="95" width="310" height="24"/>
+                                                                            <subviews>
+                                                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SCEPPaywallFeature" translatesAutoresizingMaskIntoConstraints="NO" id="15r-Fy-kbF" customClass="SCEPTemplateImageView" customModule="SCEPKit">
+                                                                                    <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
+                                                                                    <color key="tintColor" name="SCEPAccentColor"/>
+                                                                                    <constraints>
+                                                                                        <constraint firstAttribute="width" constant="24" id="UWB-Xk-oqY"/>
+                                                                                        <constraint firstAttribute="height" constant="24" id="uZ3-vY-qW7"/>
+                                                                                    </constraints>
+                                                                                    <userDefinedRuntimeAttributes>
+                                                                                        <userDefinedRuntimeAttribute type="number" keyPath="shadeIndex">
+                                                                                            <integer key="value" value="5"/>
+                                                                                        </userDefinedRuntimeAttribute>
+                                                                                    </userDefinedRuntimeAttributes>
+                                                                                </imageView>
+                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="256" verticalCompressionResistancePriority="752" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xvd-fg-osU" customClass="SCEPLabel" customModule="SCEPKit">
+                                                                                    <rect key="frame" x="32" y="0.0" width="278" height="24"/>
+                                                                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                                                                                    <color key="textColor" name="SCEPTextColor"/>
+                                                                                    <nil key="highlightedColor"/>
+                                                                                </label>
                                                                             </subviews>
                                                                         </stackView>
                                                                     </subviews>
@@ -266,14 +256,14 @@
                                                 </view>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="JMW-EL-7lR" secondAttribute="bottom" id="0Kb-r9-rh3"/>
                                                 <constraint firstItem="JMW-EL-7lR" firstAttribute="top" secondItem="FxC-b7-ScB" secondAttribute="top" id="H0t-Oa-HyB"/>
                                                 <constraint firstAttribute="trailing" secondItem="JMW-EL-7lR" secondAttribute="trailing" id="Qo4-0f-to6"/>
-                                                <constraint firstAttribute="bottom" secondItem="JMW-EL-7lR" secondAttribute="bottom" id="goD-e8-Qqo"/>
                                                 <constraint firstItem="JMW-EL-7lR" firstAttribute="leading" secondItem="FxC-b7-ScB" secondAttribute="leading" id="mpL-Pd-M9z"/>
                                             </constraints>
                                         </collectionViewCellContentView>
                                         <color key="backgroundColor" systemColor="systemIndigoColor"/>
-                                        <size key="customSize" width="358" height="304"/>
+                                        <size key="customSize" width="358" height="360"/>
                                         <connections>
                                             <outlet property="bannerButton" destination="sJo-Nr-5ur" id="SlT-2j-dZt"/>
                                             <outlet property="bannerFeature0Label" destination="E5h-xy-HlL" id="Wbq-Lx-r7B"/>
@@ -285,12 +275,10 @@
                                             <outlet property="bannerTitleLabel" destination="uMn-dY-b4g" id="n1D-sU-fb9"/>
                                             <outlet property="bannerTitleStackView" destination="X5d-6S-gVS" id="MZL-1q-Zm1"/>
                                             <outlet property="bannerTopStackView" destination="12q-QK-1Rt" id="UxM-PY-iEo"/>
-                                            <outletCollection property="bannerFeaturesStackViews" destination="I0G-jg-ON4" collectionClass="NSMutableArray" id="n5r-Km-Jrj"/>
-                                            <outletCollection property="bannerFeaturesStackViews" destination="tNy-bC-HWR" collectionClass="NSMutableArray" id="Y8d-T4-xSc"/>
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="SCEPSettingsActionCell" id="skO-eU-CGU" customClass="SCEPSettingsActionCell" customModule="SCEPKit">
-                                        <rect key="frame" x="17.666666666666668" y="342" width="358" height="49"/>
+                                        <rect key="frame" x="17.666666666666668" y="398" width="358" height="49"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="V4s-YZ-Ydn">
                                             <rect key="frame" x="0.0" y="0.0" width="358" height="49"/>

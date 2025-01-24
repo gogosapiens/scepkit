@@ -18,8 +18,6 @@ class SCEPSettingsBannerCell: SCEPAnimatedCollectionViewCell {
     @IBOutlet weak var bannerButton: SCEPMainButton!
     @IBOutlet weak var bannerImageView: UIImageView!
     @IBOutlet weak var bannerTopStackView: UIStackView!
-    @IBOutlet var bannerFeaturesStackViews: [UIStackView]!
-    @IBOutlet weak var bannerTitleStackView: UIStackView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -32,6 +30,7 @@ class SCEPSettingsBannerCell: SCEPAnimatedCollectionViewCell {
         
         bannerTitleLabel.text = texts.title.localized()
         bannerTitleLabel.styleTextWithBraces()
+        bannerTitleLabel.numberOfLines = texts.subtitle == nil ? 0 : 1
         bannerSubtitleLabel.text = texts.subtitle?.localized()
         bannerSubtitleLabel.alpha = 0.8
         bannerSubtitleLabel.isHidden = texts.subtitle == nil
@@ -43,15 +42,8 @@ class SCEPSettingsBannerCell: SCEPAnimatedCollectionViewCell {
         bannerImageView.image = .init(named: "SCEPAppIcon")
         
         layer.cornerRadius = design.settingsBannerCornerRadius
-        bannerTopStackView.axis = design.settingsTopAxis
-        bannerTopStackView.alignment = design.settingsTopAxis == .horizontal ? .fill : .center
-        bannerTitleStackView.spacing = design.settingsTopAxis == .horizontal ? 0 : 8
-        bannerFeaturesStackViews.forEach { $0.axis = design.settingsFeatureAxis }
-        bannerFeaturesStackViews.forEach { $0.spacing = design.settingsFeatureAxis == .horizontal ? 0 : 16 }
         bannerTopStackView.removeArrangedSubview(bannerImageView)
         bannerTopStackView.insertArrangedSubview(bannerImageView, at: design.settingsImageIndex)
-        bannerTitleLabel.textAlignment = design.settingsTextAlignment
-        bannerSubtitleLabel.textAlignment = design.settingsTextAlignment
     }
 }
 
@@ -66,39 +58,12 @@ fileprivate extension SCEPConfig.InterfaceStyle.Design {
         }
     }
     
-    var settingsTopAxis: NSLayoutConstraint.Axis {
-        switch self {
-        case .classico: return .horizontal
-        case .salsiccia: return .horizontal
-        case .buratino: return .horizontal
-        case .giornale: return .vertical
-        }
-    }
-    
-    var settingsFeatureAxis: NSLayoutConstraint.Axis {
-        switch self {
-        case .classico: return .horizontal
-        case .salsiccia: return .horizontal
-        case .buratino: return .vertical
-        case .giornale: return .horizontal
-        }
-    }
-    
     var settingsImageIndex: Int {
         switch self {
         case .classico: return 1
         case .salsiccia: return 0
         case .buratino: return 0
         case .giornale: return 0
-        }
-    }
-    
-    var settingsTextAlignment: NSTextAlignment {
-        switch self {
-        case .classico: return .left
-        case .salsiccia: return .left
-        case .buratino: return .left
-        case .giornale: return .center
         }
     }
 }
