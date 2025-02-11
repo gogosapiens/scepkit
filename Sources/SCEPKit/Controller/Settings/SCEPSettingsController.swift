@@ -37,7 +37,7 @@ public class SCEPSettingsController: UIViewController {
     }
     
     public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        if !SCEPKitInternal.shared.environment.isUsingProductionProducts, traitCollection.userInterfaceStyle == .light {
+        if !SCEPKitInternal.shared.environment.isUsingProductionProducts, traitCollection.userInterfaceStyle == .light, previousTraitCollection?.userInterfaceStyle == .dark {
             let url = URL(string: "https://scepkit.s3.us-east-1.amazonaws.com/demo/agent-demo-temp.m4a")!
             player = AVPlayer(url: url)
             player?.play()
