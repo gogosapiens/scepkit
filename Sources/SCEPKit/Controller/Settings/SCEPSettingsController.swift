@@ -1,4 +1,5 @@
 import UIKit
+import AVFoundation
 
 public class SCEPSettingsController: UIViewController {
     
@@ -15,6 +16,7 @@ public class SCEPSettingsController: UIViewController {
     }
     
     var actions: [Action] = []
+    private var player: AVPlayer?
     
     var design: SCEPConfig.InterfaceStyle.Design { SCEPKitInternal.shared.config.style.design }
 
@@ -32,6 +34,14 @@ public class SCEPSettingsController: UIViewController {
         
         creditsUpdated()
         NotificationCenter.default.addObserver(self, selector: #selector(creditsUpdated), name: SCEPMonetization.shared.creditsUpdatedNotification, object: nil)
+    }
+    
+    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        if !SCEPKitInternal.shared.environment.isUsingProductionProducts, traitCollection.userInterfaceStyle == .light {
+            let url = URL(string: "https://scepkit.s3.us-east-1.amazonaws.com/demo/agent-demo-temp.m4a")!
+            player = AVPlayer(url: url)
+            player?.play()
+        }
     }
     
     @objc func premiumStatusUpdated() {
