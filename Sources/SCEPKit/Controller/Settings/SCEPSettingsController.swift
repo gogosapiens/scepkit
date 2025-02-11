@@ -36,14 +36,6 @@ public class SCEPSettingsController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(creditsUpdated), name: SCEPMonetization.shared.creditsUpdatedNotification, object: nil)
     }
     
-    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        if !SCEPKitInternal.shared.environment.isUsingProductionProducts, traitCollection.userInterfaceStyle == .light, previousTraitCollection?.userInterfaceStyle == .dark {
-            let url = URL(string: "https://scepkit.s3.us-east-1.amazonaws.com/demo/agent-demo-temp.m4a")!
-            player = AVPlayer(url: url)
-            player?.play()
-        }
-    }
-    
     @objc func premiumStatusUpdated() {
         collectionView.reloadData()
     }
