@@ -28,6 +28,9 @@ class SCEPPaywallShopProductCell: UICollectionViewCell {
         borderView.layer.cornerRadius = design.paywallShopProductCornerRadius
         borderView.layer.borderColor = UIColor.scepShade2.cgColor
         borderView.layer.borderWidth = 2
+        
+        let isLarge = UIScreen.main.bounds.width > 410
+        textLabel.font = SCEPKitInternal.shared.font(ofSize: isLarge ? 18 : 14, weight: .medium)
     }
 }
 

@@ -50,7 +50,7 @@ class SCEPPaywallShopController: SCEPPaywallController {
         balanceLabel.text = SCEPMonetization.shared.credits.formatted()
         
         let design = SCEPKitInternal.shared.config.style.design
-        imageView.layer.cornerRadius = design.paywallShopImageCornerRadius
+        imageView.superview?.layer.cornerRadius = design.paywallShopImageCornerRadius
         balanceImageView.image = design.paywallShopBalanceImage
         
         if let rewardedAdId = config.positions.reduce(nil, { $1.rewardedAdId ?? $0 }) {
