@@ -11,7 +11,11 @@ class SCEPAdManager: NSObject {
     var needsToShowAppOpenOnApplicationShown: Bool = false
     var isLoadingAppOpen: Bool = false
     private var isShowingAppOpen: Bool = false
-    var willShowAppOpen: Bool = false
+    var willShowAppOpen: Bool = false {
+        didSet {
+            print("willShowAppOpen", willShowAppOpen)
+        }
+    }
     var rewardedAdCompletion: ((Bool) -> Void)?
     var rewardedAdDidReward: Bool = false
     var shownRewardedAd: GADRewardedAd?
@@ -24,6 +28,7 @@ class SCEPAdManager: NSObject {
     private override init() {
         super.init()
         NotificationCenter.default.addObserver(self, selector: #selector(applicationDidBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationWillResignActive), name: UIApplication.willResignActiveNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(applicationShown), name: SCEPKitInternal.shared.applicationShownNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(premiumStatusUpdated), name: SCEPMonetization.shared.premiumStatusUpdatedNotification, object: nil)
     }
@@ -63,6 +68,15 @@ class SCEPAdManager: NSObject {
         showAppOpenAd()
     }
     
+    @MainActor @objc func applicationWillResignActive() {
+        guard !shouldIgnoreApplicationDidBecomeActive else {
+            return
+        }
+        if canShowAds, appOpenAd != nil {
+            willShowAppOpen = true
+        }
+    }
+    
     @MainActor @objc func applicationShown() {
         showAppOpenAd()
     }
@@ -73,6 +87,7 @@ class SCEPAdManager: NSObject {
                 bannerAdView.dismissHandler(bannerAdView)
             }
             bannerAdViews.removeAll()
+            willShowAppOpen = false
         }
         load()
     }
@@ -104,6 +119,9 @@ class SCEPAdManager: NSObject {
             }
             self.appOpenAd = ad
             self.appOpenAd?.fullScreenContentDelegate = self
+            if UIApplication.shared.applicationState != .active {
+                self.willShowAppOpen = true
+            }
             NotificationCenter.default.post(name: Self.appOpenLoadedNotification, object: nil)
         }
     }
@@ -130,8 +148,8 @@ class SCEPAdManager: NSObject {
     
     @MainActor func showAppOpenAd(from viewController: UIViewController? = nil) {
         guard self.canShowAds, SCEPKitInternal.shared.isApplicationShown, !isShowingAppOpen else { return }
-        isShowingAppOpen = true
         if let appOpenAd = self.appOpenAd {
+            isShowingAppOpen = true
             appOpenAd.present(fromRootViewController: viewController)
             SCEPKitInternal.shared.trackEvent("[SCEPKit] app_open_ad_shown")
         } else {
@@ -204,6 +222,9 @@ extension SCEPAdManager: GADFullScreenContentDelegate {
             isShowingAppOpen = false
             willShowAppOpen = false
             NotificationCenter.default.post(Self.appOpenDismissedNotification)
+            if SCEPKitInternal.shared.isApplicationVisible {
+                NotificationCenter.default.post(SCEPKitInternal.shared.applicationDidBecomeVisibleNotification)
+            }
         }
     }
     
@@ -217,6 +238,9 @@ extension SCEPAdManager: GADFullScreenContentDelegate {
             isShowingAppOpen = false
             willShowAppOpen = false
             NotificationCenter.default.post(Self.appOpenDismissedNotification)
+            if SCEPKitInternal.shared.isApplicationVisible {
+                NotificationCenter.default.post(SCEPKitInternal.shared.applicationDidBecomeVisibleNotification)
+            }
         } else if ad is GADRewardedAd {
             rewardedAdCompletion?(rewardedAdDidReward)
             rewardedAdCompletion = nil

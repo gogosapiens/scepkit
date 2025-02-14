@@ -14,10 +14,14 @@ final public class SCEPKit {
         SCEPKitInternal.shared.isOnboardingCompleted
     }
     
-    public static var willShowAppOpenAd: Bool {
-        SCEPAdManager.shared.willShowAppOpen
+    /// True when the app is not showing onboarding or app open ad
+    public static var isApplicationVisible: Bool {
+        SCEPKitInternal.shared.isApplicationVisible
     }
     
+    public static var applicationDidBecomeVisibleNotification: Notification.Name {
+        SCEPKitInternal.shared.applicationDidBecomeVisibleNotification
+    }
     public static var onboardingCompletedNotification: Notification.Name {
         SCEPKitInternal.shared.onboardingCompletedNotification
     }
@@ -26,9 +30,6 @@ final public class SCEPKit {
     }
     public static var creditsUpdatedNotification: Notification.Name {
         SCEPMonetization.shared.creditsUpdatedNotification
-    }
-    public static var appOpenAdDismissedNotification: Notification.Name {
-        SCEPAdManager.appOpenDismissedNotification
     }
     
     @MainActor public static func launch(rootViewController: UIViewController) {
@@ -84,10 +85,6 @@ final public class SCEPKit {
     
     public static func setUserProperties(_ properties: [String: Any]) {
         SCEPKitInternal.shared.setUserProperties(properties)
-    }
-    
-    public static func performWhenRootScreenIsVisible(_ block: @escaping () -> Void) {
-        SCEPKitInternal.shared.performWhenRootScreenIsVisible(block)
     }
     
     public static func font(ofSize size: CGFloat, weight: UIFont.Weight) -> UIFont {

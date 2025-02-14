@@ -39,6 +39,11 @@ class SCEPKitInternal: NSObject {
     
     let onboardingCompletedNotification = Notification.Name("SCEPKitInternal.onboardingCompletedNotification")
     let applicationShownNotification = Notification.Name("SCEPKitInternal.applicationShownNotification")
+    let applicationDidBecomeVisibleNotification = Notification.Name("SCEPKitInternal.applicationDidBecomeVisibleNotification")
+    
+    var isApplicationVisible: Bool {
+        return isOnboardingCompleted && isApplicationShown && !SCEPAdManager.shared.willShowAppOpen
+    }
 
     var hasCreditsPaywalls: Bool {
         config.monetization.placements.values.contains(where: { $0.hasCredits })
@@ -338,6 +343,9 @@ class SCEPKitInternal: NSObject {
         }
         isApplicationShown = true
         NotificationCenter.default.post(name: applicationShownNotification, object: nil)
+        if isApplicationVisible {
+            NotificationCenter.default.post(name: applicationDidBecomeVisibleNotification, object: nil)
+        }
     }
     
     func showOnboarding() {
@@ -360,6 +368,9 @@ class SCEPKitInternal: NSObject {
         }
         animator.startAnimation()
         NotificationCenter.default.post(name: onboardingCompletedNotification, object: nil)
+        if isApplicationVisible {
+            NotificationCenter.default.post(name: applicationDidBecomeVisibleNotification, object: nil)
+        }
         trackEvent("[SCEPKit] onboarding_finished")
     }
     
@@ -482,23 +493,6 @@ class SCEPKitInternal: NSObject {
     
     func font(ofSize size: CGFloat, weight: UIFont.Weight) -> UIFont {
         return font.uiFont(ofSize: size, weight: weight) ?? .systemFont(ofSize: size, weight: weight)
-    }
-    
-    func performWhenRootScreenIsVisible(_ block: @escaping () -> Void) {
-        let group = DispatchGroup()
-        if !SCEPKit.isOnboardingCompleted {
-            group.enter()
-            NotificationCenter.default.addOneTimeObserver(forName: onboardingCompletedNotification) { _ in
-                group.leave()
-            }
-        }
-        if SCEPKit.willShowAppOpenAd {
-            group.enter()
-            NotificationCenter.default.addOneTimeObserver(forName: SCEPAdManager.appOpenDismissedNotification) { _ in
-                group.leave()
-            }
-        }
-        group.notify(queue: .main, execute: block)
     }
 }
 
