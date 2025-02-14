@@ -15,12 +15,12 @@ final public class SCEPKit {
     }
     
     /// True when the app is not showing onboarding or app open ad
-    public static var isApplicationVisible: Bool {
-        SCEPKitInternal.shared.isApplicationVisible
+    public static var isApplicationReady: Bool {
+        SCEPKitInternal.shared.isApplicationReady
     }
     
-    public static var applicationDidBecomeVisibleNotification: Notification.Name {
-        SCEPKitInternal.shared.applicationDidBecomeVisibleNotification
+    public static var applicationDidBecomeReadyNotification: Notification.Name {
+        SCEPKitInternal.shared.applicationDidBecomeReadyNotification
     }
     public static var onboardingCompletedNotification: Notification.Name {
         SCEPKitInternal.shared.onboardingCompletedNotification

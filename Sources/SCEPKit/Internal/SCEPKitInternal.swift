@@ -37,11 +37,11 @@ class SCEPKitInternal: NSObject {
     @UserDefaultsValue(key: "firstLaunchDate", defaultValue: nil)
     var firstLaunchDate: Date!
     
-    let onboardingCompletedNotification = Notification.Name("SCEPKitInternal.onboardingCompletedNotification")
-    let applicationShownNotification = Notification.Name("SCEPKitInternal.applicationShownNotification")
-    let applicationDidBecomeVisibleNotification = Notification.Name("SCEPKitInternal.applicationDidBecomeVisibleNotification")
+    let onboardingCompletedNotification = Notification.Name("SCEPKitInternal.onboardingCompleted")
+    let applicationShownNotification = Notification.Name("SCEPKitInternal.applicationShown")
+    let applicationDidBecomeReadyNotification = Notification.Name("SCEPKitInternal.applicationDidBecomeReady")
     
-    var isApplicationVisible: Bool {
+    var isApplicationReady: Bool {
         return isOnboardingCompleted && isApplicationShown && !SCEPAdManager.shared.willShowAppOpen
     }
 
@@ -343,8 +343,8 @@ class SCEPKitInternal: NSObject {
         }
         isApplicationShown = true
         NotificationCenter.default.post(name: applicationShownNotification, object: nil)
-        if isApplicationVisible {
-            NotificationCenter.default.post(name: applicationDidBecomeVisibleNotification, object: nil)
+        if isApplicationReady {
+            NotificationCenter.default.post(name: applicationDidBecomeReadyNotification, object: nil)
         }
     }
     
@@ -368,8 +368,8 @@ class SCEPKitInternal: NSObject {
         }
         animator.startAnimation()
         NotificationCenter.default.post(name: onboardingCompletedNotification, object: nil)
-        if isApplicationVisible {
-            NotificationCenter.default.post(name: applicationDidBecomeVisibleNotification, object: nil)
+        if isApplicationReady {
+            NotificationCenter.default.post(name: applicationDidBecomeReadyNotification, object: nil)
         }
         trackEvent("[SCEPKit] onboarding_finished")
     }

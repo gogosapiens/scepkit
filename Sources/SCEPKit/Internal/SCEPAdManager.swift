@@ -11,11 +11,7 @@ class SCEPAdManager: NSObject {
     var needsToShowAppOpenOnApplicationShown: Bool = false
     var isLoadingAppOpen: Bool = false
     private var isShowingAppOpen: Bool = false
-    var willShowAppOpen: Bool = false {
-        didSet {
-            print("willShowAppOpen", willShowAppOpen)
-        }
-    }
+    var willShowAppOpen: Bool = false
     var rewardedAdCompletion: ((Bool) -> Void)?
     var rewardedAdDidReward: Bool = false
     var shownRewardedAd: GADRewardedAd?
@@ -66,6 +62,9 @@ class SCEPAdManager: NSObject {
             return
         }
         showAppOpenAd()
+        if SCEPKitInternal.shared.isApplicationReady {
+            NotificationCenter.default.post(SCEPKitInternal.shared.applicationDidBecomeReadyNotification)
+        }
     }
     
     @MainActor @objc func applicationWillResignActive() {
@@ -222,8 +221,8 @@ extension SCEPAdManager: GADFullScreenContentDelegate {
             isShowingAppOpen = false
             willShowAppOpen = false
             NotificationCenter.default.post(Self.appOpenDismissedNotification)
-            if SCEPKitInternal.shared.isApplicationVisible {
-                NotificationCenter.default.post(SCEPKitInternal.shared.applicationDidBecomeVisibleNotification)
+            if SCEPKitInternal.shared.isApplicationReady {
+                NotificationCenter.default.post(SCEPKitInternal.shared.applicationDidBecomeReadyNotification)
             }
         }
     }
@@ -238,8 +237,8 @@ extension SCEPAdManager: GADFullScreenContentDelegate {
             isShowingAppOpen = false
             willShowAppOpen = false
             NotificationCenter.default.post(Self.appOpenDismissedNotification)
-            if SCEPKitInternal.shared.isApplicationVisible {
-                NotificationCenter.default.post(SCEPKitInternal.shared.applicationDidBecomeVisibleNotification)
+            if SCEPKitInternal.shared.isApplicationReady {
+                NotificationCenter.default.post(SCEPKitInternal.shared.applicationDidBecomeReadyNotification)
             }
         } else if ad is GADRewardedAd {
             rewardedAdCompletion?(rewardedAdDidReward)
