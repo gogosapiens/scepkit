@@ -67,8 +67,9 @@ final public class SCEPKit {
         SCEPKitInternal.shared.showSettingsController(from: controller, customActions: customActions)
     }
     
-    @discardableResult @MainActor public static func showInterstitialAd(from controller: UIViewController?, placement: String? = nil) -> Bool {
-        SCEPAdManager.shared.showInterstitialAd(from: controller, placement: placement)
+    /// Returns true if the ad is shown. Calls completion block when the ad was closed or immediately if the ad was skipped due to premium, it not being loaded or if the interstitial period did not pass yet. Boolean in completion block is true if ad was shown.
+    @discardableResult @MainActor public static func showInterstitialAd(from controller: UIViewController?, placement: String? = nil, completion: ((Bool) -> Void)? = nil) -> Bool {
+        SCEPAdManager.shared.showInterstitialAd(from: controller, placement: placement, completion: completion)
     }
     
     @MainActor public static func showRewardedAd(from controller: UIViewController, placement: String? = nil, customLoadingCompletion: ((Bool) -> Void)? = nil, completion: @escaping (Bool) -> Void) {

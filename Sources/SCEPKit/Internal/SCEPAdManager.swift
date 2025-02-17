@@ -17,6 +17,7 @@ class SCEPAdManager: NSObject {
     var shownRewardedAd: GADRewardedAd?
     var bannerAdViews: Set<SCEPBannerAdView> = []
     var shouldIgnoreApplicationDidBecomeActive: Bool = false
+    var interstitialCompletionHandler: ((Bool) -> Void)?
     
     private var interstitial: GADInterstitialAd?
     private var appOpenAd: GADAppOpenAd?
@@ -124,11 +125,15 @@ class SCEPAdManager: NSObject {
             NotificationCenter.default.post(name: Self.appOpenLoadedNotification, object: nil)
         }
     }
-    @MainActor func showInterstitialAd(from viewController: UIViewController? = nil, placement: String?) -> Bool {
-        guard canShowAds else { return false }
+    @MainActor func showInterstitialAd(from viewController: UIViewController? = nil, placement: String?, completion: ((Bool) -> Void)?) -> Bool {
+        guard canShowAds else {
+            completion?(false)
+            return false
+        }
         let interstitialInterval: TimeInterval = config.interstitialInterval ?? 60
         if let interstitial = interstitial {
             if Date() > lastInterstitialShowDate + interstitialInterval {
+                interstitialCompletionHandler = completion
                 Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { [weak viewController] _ in
                     interstitial.present(fromRootViewController: viewController)
                 }
@@ -137,10 +142,12 @@ class SCEPAdManager: NSObject {
                 return true
             } else {
                 logger.info("Interstitial ad skipped due to interval")
+                completion?(false)
                 return false
             }
         } else {
             logger.info("Interstitial ad not loaded")
+            completion?(false)
             return false
         }
     }
@@ -215,6 +222,8 @@ extension SCEPAdManager: GADFullScreenContentDelegate {
         if ad is GADInterstitialAd {
             interstitial = nil
             loadInterstitialAd()
+            interstitialCompletionHandler?(false)
+            interstitialCompletionHandler = nil
         } else if ad is GADAppOpenAd {
             appOpenAd = nil
             loadAppOpenAd()
@@ -231,6 +240,8 @@ extension SCEPAdManager: GADFullScreenContentDelegate {
         if ad is GADInterstitialAd {
             interstitial = nil
             loadInterstitialAd()
+            interstitialCompletionHandler?(true)
+            interstitialCompletionHandler = nil
         } else if ad is GADAppOpenAd {
             appOpenAd = nil
             loadAppOpenAd()
