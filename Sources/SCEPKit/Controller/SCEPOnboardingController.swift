@@ -1,4 +1,5 @@
 import UIKit
+import StoreKit
 
 class SCEPOnboardingController: UIViewController {
     
@@ -37,7 +38,7 @@ class SCEPOnboardingController: UIViewController {
         for (index, constraint) in [page0WidthConstraint, page1WidthConstraint, page2WidthConstraint].enumerated() {
             let isCurrent = index == currentIndex
             constraint?.constant = isCurrent ? design.onboardingSelectedPageWidth : 8
-            pageStackView.arrangedSubviews[index].backgroundColor = isCurrent ? .scepTextColor : .scepShade1
+            pageStackView.arrangedSubviews[index].backgroundColor = isCurrent ? .scepOnboardingTextColor : .scepShade2
         }
         UIView.animate(withDuration: animated ? 0.66 : 0, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0) {
             self.view.layoutIfNeeded()
@@ -52,6 +53,17 @@ class SCEPOnboardingController: UIViewController {
             let slideController = slideController(index: nextSlideIndex)
             showSlideController(slideController, animated: true)
             slideIndex = nextSlideIndex
+            if slideIndex == 2, config.meta.showRateUs ?? false {
+                if #available(iOS 14.0, *) {
+                    if let scene = UIApplication.shared.connectedScenes.first(
+                        where: { $0.activationState == .foregroundActive }
+                    ) as? UIWindowScene {
+                        SKStoreReviewController.requestReview(in: scene)
+                    }
+                } else {
+                    SKStoreReviewController.requestReview()
+                }
+            }
         } else {
             guard let paywallController = SCEPKitInternal.shared.onboardingPaywallController() else {
                 SCEPKitInternal.shared.completeOnboarding()

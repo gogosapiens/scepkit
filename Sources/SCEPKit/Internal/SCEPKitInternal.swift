@@ -442,21 +442,31 @@ class SCEPKitInternal: NSObject {
         amplitude.identify(userProperties: properties)
     }
     
-    private func remoteConfigValue<Type: Decodable>(for key: String) -> Type? {
-        if Type.self == String.self {
-            return RemoteConfig.remoteConfig().configValue(forKey: key).stringValue as? Type
-        } else {
-            let data = RemoteConfig.remoteConfig().configValue(forKey: key).dataValue
-            return try? JSONDecoder().decode(Type.self, from: data)
-        }
+    func remoteConfigValue<Type: Decodable>(for key: String) -> Type? {
+        let configValue = RemoteConfig.remoteConfig().configValue(forKey: key)
+        return decode(Type.self, from: configValue)
     }
     
     private func defaultRemoteConfigValue<Type: Decodable>(for key: String) -> Type? {
-        if Type.self == String.self {
-            return RemoteConfig.remoteConfig().defaultValue(forKey: key)?.stringValue as? Type
+        guard let configValue = RemoteConfig.remoteConfig().defaultValue(forKey: key) else { return nil }
+        return decode(Type.self, from: configValue)
+    }
+    
+    private func decode<Type: Decodable>(_ type: Type.Type, from configValue: RemoteConfigValue) -> Type? {
+        if let value = try? JSONDecoder().decode(Type.self, from: configValue.dataValue) {
+            return value
+        } else if Type.self == String.self {
+            return configValue.stringValue as? Type
+        } else if Type.self == Bool.self {
+            return configValue.boolValue as? Type
+        } else if Type.self == Int.self {
+            return configValue.numberValue.intValue as? Type
+        } else if Type.self == Float.self {
+            return configValue.numberValue.floatValue as? Type
+        } else if Type.self == Double.self {
+            return configValue.numberValue.doubleValue as? Type
         } else {
-            guard let data = RemoteConfig.remoteConfig().defaultValue(forKey: key)?.dataValue else { return nil }
-            return try? JSONDecoder().decode(Type.self, from: data)
+            return nil
         }
     }
     

@@ -7,8 +7,9 @@
 
 import UIKit
 
-extension UIColor {
+public extension UIColor {
     
+    static var scepOnboardingTextColor: UIColor { .scepShade(with: -2) }
     static var scepButtonTextColor: UIColor { .scepShade(with: -1) }
     static var scepTextColor: UIColor { .scepShade(with: 0) }
     static var scepShade1: UIColor { .scepShade(with: 1) }
@@ -18,7 +19,9 @@ extension UIColor {
     static var scepAccent: UIColor { .scepShade(with: 5) }
     
     static func scepShade(with index: Int) -> UIColor {
-        if index == -1 {
+        if index == -2 {
+            return .init(named: "SCEPOnboardingTextColor", in: .main, compatibleWith: nil) ?? .clear
+        } else if index == -1 {
             return .init(named: "SCEPButtonTextColor", in: .main, compatibleWith: nil) ?? .clear
         } else if index == 0 {
             return .init(named: "SCEPTextColor", in: .main, compatibleWith: nil) ?? .clear

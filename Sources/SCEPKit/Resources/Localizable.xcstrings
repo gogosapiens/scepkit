@@ -1198,6 +1198,107 @@
                     }
                 }
             }
+        },
+        "Buy Credits": {
+            "extractionState": "manual",
+            "localizations": {
+                "ru": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Купить кредиты"
+                    }
+                },
+                "fr": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Acheter des crédits"
+                    }
+                },
+                "de": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Credits kaufen"
+                    }
+                },
+                "zh": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "购买积分"
+                    }
+                },
+                "es": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Comprar créditos"
+                    }
+                },
+                "nl": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Credits kopen"
+                    }
+                },
+                "ko": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "크레딧 구입"
+                    }
+                },
+                "ja": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "クレジットを購入"
+                    }
+                },
+                "hi": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "क्रेडिट खरीदें"
+                    }
+                },
+                "pt": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Comprar créditos"
+                    }
+                },
+                "it": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Acquista crediti"
+                    }
+                },
+                "sv": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Köp krediter"
+                    }
+                },
+                "da": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Køb credits"
+                    }
+                },
+                "pl": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "Kup kredyty"
+                    }
+                },
+                "ar": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "شراء الأرصدة"
+                    }
+                },
+                "he": {
+                    "stringUnit": {
+                        "state": "translated",
+                        "value": "קנה קרדיטים"
+                    }
+                }
+            }
         }
     },
     "version" : "1.0"

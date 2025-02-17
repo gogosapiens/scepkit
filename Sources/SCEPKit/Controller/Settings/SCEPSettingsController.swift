@@ -165,14 +165,22 @@ public class SCEPSettingsController: UIViewController {
         if !actions.isEmpty {
             sections.append(.actions(header: nil, actions: actions))
         }
+        let creditsAction = Action(
+            title: "Buy Credits".localized(),
+            image: .init(moduleAssetName: "SettingsCredits")!
+        ) { controller in
+            SCEPKitInternal.shared.showPaywallController(from: self, placement: .main)
+        }
+        let showCredits = SCEPKitInternal.shared.hasCreditsPaywalls && SCEPMonetization.shared.isPremium
         let mainActions: [Action] = [
+            showCredits ? creditsAction : nil,
             .init(title: "Rate us".localized(), image: design.settingsRateImage) { controller in
                 controller.openURL(SCEPKitInternal.shared.reviewURL)
             },
             .init(title: "Feedback".localized(), image: design.settingsFeedbackImage) { controller in
                 controller.openURL(SCEPKitInternal.shared.feedbackURL)
             },
-        ]
+        ].compactMap { $0 }
         sections.append(.actions(header: "MAIN".localized(), actions: mainActions))
         let legalActions: [Action] = [
             .init(title: "Privacy Policy".localized(), image: design.settingsPrivacyImage) { controller in

@@ -100,6 +100,7 @@ struct SCEPConfig: Decodable {
             let imageURL0: URL
             let imageURL1: URL
             let imageURL2: URL
+            let showRateUs: Bool?
         }
     }
     

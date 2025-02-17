@@ -91,6 +91,14 @@ final public class SCEPKit {
     public static func font(ofSize size: CGFloat, weight: UIFont.Weight) -> UIFont {
         SCEPKitInternal.shared.font.uiFont(ofSize: size, weight: weight) ?? .systemFont(ofSize: size, weight: weight)
     }
+    
+    public static func remoteConfigValue<Type: Decodable>(for key: String) -> Type? {
+        return SCEPKitInternal.shared.remoteConfigValue(for: key)
+    }
+    
+    public static func remoteConfigValue<Type: Decodable>(of type: Type.Type, for key: String) -> Type? {
+        return SCEPKitInternal.shared.remoteConfigValue(for: key)
+    }
 }
 
 public enum SCEPPaywallPlacement: Hashable {
