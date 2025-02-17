@@ -57,7 +57,7 @@ SCEPKit поддерживает три модели монетизации:
 Разделяет пользователей на **premium** и **не-premium**:
 - Доступ к premium-контенту через `SCEPKit.isPremium`
 - `SCEPKit.premiumUpdatedNotification` для обновления UI при подписке
-- Вызов подписки через:
+- Доступ к premium-контенту, включая логику проверки статуса юзера:
   ```swift
   SCEPKit.accessPremiumContent(from: controller, placement: "feature_name") {
       // Код отображения premium-контента
@@ -65,7 +65,7 @@ SCEPKit поддерживает три модели монетизации:
   ```
 - Прямой вызов экрана подписки:
   ```swift
-  SCEPKit.showPaywallController(from: controller) {
+  SCEPKit.showPaywallController(from: controller, placement: "feature_name") {
       // Код после успешной подписки
   }
   ```
@@ -76,17 +76,29 @@ SCEPKit поддерживает три модели монетизации:
   ```swift
   SCEPKit.hasCredits(5) // true/false
   ```
-- Покупка контента за кредиты:
+- Доступ к платному контенту, включая логику проверки количества кредитов:
   ```swift
-  SCEPKit.accessCreditsContent(amount: 5, controller: self) { handler in
+  SCEPKit.accessCreditsContent(amount: 5, controller: self, placement: "feature_name") { handler in
       // Код отображения контента
   }
   ```
+- Прямой вызов экрана кредитов:
+  ```swift
+  SCEPKit.showPaywallController(from: controller, placement: "feature_name") {
+      // Код после успешной подписки
+  }
+
 
 #### 3. **Subscription + Credits** (Подписка + Кредиты)
 - Подписка даёт кредиты каждую неделю.
 - Покупка дополнительных кредитов доступна только подписчикам.
 - Работа аналогична модели **Credits**, но подписка необходима для их покупки.
+- Доступ к платному контенту, включая логику проверки статус подписки и количества кредитов:
+  ```swift
+  SCEPKit.accessCreditsContent(amount: 5, controller: self, placement: "feature_name") { handler in
+      // Код отображения контента
+  }
+  ```
 
 ---
 
@@ -94,7 +106,8 @@ SCEPKit поддерживает три модели монетизации:
 SCEPKit поддерживает несколько типов рекламы:
 ### 1. **App Open Ad** (Запуск)
 - Автоматически показывается при запуске или возвращении из фона.
-- Определить, загружено ли приложение: `SCEPKit.isApplicationReady`
+- Определить, загружено ли приложение: `SCEPKit.isApplicationReady`, `SCEPKit.applicationDidBecomeReadyNotification`.
+
 
 ### 2. **Banner Ad** (Баннер)
 ```swift
