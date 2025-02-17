@@ -106,7 +106,7 @@ SCEPKit поддерживает три модели монетизации:
 SCEPKit поддерживает несколько типов рекламы:
 ### 1. **App Open Ad** (Запуск)
 - Автоматически показывается при запуске или возвращении из фона.
-- Определить, загружено ли приложение: `SCEPKit.isApplicationReady`, `SCEPKit.applicationDidBecomeReadyNotification`.
+- Определить, закрыта ли уже реклама: `SCEPKit.isApplicationReady`, `SCEPKit.applicationDidBecomeReadyNotification`.
 
 
 ### 2. **Banner Ad** (Баннер)
