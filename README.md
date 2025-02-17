@@ -151,8 +151,9 @@ SCEPKit.showSettingsController(from: self, customActions: [])
 ### Аналитика, Remote Config, Шрифты, Цвета и Локализация
 - Примеры использования смотрите в [SCEPKit Demo](https://github.com/gogosapiens/scepkit-demo).
 
----
 
+---
+## Прочее
 | Git Branch & SCEPEnvironment | Ad ids prefix | Product ids & Adapty key prefix |
 | ---- | ----- | ---------------- |
 | main | test | test |
