@@ -57,7 +57,7 @@ SCEPKit поддерживает три модели монетизации:
 Разделяет пользователей на **premium** и **не-premium**:
 - Доступ к premium-контенту через `SCEPKit.isPremium`
 - `SCEPKit.premiumUpdatedNotification` для обновления UI при подписке.
-- Доступ к premium-контенту, включая логику проверки статуса юзера:
+- Доступ к premium-контенту, включая логику проверки premium-статуса юзера:
   ```swift
   SCEPKit.accessPremiumContent(from: controller, placement: "feature_name") {
       // Код отображения premium-контента
