@@ -106,9 +106,14 @@ fileprivate class ItemDownloader<Item: DataConvertible & AnyObject> {
         activeRequests[url] = [completion]
         
         func complete(with item: Item?) {
-            DispatchQueue.main.async {
+            if Thread.isMainThread {
                 self.activeRequests[url]?.forEach { $0(item) }
                 self.activeRequests[url] = nil
+            } else {
+                DispatchQueue.main.async {
+                    self.activeRequests[url]?.forEach { $0(item) }
+                    self.activeRequests[url] = nil
+                }
             }
         }
         
