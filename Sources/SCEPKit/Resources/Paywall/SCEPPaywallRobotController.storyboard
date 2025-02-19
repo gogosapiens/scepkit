@@ -35,12 +35,17 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </imageView>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pNr-fE-gFq">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pNr-fE-gFq" customClass="SCEPBackgroundView" customModule="SCEPKit">
                                         <rect key="frame" x="0.0" y="229" width="393" height="100"/>
                                         <color key="backgroundColor" name="SCEPShade4Color"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="100" id="PXX-R7-m7W"/>
                                         </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="shadeIndex">
+                                                <integer key="value" value="4"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -69,12 +74,17 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="wUt-vh-MNU">
                                         <rect key="frame" x="0.0" y="0.0" width="361" height="24"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SCEPPaywallFeature" translatesAutoresizingMaskIntoConstraints="NO" id="6jK-Qk-uvm">
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SCEPPaywallFeature" translatesAutoresizingMaskIntoConstraints="NO" id="6jK-Qk-uvm" customClass="SCEPTemplateImageView" customModule="SCEPKit">
                                                 <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
                                                 <color key="tintColor" name="SCEPTextColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="24" id="ocG-7p-DcK"/>
                                                 </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="shadeIndex">
+                                                        <integer key="value" value="0"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="248" verticalHuggingPriority="251" text="Unlimited chat messages" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="83z-UH-X1E" customClass="SCEPLabel" customModule="SCEPKit">
                                                 <rect key="frame" x="32" y="0.0" width="329" height="24"/>
@@ -90,12 +100,17 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="voy-T8-n5p">
                                         <rect key="frame" x="0.0" y="32" width="361" height="24"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SCEPPaywallFeature" translatesAutoresizingMaskIntoConstraints="NO" id="H8S-Iw-UZ9">
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SCEPPaywallFeature" translatesAutoresizingMaskIntoConstraints="NO" id="H8S-Iw-UZ9" customClass="SCEPTemplateImageView" customModule="SCEPKit">
                                                 <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
                                                 <color key="tintColor" name="SCEPTextColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="24" id="mOw-lk-rFk"/>
                                                 </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="shadeIndex">
+                                                        <integer key="value" value="0"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="248" verticalHuggingPriority="251" text="Fastest GPT model" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="pXx-yd-COc" customClass="SCEPLabel" customModule="SCEPKit">
                                                 <rect key="frame" x="32" y="0.0" width="329" height="24"/>
@@ -111,12 +126,17 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="jmL-nr-nqe">
                                         <rect key="frame" x="0.0" y="64" width="361" height="24"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SCEPPaywallFeature" translatesAutoresizingMaskIntoConstraints="NO" id="zVC-SH-wK6">
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SCEPPaywallFeature" translatesAutoresizingMaskIntoConstraints="NO" id="zVC-SH-wK6" customClass="SCEPTemplateImageView" customModule="SCEPKit">
                                                 <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
                                                 <color key="tintColor" name="SCEPTextColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="24" id="RNK-rd-Y2F"/>
                                                 </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="shadeIndex">
+                                                        <integer key="value" value="0"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="248" verticalHuggingPriority="251" text="Premium AI features" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="xuI-dI-WRC" customClass="SCEPLabel" customModule="SCEPKit">
                                                 <rect key="frame" x="32" y="0.0" width="329" height="24"/>
@@ -132,12 +152,17 @@
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="hFq-Lt-iSs">
                                         <rect key="frame" x="0.0" y="96" width="361" height="24"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SCEPPaywallFeature" translatesAutoresizingMaskIntoConstraints="NO" id="zbF-Xw-MCD">
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SCEPPaywallFeature" translatesAutoresizingMaskIntoConstraints="NO" id="zbF-Xw-MCD" customClass="SCEPTemplateImageView" customModule="SCEPKit">
                                                 <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
                                                 <color key="tintColor" name="SCEPTextColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="24" id="wZq-32-Lrz"/>
                                                 </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="shadeIndex">
+                                                        <integer key="value" value="0"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="248" verticalHuggingPriority="251" text="No more ads" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Msb-19-li8" customClass="SCEPLabel" customModule="SCEPKit">
                                                 <rect key="frame" x="32" y="0.0" width="329" height="24"/>
@@ -540,16 +565,16 @@
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="SCEPShade1Color">
-            <color red="0.36862745098039218" green="0.35686274509803922" blue="0.40000000000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.55686274509803924" green="0.53725490196078429" blue="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="SCEPShade3Color">
-            <color red="0.13725490196078433" green="0.13333333333333333" blue="0.14901960784313725" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.83529411764705885" green="0.80784313725490198" blue="0.89803921568627454" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="SCEPShade4Color">
-            <color red="0.043137254901960784" green="0.043137254901960784" blue="0.047058823529411764" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.92941176470588238" green="0.89803921568627454" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="SCEPTextColor">
-            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.047058823529411764" green="0.047058823529411764" blue="0.050980392156862744" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
