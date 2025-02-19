@@ -96,9 +96,21 @@ extension SCEPConfig.InterfaceStyle.Design {
         case .giornale: return 12
         }
     }
+}
+
+extension SCEPConfig.InterfaceStyle {
     
     var paywallProductCornerRadius: CGFloat {
-        switch self {
+        switch self.design {
+        case .classico: return 16
+        case .salsiccia: return theme == .dark ? 33 : 16
+        case .buratino: return 8
+        case .giornale: return 12
+        }
+    }
+    
+    var paywallLightOverlayCornerRadius: CGFloat {
+        switch self.design {
         case .classico: return 16
         case .salsiccia: return 33
         case .buratino: return 8
@@ -107,9 +119,9 @@ extension SCEPConfig.InterfaceStyle.Design {
     }
     
     var paywallProductLeftPadding: CGFloat {
-        switch self {
+        switch self.design {
         case .classico: return 16
-        case .salsiccia: return 24
+        case .salsiccia: return theme == .dark ? 24 : 16
         case .buratino: return 16
         case .giornale: return 16
         }

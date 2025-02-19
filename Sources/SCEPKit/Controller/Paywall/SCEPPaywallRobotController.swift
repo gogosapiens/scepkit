@@ -57,21 +57,35 @@ class SCEPPaywallRobotController: SCEPPaywallController {
     @IBOutlet weak var privacyButton: SCEPButton!
     @IBOutlet weak var restoreButton: SCEPButton!
     @IBOutlet weak var crossButton: SCEPButton!
+    @IBOutlet weak var featuresStackView: UIStackView!
+    @IBOutlet weak var darkOverlayView: SCEPTemplateImageView!
+    @IBOutlet weak var lightOverlayView: UIView!
+    @IBOutlet weak var lightOverlayHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var darkHeaderConstraint: NSLayoutConstraint!
+    @IBOutlet weak var lightHeaderConstraint: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         if placement == .onboarding {
             continueButton.alpha = 0
         }
+        let style = SCEPKitInternal.shared.config.style
         selectedProductIndex = 0
         trialSwitch.isOn = false
         trialSwitch.onTintColor = .scepAccent
-        trialSwitch.thumbTintColor = .scepTextColor
         trialView.layer.borderColor = UIColor.scepShade2.cgColor
         trialView.layer.borderWidth = 2
-        trialView.layer.cornerRadius = SCEPKitInternal.shared.config.style.design.paywallTrialSwitchCornerRadius
+        trialView.layer.cornerRadius = style.design.paywallTrialSwitchCornerRadius
         trialView.isHidden = trialProducts.allSatisfy { $0 == nil }
         crossButton.alpha = config.meta.crossOpacity
+        
+        darkOverlayView.isHidden = style.theme != .dark
+        lightOverlayView.isHidden = style.theme != .light
+        lightOverlayHeightConstraint.constant = style.paywallLightOverlayCornerRadius
+        lightOverlayView.layer.cornerRadius = style.paywallLightOverlayCornerRadius
+        lightOverlayView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        darkHeaderConstraint.isActive = style.theme == .dark
+        lightHeaderConstraint.isActive = style.theme == .light
         
         setupTexts()
         imageView.image = nil
@@ -85,11 +99,21 @@ class SCEPPaywallRobotController: SCEPPaywallController {
         privacyButton.title = "Privacy".localized()
         restoreButton.title = "Restore".localized()
         continueButton.title = "Continue".localized()
+        
+        addShadow(to: titleLabel)
+        addShadow(to: featuresStackView)
+    }
+    
+    func addShadow(to view: UIView) {
+        view.layer.shadowColor = UIColor.scepShade4.cgColor
+        view.layer.shadowOpacity = 0.2
+        view.layer.shadowRadius = 2
+        view.layer.shadowOffset.height = 2
     }
     
     func setupTexts() {
         titleLabel.text = config.texts.title.localized()
-        titleLabel.styleTextWithBraces()
+        titleLabel.styleTextColorWithBraces()
         let labels = [feature0Label, feature1Label, feature2Label, feature3Label]
         let features = [config.texts.feature0, config.texts.feature1, config.texts.feature2, config.texts.feature3]
         for (label, feature) in zip(labels, features) {

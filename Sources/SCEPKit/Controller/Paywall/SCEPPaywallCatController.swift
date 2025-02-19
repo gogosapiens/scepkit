@@ -54,6 +54,16 @@ class SCEPPaywallCatController: SCEPPaywallController {
     @IBOutlet weak var termsButton: SCEPButton!
     @IBOutlet weak var privacyButton: SCEPButton!
     @IBOutlet weak var restoreButton: SCEPButton!
+    @IBOutlet weak var laurelView: UIView!
+    @IBOutlet weak var featuresView: UIView!
+    @IBOutlet weak var darkContentConstraint: NSLayoutConstraint!
+    @IBOutlet weak var lightContentConstraint: NSLayoutConstraint!
+    @IBOutlet weak var darkHeaderConstraint: NSLayoutConstraint!
+    @IBOutlet weak var lightHeaderConstraint: NSLayoutConstraint!
+    @IBOutlet weak var lightOverlayHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var lightOverlayView: SCEPBackgroundView!
+    @IBOutlet weak var darkOverlayView: SCEPTemplateImageView!
+    @IBOutlet weak var laurelTopConstraint: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,14 +76,25 @@ class SCEPPaywallCatController: SCEPPaywallController {
             crownImageView.startAnimatingGif()
         }
         
+        let style = SCEPKitInternal.shared.config.style
         selectedProductIndex = 0
         trialSwitch.isOn = false
         trialSwitch.onTintColor = .scepAccent
-        trialSwitch.thumbTintColor = .scepTextColor
         trialView.layer.borderColor = UIColor.scepShade2.cgColor
         trialView.layer.borderWidth = 2
-        trialView.layer.cornerRadius = SCEPKitInternal.shared.config.style.design.paywallTrialSwitchCornerRadius
+        trialView.layer.cornerRadius = style.design.paywallTrialSwitchCornerRadius
         trialView.isHidden = trialProduct == nil
+        
+        darkContentConstraint.isActive = style.theme == .dark
+        lightContentConstraint.isActive = style.theme == .light
+        darkHeaderConstraint.isActive = style.theme == .dark
+        lightHeaderConstraint.isActive = style.theme == .light
+        lightOverlayHeightConstraint.constant = style.paywallLightOverlayCornerRadius
+        lightOverlayView.layer.cornerRadius = style.paywallLightOverlayCornerRadius
+        lightOverlayView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        lightOverlayView.isHidden = style.theme != .light
+        darkOverlayView.isHidden = style.theme != .dark
+        laurelTopConstraint.constant = style.theme == .dark ? 26 : 15
         
         setupTexts()
         imageView.image = nil
@@ -88,16 +109,32 @@ class SCEPPaywallCatController: SCEPPaywallController {
         privacyButton.title = "Privacy".localized()
         restoreButton.title = "Restore".localized()
         continueButton.title = "Continue".localized()
+        
+        addShadow(to: titleLabel)
+        addShadow(to: laurelView)
+        addShadow(to: featuresView)
+        addShadow(to: priceLabel)
+    }
+    
+    func addShadow(to view: UIView) {
+        view.layer.shadowColor = UIColor.scepShade4.cgColor
+        view.layer.shadowOpacity = 0.2
+        view.layer.shadowRadius = 2
+        view.layer.shadowOffset.height = 2
     }
     
     func setupTexts() {
         titleLabel.text = config.texts.title.localized()
+        titleLabel.styleTextColorWithBraces()
         laurelLabel.text = config.texts.laurel.localized()
+        laurelLabel.font = SCEPKitInternal.shared.font(ofSize: 14, weight: .medium)
+        laurelLabel.styleTextFontWithBraces(SCEPKitInternal.shared.font(ofSize: 14, weight: .bold))
         let labels = [feature0Label, feature1Label, feature2Label, feature3Label]
         let features = [config.texts.feature0, config.texts.feature1, config.texts.feature2, config.texts.feature3]
         for (label, feature) in zip(labels, features) {
             label?.text = feature.localized()
-            label?.styleTextWithBraces()
+            label?.font = SCEPKitInternal.shared.font(ofSize: 18, weight: .regular)
+            label?.styleTextFontWithBraces(SCEPKitInternal.shared.font(ofSize: 18, weight: .bold))
         }
     }
     

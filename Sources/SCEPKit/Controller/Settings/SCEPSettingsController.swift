@@ -18,7 +18,7 @@ public class SCEPSettingsController: UIViewController {
     var actions: [Action] = []
     private var player: AVPlayer?
     
-    var design: SCEPConfig.InterfaceStyle.Design { SCEPKitInternal.shared.config.style.design }
+    var style: SCEPConfig.InterfaceStyle { SCEPKitInternal.shared.config.style }
 
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var closeButton: UIButton!
@@ -174,19 +174,19 @@ public class SCEPSettingsController: UIViewController {
         let showCredits = SCEPKitInternal.shared.hasCreditsPaywalls && SCEPMonetization.shared.isPremium
         let mainActions: [Action] = [
             showCredits ? creditsAction : nil,
-            .init(title: "Rate us".localized(), image: design.settingsRateImage) { controller in
+            .init(title: "Rate us".localized(), image: style.design.settingsRateImage) { controller in
                 controller.openURL(SCEPKitInternal.shared.reviewURL)
             },
-            .init(title: "Feedback".localized(), image: design.settingsFeedbackImage) { controller in
+            .init(title: "Feedback".localized(), image: style.design.settingsFeedbackImage) { controller in
                 controller.openURL(SCEPKitInternal.shared.feedbackURL)
             },
         ].compactMap { $0 }
         sections.append(.actions(header: "MAIN".localized(), actions: mainActions))
         let legalActions: [Action] = [
-            .init(title: "Privacy Policy".localized(), image: design.settingsPrivacyImage) { controller in
+            .init(title: "Privacy Policy".localized(), image: style.design.settingsPrivacyImage) { controller in
                 controller.openURL(SCEPKitInternal.shared.privacyURL)
             },
-            .init(title: "Terms of Use".localized(), image: design.settingsTermsImage) { controller in
+            .init(title: "Terms of Use".localized(), image: style.design.settingsTermsImage) { controller in
                 controller.openURL(SCEPKitInternal.shared.termsURL)
             },
         ]
@@ -283,7 +283,7 @@ extension SCEPSettingsController: UICollectionViewDelegateFlowLayout {
         let width = collectionView.frame.width - layout.sectionInset.left - layout.sectionInset.right
         switch sections[indexPath.section] {
         case .banner:
-            return .init(width: width, height: 360)
+            return .init(width: width, height: style.isSettingsBannerVertical ? 456 : 360)
         case .actions:
             return .init(width: width, height: 56)
         }

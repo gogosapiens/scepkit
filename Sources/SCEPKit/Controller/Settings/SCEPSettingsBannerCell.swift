@@ -22,18 +22,20 @@ class SCEPSettingsBannerCell: SCEPAnimatedCollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        let design = SCEPKitInternal.shared.config.style.design
+        let style = SCEPKitInternal.shared.config.style
         let config = SCEPKitInternal.shared.config.settings
         let texts = config.texts
         
         bannerButton.title = "Get started".localized()
         
         bannerTitleLabel.text = texts.title.localized()
-        bannerTitleLabel.styleTextWithBraces()
+        bannerTitleLabel.styleTextColorWithBraces()
         bannerTitleLabel.numberOfLines = texts.subtitle == nil ? 0 : 1
+        bannerTitleLabel.textAlignment = style.isSettingsBannerVertical ? .center : .left
         bannerSubtitleLabel.text = texts.subtitle?.localized()
         bannerSubtitleLabel.alpha = 0.8
         bannerSubtitleLabel.isHidden = texts.subtitle == nil
+        bannerSubtitleLabel.textAlignment = style.isSettingsBannerVertical ? .center : .left
         let featureLabels: [SCEPLabel] = [bannerFeature0Label!, bannerFeature1Label!, bannerFeature2Label!, bannerFeature3Label!]
         let featureTexts = [texts.feature0, texts.feature1, texts.feature2, texts.feature3]
         for (label, text) in zip(featureLabels, featureTexts) {
@@ -41,9 +43,11 @@ class SCEPSettingsBannerCell: SCEPAnimatedCollectionViewCell {
         }
         bannerImageView.image = .init(named: "SCEPAppIcon")
         
-        layer.cornerRadius = design.settingsBannerCornerRadius
+        layer.cornerRadius = style.design.settingsBannerCornerRadius
         bannerTopStackView.removeArrangedSubview(bannerImageView)
-        bannerTopStackView.insertArrangedSubview(bannerImageView, at: design.settingsImageIndex)
+        bannerTopStackView.insertArrangedSubview(bannerImageView, at: style.design.settingsImageIndex)
+        bannerTopStackView.axis = style.isSettingsBannerVertical ? .vertical : .horizontal
+        bannerTopStackView.alignment = .center
     }
 }
 
@@ -65,5 +69,12 @@ fileprivate extension SCEPConfig.InterfaceStyle.Design {
         case .buratino: return 0
         case .giornale: return 0
         }
+    }
+}
+
+extension SCEPConfig.InterfaceStyle {
+    
+    var isSettingsBannerVertical: Bool {
+        return design == .giornale && theme == .light
     }
 }

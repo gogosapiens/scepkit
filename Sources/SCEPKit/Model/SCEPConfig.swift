@@ -146,6 +146,11 @@ struct SCEPConfig: Decodable {
             theme = .init(rawValue: String(components[1]))!
         }
         
+        init(design: Design, theme: Theme) {
+            self.design = design
+            self.theme = theme
+        }
+        
         var uiUserInterfaceStyle: UIUserInterfaceStyle {
             switch theme {
             case .dark:

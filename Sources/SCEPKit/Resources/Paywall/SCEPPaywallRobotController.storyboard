@@ -17,28 +17,41 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" verticalHuggingPriority="240" translatesAutoresizingMaskIntoConstraints="NO" id="nRv-G6-QA9">
-                                <rect key="frame" x="0.0" y="0.0" width="393" height="336"/>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="240" translatesAutoresizingMaskIntoConstraints="NO" id="nRv-G6-QA9">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="245"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="240" translatesAutoresizingMaskIntoConstraints="NO" id="JCZ-67-aYL">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="336"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="245"/>
                                     </imageView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="240" image="SCEPPaywallVerticalOverlay" translatesAutoresizingMaskIntoConstraints="NO" id="R4M-oD-ruc" customClass="SCEPTemplateImageView" customModule="SCEPKit">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="336"/>
+                                        <rect key="frame" x="0.0" y="-14" width="393" height="259"/>
                                         <color key="tintColor" name="SCEPShade4Color"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="259" id="XkM-Xx-SSY"/>
+                                        </constraints>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="shadeIndex">
                                                 <integer key="value" value="4"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </imageView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pNr-fE-gFq">
+                                        <rect key="frame" x="0.0" y="229" width="393" height="100"/>
+                                        <color key="backgroundColor" name="SCEPShade4Color"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="100" id="PXX-R7-m7W"/>
+                                        </constraints>
+                                    </view>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="pNr-fE-gFq" secondAttribute="top" constant="16" id="08j-bL-Ht5"/>
+                                    <constraint firstAttribute="width" secondItem="nRv-G6-QA9" secondAttribute="height" multiplier="375:428" priority="750" id="3ha-2X-imP"/>
                                     <constraint firstAttribute="bottom" secondItem="R4M-oD-ruc" secondAttribute="bottom" id="BbM-cn-xbK"/>
                                     <constraint firstAttribute="trailing" secondItem="R4M-oD-ruc" secondAttribute="trailing" id="Czw-BM-KvY"/>
                                     <constraint firstAttribute="bottom" secondItem="JCZ-67-aYL" secondAttribute="bottom" id="Ebe-ei-GeG"/>
-                                    <constraint firstItem="R4M-oD-ruc" firstAttribute="top" secondItem="nRv-G6-QA9" secondAttribute="top" id="NNN-MG-nix"/>
+                                    <constraint firstAttribute="trailing" secondItem="pNr-fE-gFq" secondAttribute="trailing" id="JTo-kJ-4UI"/>
+                                    <constraint firstItem="pNr-fE-gFq" firstAttribute="leading" secondItem="nRv-G6-QA9" secondAttribute="leading" id="Oi2-wl-eal"/>
                                     <constraint firstAttribute="trailing" secondItem="JCZ-67-aYL" secondAttribute="trailing" id="PYu-dK-zH2"/>
                                     <constraint firstItem="JCZ-67-aYL" firstAttribute="leading" secondItem="nRv-G6-QA9" secondAttribute="leading" id="R31-Ft-FQq"/>
                                     <constraint firstItem="R4M-oD-ruc" firstAttribute="leading" secondItem="nRv-G6-QA9" secondAttribute="leading" id="vYs-HQ-2O0"/>
@@ -158,7 +171,7 @@
                                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1fB-go-aI2">
                                                         <rect key="frame" x="280" y="8.6666666666666856" width="51" height="31"/>
                                                         <color key="onTintColor" name="SCEPAccentColor"/>
-                                                        <color key="thumbTintColor" name="SCEPShade0Color"/>
+                                                        <color key="thumbTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <connections>
                                                             <action selector="trialSwitchValueChanged:" destination="Y6W-OH-hqX" eventType="valueChanged" id="GNw-sO-yds"/>
                                                         </connections>
@@ -469,9 +482,9 @@
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="UK9-ss-RUG" secondAttribute="trailing" constant="16" id="RmY-7X-LQF"/>
                             <constraint firstItem="nRv-G6-QA9" firstAttribute="leading" secondItem="5EZ-qb-Rvc" secondAttribute="leading" id="Slp-Pz-POG"/>
                             <constraint firstItem="x77-PA-XVR" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="UsQ-pO-CT3"/>
-                            <constraint firstItem="UK9-ss-RUG" firstAttribute="bottom" secondItem="nRv-G6-QA9" secondAttribute="bottom" id="VRV-eU-bqi"/>
                             <constraint firstItem="UK9-ss-RUG" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="Wjf-Bz-12M"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="quU-kN-ayM" secondAttribute="trailing" constant="42" id="ZEX-9j-pbc"/>
+                            <constraint firstItem="UK9-ss-RUG" firstAttribute="top" secondItem="pNr-fE-gFq" secondAttribute="top" constant="16" id="g6t-lL-Dfz"/>
                             <constraint firstAttribute="trailing" secondItem="nRv-G6-QA9" secondAttribute="trailing" id="hGn-hL-gqA"/>
                             <constraint firstItem="SLd-Vz-J81" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="mss-gZ-VGq"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="uI7-w9-o2g" secondAttribute="trailing" id="oeU-o1-HhW"/>
@@ -488,11 +501,17 @@
                         <outlet property="cancelAnytimeLabel" destination="jTf-id-TSR" id="fbi-je-0zP"/>
                         <outlet property="continueButton" destination="SLd-Vz-J81" id="Hq7-gZ-QnI"/>
                         <outlet property="crossButton" destination="uI7-w9-o2g" id="vLA-8h-z96"/>
+                        <outlet property="darkHeaderConstraint" destination="3ha-2X-imP" id="PlN-sA-l2T"/>
+                        <outlet property="darkOverlayView" destination="R4M-oD-ruc" id="Z8e-Ou-OnJ"/>
                         <outlet property="feature0Label" destination="83z-UH-X1E" id="pb0-Xi-0Oo"/>
                         <outlet property="feature1Label" destination="pXx-yd-COc" id="OlS-R9-ohH"/>
                         <outlet property="feature2Label" destination="xuI-dI-WRC" id="MOC-ys-BSh"/>
                         <outlet property="feature3Label" destination="Msb-19-li8" id="pzA-wL-hbK"/>
+                        <outlet property="featuresStackView" destination="CkJ-RG-rGE" id="eXY-UF-a1R"/>
                         <outlet property="imageView" destination="JCZ-67-aYL" id="8FL-24-MF6"/>
+                        <outlet property="lightHeaderConstraint" destination="g6t-lL-Dfz" id="aP0-W2-Fb0"/>
+                        <outlet property="lightOverlayHeightConstraint" destination="08j-bL-Ht5" id="luM-vw-KFE"/>
+                        <outlet property="lightOverlayView" destination="pNr-fE-gFq" id="eKf-Th-9wS"/>
                         <outlet property="privacyButton" destination="M96-sB-f78" id="Fvc-vW-IDk"/>
                         <outlet property="restoreButton" destination="Vrv-th-AGX" id="kxm-x0-sBy"/>
                         <outlet property="tableView" destination="R18-7W-ehU" id="ce6-2L-IjE"/>
@@ -513,24 +532,24 @@
         <image name="SCEPPaywallBadgeShadowMask" width="200" height="33.333332061767578"/>
         <image name="SCEPPaywallClose" width="24" height="24"/>
         <image name="SCEPPaywallFeature" width="24" height="24.333333969116211"/>
-        <image name="SCEPPaywallVerticalOverlay" width="375" height="300"/>
+        <image name="SCEPPaywallVerticalOverlay" width="375" height="259"/>
         <namedColor name="SCEPAccentColor">
-            <color red="0.47450980392156861" green="0.24705882352941178" blue="0.99215686274509807" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.41568627450980394" green="0.21176470588235294" blue="0.89803921568627454" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="SCEPShade0Color">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="SCEPShade1Color">
-            <color red="0.36862745098039218" green="0.35686274509803922" blue="0.40000000000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.55686274509803924" green="0.53725490196078429" blue="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="SCEPShade3Color">
-            <color red="0.13725490196078433" green="0.13333333333333333" blue="0.14901960784313725" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.83529411764705885" green="0.80784313725490198" blue="0.89803921568627454" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="SCEPShade4Color">
-            <color red="0.043137254901960784" green="0.043137254901960784" blue="0.047058823529411764" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.92941176470588238" green="0.89803921568627454" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="SCEPTextColor">
-            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.047058823529411764" green="0.047058823529411764" blue="0.050980392156862744" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

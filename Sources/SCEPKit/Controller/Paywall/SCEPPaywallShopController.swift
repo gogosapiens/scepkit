@@ -161,7 +161,7 @@ extension SCEPConfig.InterfaceStyle.Design {
     var paywallShopImageCornerRadius: CGFloat {
         switch self {
         case .classico: return 16
-        case .salsiccia: return 32
+        case .salsiccia: return 24
         case .buratino: return 8
         case .giornale: return 12
         }

@@ -17,14 +17,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nqc-6d-eDF" userLabel="Image Container">
-                                <rect key="frame" x="0.0" y="0.0" width="393" height="605"/>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nqc-6d-eDF" userLabel="Image Container">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NH5-qA-igJ">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="605"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                                     </imageView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SCEPOnboardingSlideOverlay-giornale" translatesAutoresizingMaskIntoConstraints="NO" id="P3k-fa-M4R" customClass="SCEPTemplateImageView" customModule="SCEPKit">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="605"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                                         <color key="tintColor" name="SCEPShade4Color"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="shadeIndex">
@@ -44,11 +44,8 @@
                                     <constraint firstItem="P3k-fa-M4R" firstAttribute="leading" secondItem="Nqc-6d-eDF" secondAttribute="leading" id="pSZ-VV-5sa"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Headline about something important" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MNC-Ku-PSb" customClass="SCEPLabel" customModule="SCEPKit">
-                                <rect key="frame" x="20" y="481" width="353" height="100"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="100" id="plb-7C-Fmj"/>
-                                </constraints>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Headline about something important" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MNC-Ku-PSb" customClass="SCEPLabel" customModule="SCEPKit">
+                                <rect key="frame" x="24" y="59.000000000000007" width="345" height="76.666666666666686"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="32"/>
                                 <color key="textColor" name="SCEPTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -65,7 +62,7 @@
                                     <constraint firstAttribute="height" constant="48" id="n0A-K8-5zI"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" alpha="0.0" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="btg-un-Xe2" customClass="SCEPMainButton" customModule="SCEPKit">
+                            <button opaque="NO" alpha="0.0" contentMode="scaleToFill" verticalHuggingPriority="999" verticalCompressionResistancePriority="999" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="btg-un-Xe2" customClass="SCEPMainButton" customModule="SCEPKit">
                                 <rect key="frame" x="16" y="698" width="361" height="56"/>
                                 <constraints>
                                     <constraint firstAttribute="height" priority="999" constant="56" id="yty-I4-0Xb"/>
@@ -77,22 +74,25 @@
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" name="SCEPShade4Color"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="Nqc-6d-eDF" secondAttribute="bottom" priority="999" id="AI9-lr-Nz5"/>
-                            <constraint firstItem="Nqc-6d-eDF" firstAttribute="bottom" secondItem="MNC-Ku-PSb" secondAttribute="bottom" priority="752" constant="24" id="Fk9-yE-emf"/>
+                            <constraint firstItem="MNC-Ku-PSb" firstAttribute="top" secondItem="Nqc-6d-eDF" secondAttribute="bottom" priority="998" constant="24" id="6jx-Gg-clb"/>
                             <constraint firstItem="btg-un-Xe2" firstAttribute="top" secondItem="74t-qD-Urx" secondAttribute="bottom" id="GJD-pG-rfz"/>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="MNC-Ku-PSb" secondAttribute="trailing" constant="20" id="Gur-OJ-aJk"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="MNC-Ku-PSb" secondAttribute="trailing" constant="24" id="Gur-OJ-aJk"/>
                             <constraint firstItem="Nqc-6d-eDF" firstAttribute="top" secondItem="5EZ-qb-Rvc" secondAttribute="top" id="KXr-Iz-wNX"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="btg-un-Xe2" secondAttribute="bottom" constant="64" id="OXZ-Yt-UZg"/>
-                            <constraint firstItem="MNC-Ku-PSb" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="WBG-lS-hce"/>
+                            <constraint firstItem="Nqc-6d-eDF" firstAttribute="bottom" secondItem="MNC-Ku-PSb" secondAttribute="bottom" priority="998" constant="24" id="SBV-uP-c9p"/>
+                            <constraint firstItem="Nqc-6d-eDF" firstAttribute="top" secondItem="MNC-Ku-PSb" secondAttribute="bottom" priority="998" constant="20" id="Vyp-Uz-Gre"/>
+                            <constraint firstItem="MNC-Ku-PSb" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="24" id="WBG-lS-hce"/>
                             <constraint firstItem="btg-un-Xe2" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="WWy-Q2-75M"/>
-                            <constraint firstItem="MNC-Ku-PSb" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" priority="750" constant="50" id="cIa-gs-OIc"/>
+                            <constraint firstItem="MNC-Ku-PSb" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="cIa-gs-OIc"/>
+                            <constraint firstAttribute="bottom" secondItem="Nqc-6d-eDF" secondAttribute="bottom" id="cpb-Nu-Ju1"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="74t-qD-Urx" secondAttribute="trailing" constant="16" id="fuK-V1-WbV"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="btg-un-Xe2" secondAttribute="trailing" constant="16" id="hB8-Mz-i72"/>
-                            <constraint firstItem="Nqc-6d-eDF" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="hOo-VB-oup"/>
-                            <constraint firstItem="74t-qD-Urx" firstAttribute="top" secondItem="Nqc-6d-eDF" secondAttribute="bottom" constant="45" id="kMU-Oq-nzU"/>
-                            <constraint firstItem="74t-qD-Urx" firstAttribute="top" secondItem="MNC-Ku-PSb" secondAttribute="bottom" priority="751" constant="8" id="rhp-vJ-93T"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="Nqc-6d-eDF" secondAttribute="trailing" id="hOo-VB-oup"/>
+                            <constraint firstItem="btg-un-Xe2" firstAttribute="top" secondItem="Nqc-6d-eDF" secondAttribute="bottom" priority="998" constant="24" id="rkk-Sw-EAN"/>
+                            <constraint firstItem="74t-qD-Urx" firstAttribute="top" secondItem="MNC-Ku-PSb" secondAttribute="bottom" priority="998" constant="16" id="sUy-Uj-NmY"/>
                             <constraint firstItem="Nqc-6d-eDF" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="tSg-2Y-YJa"/>
                             <constraint firstItem="74t-qD-Urx" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="u3g-nK-vur"/>
+                            <constraint firstItem="74t-qD-Urx" firstAttribute="top" secondItem="MNC-Ku-PSb" secondAttribute="bottom" priority="998" constant="32" id="xCp-XJ-bnN"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="number" keyPath="shadeIndex">
@@ -101,12 +101,19 @@
                         </userDefinedRuntimeAttributes>
                     </view>
                     <connections>
-                        <outlet property="imageLargeConstraint" destination="AI9-lr-Nz5" id="Tan-qJ-U5f"/>
-                        <outlet property="imageSmallConstraint" destination="kMU-Oq-nzU" id="ggd-gi-SG7"/>
+                        <outlet property="imageBottomButtonTopConstraint" destination="rkk-Sw-EAN" id="NOJ-aX-swo"/>
+                        <outlet property="imageBottomScreenBottomConstraint" destination="cpb-Nu-Ju1" id="4kh-xf-e67"/>
+                        <outlet property="imageBottomTitleBottomConstraint" destination="SBV-uP-c9p" id="y9l-bR-GS4"/>
+                        <outlet property="imageBottomTitleTopConstraint" destination="6jx-Gg-clb" id="vvm-9f-30k"/>
+                        <outlet property="imageContainerView" destination="Nqc-6d-eDF" id="iVH-vC-sO4"/>
+                        <outlet property="imagePaddingLeftConstraint" destination="tSg-2Y-YJa" id="B7i-8a-XrE"/>
+                        <outlet property="imagePaddingRightConstraint" destination="hOo-VB-oup" id="cQJ-fd-RMR"/>
+                        <outlet property="imageTopScreenTopConstraint" destination="KXr-Iz-wNX" id="rjb-g5-ofL"/>
+                        <outlet property="imageTopTitleBottomConstraint" destination="Vyp-Uz-Gre" id="ejA-Q4-VQM"/>
                         <outlet property="imageView" destination="NH5-qA-igJ" id="dLj-hH-xYB"/>
                         <outlet property="overlayImageView" destination="P3k-fa-M4R" id="MDe-OH-qwK"/>
-                        <outlet property="titleBottomConstraint" destination="rhp-vJ-93T" id="cHn-eQ-4DL"/>
-                        <outlet property="titleImageBottomConstraint" destination="Fk9-yE-emf" id="1ka-es-NSc"/>
+                        <outlet property="titleBottomConstraint" destination="sUy-Uj-NmY" id="bnB-NC-0eq"/>
+                        <outlet property="titleImageBottomConstraint" destination="xCp-XJ-bnN" id="Gl2-te-EJQ"/>
                         <outlet property="titleLabel" destination="MNC-Ku-PSb" id="99U-1x-XpY"/>
                         <outlet property="titleTopConstraint" destination="cIa-gs-OIc" id="PpS-Pf-6OZ"/>
                     </connections>
@@ -117,12 +124,12 @@
         </scene>
     </scenes>
     <resources>
-        <image name="SCEPOnboardingSlideOverlay-giornale" width="375" height="579"/>
+        <image name="SCEPOnboardingSlideOverlay-giornale" width="375" height="619"/>
         <namedColor name="SCEPShade4Color">
-            <color red="0.047058823529411764" green="0.043137254901960784" blue="0.043137254901960784" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.92941176470588238" green="0.89803921568627454" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="SCEPTextColor">
-            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.047058823529411764" green="0.047058823529411764" blue="0.050980392156862744" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

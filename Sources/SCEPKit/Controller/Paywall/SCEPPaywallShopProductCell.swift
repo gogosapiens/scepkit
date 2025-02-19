@@ -19,13 +19,17 @@ class SCEPPaywallShopProductCell: UICollectionViewCell {
         badgeView.layer.maskedCorners = .layerMinXMaxYCorner
         badgeView.layer.cornerRadius = 8
         
-        let design = SCEPKitInternal.shared.config.style.design
-        contentView.layer.cornerRadius = design.paywallShopProductCornerRadius
+        let style = SCEPKitInternal.shared.config.style
+        contentView.layer.cornerRadius = style.design.paywallShopProductCornerRadius
         contentView.layer.borderColor = UIColor.scepShade2.cgColor
-        buttonView.layer.cornerRadius = design.paywallShopProductButtonCornerRadius
-        badgeTrailingConstraint.constant = design.paywallShopProductButtonBadgeLeadingPadding
+        badgeTrailingConstraint.constant = style.design.paywallShopProductButtonBadgeLeadingPadding
+        buttonView.layer.cornerRadius = style.design.paywallShopProductButtonCornerRadius
+        buttonView.layer.borderColor = UIColor.scepShade1.cgColor
+        buttonView.layer.borderWidth = style.theme == .light ? 1 : 0
+        buttonView.shadeIndex = style.theme == .light ? 4 : 2
+        buttonView.backgroundColor = .scepShade(with: buttonView.shadeIndex)
 
-        borderView.layer.cornerRadius = design.paywallShopProductCornerRadius
+        borderView.layer.cornerRadius = style.design.paywallShopProductCornerRadius
         borderView.layer.borderColor = UIColor.scepShade2.cgColor
         borderView.layer.borderWidth = 2
         
@@ -39,7 +43,7 @@ extension SCEPConfig.InterfaceStyle.Design {
     var paywallShopProductCornerRadius: CGFloat {
         switch self {
         case .classico: return 16
-        case .salsiccia: return 32
+        case .salsiccia: return 24
         case .buratino: return 8
         case .giornale: return 12
         }
