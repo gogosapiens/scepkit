@@ -159,7 +159,8 @@ public class SCEPSettingsController: UIViewController {
     
     var sections: [Section] {
         var sections: [Section] = []
-        if !SCEPMonetization.shared.isPremium || !SCEPKitInternal.shared.hasPremiumPaywalls {
+        let isShowingBanner = SCEPKitInternal.shared.hasPremiumPaywalls && !SCEPMonetization.shared.isPremium
+        if isShowingBanner {
             sections.append(.banner)
         }
         if !actions.isEmpty {
@@ -171,7 +172,7 @@ public class SCEPSettingsController: UIViewController {
         ) { controller in
             SCEPKitInternal.shared.showPaywallController(from: self, placement: .main)
         }
-        let showCredits = SCEPKitInternal.shared.hasCreditsPaywalls && SCEPMonetization.shared.isPremium
+        let showCredits = SCEPKitInternal.shared.hasCreditsPaywalls && !isShowingBanner
         let mainActions: [Action] = [
             showCredits ? creditsAction : nil,
             .init(title: "Rate us".localized(), image: style.design.settingsRateImage) { controller in

@@ -50,7 +50,7 @@ class SCEPKitInternal: NSObject {
     }
     
     var hasPremiumPaywalls: Bool {
-        config.monetization.placements.values.contains(where: { $0.hasCredits })
+        config.monetization.placements.values.contains(where: { $0.hasPremium })
     }
     
     @MainActor func launch(rootViewController: UIViewController) {
@@ -276,7 +276,7 @@ class SCEPKitInternal: NSObject {
         let paywallId: String
         switch SCEPMonetization.shared.premuimStatus {
         case .free:
-            paywallId = placementConfig.premium ?? placementConfig.credits!
+            paywallId = placementConfig.premium ?? placementConfig.noTrialPremium ?? placementConfig.credits!
         case .trial:
             paywallId = placementConfig.noTrialPremium ?? placementConfig.credits!
         case .paid:
