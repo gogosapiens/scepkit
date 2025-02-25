@@ -400,7 +400,7 @@ class SCEPKitInternal: NSObject {
         }
     }
     
-    func accessCreditsContent(amount: Int, from controller: UIViewController, placement: SCEPPaywallPlacement, handler: @escaping (SCEPCreditsChargeHandler) -> Void) {
+    func accessCreditsContent(amount: Int, from controller: UIViewController, placement: SCEPPaywallPlacement, handler: @escaping (@escaping SCEPCreditsChargeHandler) -> Void) {
         guard hasCreditsPaywalls else {
             let alert = UIAlertController(title: "Error", message: "This app does not support credits content", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default))

@@ -54,7 +54,7 @@ final public class SCEPKit {
         SCEPKitInternal.shared.accessPremiumContent(from: controller, placement: placement, handler: handler)
     }
     
-    public static func accessCreditsContent(amount: Int, controller: UIViewController, placement: String? = nil, handler: @escaping (SCEPCreditsChargeHandler) -> Void) {
+    public static func accessCreditsContent(amount: Int, controller: UIViewController, placement: String? = nil, handler: @escaping (@escaping SCEPCreditsChargeHandler) -> Void) {
         let placement = placement.map(SCEPPaywallPlacement.custom) ?? .main
         SCEPKitInternal.shared.accessCreditsContent(amount: amount, from: controller, placement: placement, handler: handler)
     }
