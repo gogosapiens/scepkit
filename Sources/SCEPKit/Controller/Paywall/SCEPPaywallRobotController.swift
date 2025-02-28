@@ -16,7 +16,7 @@ class SCEPPaywallRobotController: SCEPPaywallController {
         }
         struct Meta: Codable {
             let imageURL: URL
-            let crossOpacity: Double
+            let crossOpacity: Double?
         }
     }
     var config: Config!
@@ -77,7 +77,7 @@ class SCEPPaywallRobotController: SCEPPaywallController {
         trialView.layer.borderWidth = 2
         trialView.layer.cornerRadius = style.design.paywallTrialSwitchCornerRadius
         trialView.isHidden = trialProducts.allSatisfy { $0 == nil }
-        crossButton.alpha = config.meta.crossOpacity
+        crossButton.alpha = config.meta.crossOpacity ?? 0.5
         
         darkOverlayView.isHidden = style.theme != .dark
         lightOverlayView.isHidden = style.theme != .light

@@ -18,6 +18,7 @@ class SCEPPaywallShopController: SCEPPaywallController {
         struct Texts: Codable { }
         struct Meta: Codable {
             let imageURL: URL
+            let crossOpacity: Double?
         }
     }
     var config: Config!
@@ -33,6 +34,7 @@ class SCEPPaywallShopController: SCEPPaywallController {
     @IBOutlet weak var termsButton: SCEPButton!
     @IBOutlet weak var privacyButton: SCEPButton!
     @IBOutlet weak var restoreButton: SCEPButton!
+    @IBOutlet weak var crossButton: SCEPButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,6 +48,7 @@ class SCEPPaywallShopController: SCEPPaywallController {
         termsButton.title = "Terms".localized()
         privacyButton.title = "Privacy".localized()
         restoreButton.title = "Restore".localized()
+        crossButton.alpha = config.meta.crossOpacity ?? 1
         
         balanceLabel.text = SCEPMonetization.shared.credits.formatted()
         

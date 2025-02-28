@@ -99,6 +99,10 @@ final public class SCEPKit {
     public static func remoteConfigValue<Type: Decodable>(of type: Type.Type, for key: String) -> Type? {
         return SCEPKitInternal.shared.remoteConfigValue(for: key)
     }
+    
+    public static func ignoreApplicationDidBecomeActive(for duration: TimeInterval) {
+        SCEPAdManager.shared.ignoreApplicationDidBecomeActive(for: duration)
+    }
 }
 
 public enum SCEPPaywallPlacement: Hashable {

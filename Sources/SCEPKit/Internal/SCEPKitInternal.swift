@@ -207,8 +207,7 @@ class SCEPKitInternal: NSObject {
                     }
                 }
             }
-            let placement = config.monetization.placements[SCEPPaywallPlacement.onboarding.id]
-            let paywallIds = placement?.all ?? []
+            let paywallIds = config.monetization.placements[SCEPPaywallPlacement.onboarding.id]?.all ?? []
             let paywallImageURLs = Set(paywallIds.flatMap { config.monetization.paywalls[$0]!.imageURLs })
             for imageURL in paywallImageURLs {
                 group.enter()
@@ -322,12 +321,14 @@ class SCEPKitInternal: NSObject {
     }
     
     func onboardingPaywallController() -> SCEPPaywallController? {
-        if config.monetization.placements[SCEPPaywallPlacement.onboarding.id]!.credits != nil || !SCEPMonetization.shared.isPremium {
-            let config = paywallConfig(for: .onboarding)
-            return paywallController(config: config, placement: .onboarding, successHandler: nil)
-        } else {
+        guard
+            let placement = config.monetization.placements[SCEPPaywallPlacement.onboarding.id],
+            placement.hasCredits || !SCEPMonetization.shared.isPremium
+        else {
             return nil
         }
+        let config = paywallConfig(for: .onboarding)
+        return paywallController(config: config, placement: .onboarding, successHandler: nil)
     }
     
     func showSettingsController(from controller: UIViewController, customActions: [SCEPSettingsController.Action]) {

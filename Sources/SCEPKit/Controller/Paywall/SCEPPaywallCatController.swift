@@ -18,6 +18,7 @@ class SCEPPaywallCatController: SCEPPaywallController {
         }
         struct Meta: Codable {
             let imageURL: URL
+            let crossOpacity: Double?
         }
     }
     var config: Config!
@@ -64,6 +65,7 @@ class SCEPPaywallCatController: SCEPPaywallController {
     @IBOutlet weak var lightOverlayView: SCEPBackgroundView!
     @IBOutlet weak var darkOverlayView: SCEPTemplateImageView!
     @IBOutlet weak var laurelTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var crossButton: SCEPButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -84,6 +86,7 @@ class SCEPPaywallCatController: SCEPPaywallController {
         trialView.layer.borderWidth = 2
         trialView.layer.cornerRadius = style.design.paywallTrialSwitchCornerRadius
         trialView.isHidden = trialProduct == nil
+        crossButton.alpha = config.meta.crossOpacity ?? 0.5
         
         darkContentConstraint.isActive = style.theme == .dark
         lightContentConstraint.isActive = style.theme == .light

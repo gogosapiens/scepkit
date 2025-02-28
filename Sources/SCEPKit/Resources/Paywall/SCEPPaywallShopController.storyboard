@@ -353,6 +353,7 @@
                         <outlet property="balanceLabel" destination="Hgd-eh-LYR" id="wjv-o0-2ft"/>
                         <outlet property="closeButton" destination="HMm-5T-XH9" id="xjh-VM-yzz"/>
                         <outlet property="collectionView" destination="nVp-Tp-T0L" id="c8d-ih-44H"/>
+                        <outlet property="crossButton" destination="HMm-5T-XH9" id="eYW-vR-x4V"/>
                         <outlet property="imageView" destination="l5h-LN-WMa" id="pqZ-4x-ZfG"/>
                         <outlet property="privacyButton" destination="MT2-Pc-5V3" id="Gdq-Up-4mU"/>
                         <outlet property="restoreButton" destination="9rT-n9-4U3" id="NHe-IM-I1h"/>
@@ -369,19 +370,19 @@
         <image name="PremiumCreditsOptionCoin" width="27.666666030883789" height="29.333333969116211"/>
         <image name="SCEPPaywallClose" width="24" height="24"/>
         <namedColor name="SCEPAccentColor">
-            <color red="0.41568627450980394" green="0.21176470588235294" blue="0.89803921568627454" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.88235294117647056" green="0.18823529411764706" blue="0.42352941176470588" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="SCEPShade0Color">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="SCEPShade2Color">
-            <color red="0.78823529411764703" green="0.76470588235294112" blue="0.84705882352941175" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.88627450980392153" green="0.8666666666666667" blue="0.93725490196078431" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="SCEPShade3Color">
-            <color red="0.83529411764705885" green="0.80784313725490198" blue="0.89803921568627454" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.95294117647058818" green="0.94117647058823528" blue="0.98431372549019602" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="SCEPShade4Color">
-            <color red="0.92941176470588238" green="0.89803921568627454" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

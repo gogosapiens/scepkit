@@ -79,8 +79,8 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="xen-e6-24z" customClass="SCEPLabel" customModule="SCEPKit">
-                                        <rect key="frame" x="20" y="0.0" width="79" height="71"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Top AI models inside" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="xen-e6-24z" customClass="SCEPLabel" customModule="SCEPKit">
+                                        <rect key="frame" x="20" y="0.0" width="79" height="67"/>
                                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
                                         <color key="textColor" name="SCEPTextColor"/>
                                         <nil key="highlightedColor"/>
@@ -97,7 +97,7 @@
                                     <constraint firstAttribute="height" constant="71" id="Iy4-yF-SGq"/>
                                     <constraint firstAttribute="trailing" secondItem="xen-e6-24z" secondAttribute="trailing" constant="20" id="M6Z-Mf-Ow6"/>
                                     <constraint firstAttribute="trailing" secondItem="PYc-Vd-4cM" secondAttribute="trailing" id="N4G-N6-h8T"/>
-                                    <constraint firstAttribute="bottom" secondItem="xen-e6-24z" secondAttribute="bottom" id="PHV-4C-0Qu"/>
+                                    <constraint firstAttribute="bottom" secondItem="xen-e6-24z" secondAttribute="bottom" constant="4" id="PHV-4C-0Qu"/>
                                     <constraint firstItem="PYc-Vd-4cM" firstAttribute="leading" secondItem="De3-7L-jZM" secondAttribute="leading" id="gnz-5d-6nM"/>
                                     <constraint firstAttribute="width" constant="119" id="ifi-mZ-iQy"/>
                                     <constraint firstItem="PYc-Vd-4cM" firstAttribute="top" secondItem="De3-7L-jZM" secondAttribute="top" id="sDP-od-Nkp"/>
@@ -285,7 +285,7 @@
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9cj-jS-7oJ" customClass="SCEPButton" customModule="SCEPKit">
                                 <rect key="frame" x="337" y="59" width="56" height="56"/>
-                                <color key="tintColor" name="SCEPShade0Color"/>
+                                <color key="tintColor" name="SCEPTextColor"/>
                                 <inset key="contentEdgeInsets" minX="16" minY="16" maxX="16" maxY="16"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="SCEPPaywallClose">
@@ -342,6 +342,7 @@
                     <connections>
                         <outlet property="cancelAnytimeLabel" destination="SDG-jS-huy" id="Imi-np-zB2"/>
                         <outlet property="continueButton" destination="z3N-1c-M6r" id="Xye-a5-WM5"/>
+                        <outlet property="crossButton" destination="9cj-jS-7oJ" id="klZ-28-7Vb"/>
                         <outlet property="crownImageView" destination="e9k-5W-K0e" id="rdc-B7-efA"/>
                         <outlet property="darkContentConstraint" destination="C2p-B7-NeW" id="1qK-gX-bhX"/>
                         <outlet property="darkHeaderConstraint" destination="6fn-fE-yVE" id="sec-l0-VNQ"/>
@@ -380,16 +381,13 @@
         <image name="SCEPPaywallLaurel" width="119" height="71"/>
         <image name="SCEPPaywallSingleOverlay" width="375" height="812"/>
         <namedColor name="SCEPAccentColor">
-            <color red="0.41568627450980394" green="0.21176470588235294" blue="0.89803921568627454" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="SCEPShade0Color">
-            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.88235294117647056" green="0.18823529411764706" blue="0.42352941176470588" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="SCEPShade1Color">
-            <color red="0.55686274509803924" green="0.53725490196078429" blue="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.6705882352941176" green="0.6470588235294118" blue="0.72549019607843135" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="SCEPShade4Color">
-            <color red="0.92941176470588238" green="0.89803921568627454" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="SCEPTextColor">
             <color red="0.047058823529411764" green="0.047058823529411764" blue="0.050980392156862744" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

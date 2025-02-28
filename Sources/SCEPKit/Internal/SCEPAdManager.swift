@@ -16,8 +16,10 @@ class SCEPAdManager: NSObject {
     var rewardedAdDidReward: Bool = false
     var shownRewardedAd: GADRewardedAd?
     var bannerAdViews: Set<SCEPBannerAdView> = []
-    var shouldIgnoreApplicationDidBecomeActive: Bool = false
+    var isPurchasing: Bool = false
     var interstitialCompletionHandler: ((Bool) -> Void)?
+    
+    var applicationDidBecomeActiveIgnoreTimer: Timer?
     
     private var interstitial: GADInterstitialAd?
     private var appOpenAd: GADAppOpenAd?
@@ -58,10 +60,15 @@ class SCEPAdManager: NSObject {
         }
     }
     
-    @MainActor @objc func applicationDidBecomeActive() {
-        guard !shouldIgnoreApplicationDidBecomeActive else {
-            return
+    func ignoreApplicationDidBecomeActive(for duration: TimeInterval) {
+        applicationDidBecomeActiveIgnoreTimer?.invalidate()
+        applicationDidBecomeActiveIgnoreTimer = .scheduledTimer(withTimeInterval: duration, repeats: false) { _ in
+            self.applicationDidBecomeActiveIgnoreTimer = nil
         }
+    }
+    
+    @MainActor @objc func applicationDidBecomeActive() {
+        guard !isPurchasing, applicationDidBecomeActiveIgnoreTimer == nil else { return }
         showAppOpenAd()
         if SCEPKitInternal.shared.isApplicationReady {
             NotificationCenter.default.post(SCEPKitInternal.shared.applicationDidBecomeReadyNotification)
@@ -69,9 +76,7 @@ class SCEPAdManager: NSObject {
     }
     
     @MainActor @objc func applicationWillResignActive() {
-        guard !shouldIgnoreApplicationDidBecomeActive else {
-            return
-        }
+        guard !isPurchasing, applicationDidBecomeActiveIgnoreTimer == nil else { return }
         if canShowAds, appOpenAd != nil {
             willShowAppOpen = true
         }
@@ -157,7 +162,6 @@ class SCEPAdManager: NSObject {
         if let appOpenAd = self.appOpenAd {
             isShowingAppOpen = true
             appOpenAd.present(fromRootViewController: viewController)
-            SCEPKitInternal.shared.trackEvent("[SCEPKit] app_open_ad_shown")
         } else {
             isShowingAppOpen = false
         }
@@ -217,6 +221,12 @@ class SCEPAdManager: NSObject {
 }
 
 extension SCEPAdManager: GADFullScreenContentDelegate {
+    
+    func adWillPresentFullScreenContent(_ ad: any GADFullScreenPresentingAd) {
+        if ad is GADAppOpenAd {
+            SCEPKitInternal.shared.trackEvent("[SCEPKit] app_open_ad_shown")
+        }
+    }
     
     func ad(_ ad: GADFullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
         if ad is GADInterstitialAd {
