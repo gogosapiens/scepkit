@@ -323,6 +323,7 @@ class SCEPKitInternal: NSObject {
     func onboardingPaywallController() -> SCEPPaywallController? {
         guard
             let placement = config.monetization.placements[SCEPPaywallPlacement.onboarding.id],
+            !placement.all.isEmpty,
             placement.hasCredits || !SCEPMonetization.shared.isPremium
         else {
             return nil
