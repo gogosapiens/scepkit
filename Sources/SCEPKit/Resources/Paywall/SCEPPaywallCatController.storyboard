@@ -344,6 +344,7 @@
                         <outlet property="continueButton" destination="z3N-1c-M6r" id="Xye-a5-WM5"/>
                         <outlet property="crossButton" destination="9cj-jS-7oJ" id="klZ-28-7Vb"/>
                         <outlet property="crownImageView" destination="e9k-5W-K0e" id="rdc-B7-efA"/>
+                        <outlet property="crownToTitleConstraint" destination="hWJ-ok-D9K" id="qO2-MP-GCF"/>
                         <outlet property="darkContentConstraint" destination="C2p-B7-NeW" id="1qK-gX-bhX"/>
                         <outlet property="darkHeaderConstraint" destination="6fn-fE-yVE" id="sec-l0-VNQ"/>
                         <outlet property="darkOverlayView" destination="7eK-H9-4je" id="qOK-jI-KWe"/>
@@ -381,10 +382,10 @@
         <image name="SCEPPaywallLaurel" width="119" height="71"/>
         <image name="SCEPPaywallSingleOverlay" width="375" height="812"/>
         <namedColor name="SCEPAccentColor">
-            <color red="0.88235294117647056" green="0.18823529411764706" blue="0.42352941176470588" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.21568627450980393" green="0.29019607843137257" blue="0.48627450980392156" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="SCEPShade1Color">
-            <color red="0.6705882352941176" green="0.6470588235294118" blue="0.72549019607843135" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.61960784313725492" green="0.64313725490196083" blue="0.71372549019607845" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="SCEPShade4Color">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

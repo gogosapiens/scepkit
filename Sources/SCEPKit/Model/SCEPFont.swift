@@ -7,9 +7,9 @@
 
 import UIKit
 
-enum SCEPFont: CaseIterable {
+public enum SCEPFont: CaseIterable {
     
-    enum Weight {
+    public enum Weight {
         case light, regular, medium, semiBold, bold, extraBold
         var uiWeight: UIFont.Weight {
             switch self {

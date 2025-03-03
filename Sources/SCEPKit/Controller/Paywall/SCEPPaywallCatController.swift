@@ -66,6 +66,7 @@ class SCEPPaywallCatController: SCEPPaywallController {
     @IBOutlet weak var darkOverlayView: SCEPTemplateImageView!
     @IBOutlet weak var laurelTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var crossButton: SCEPButton!
+    @IBOutlet weak var crownToTitleConstraint: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -98,6 +99,7 @@ class SCEPPaywallCatController: SCEPPaywallController {
         lightOverlayView.isHidden = style.theme != .light
         darkOverlayView.isHidden = style.theme != .dark
         laurelTopConstraint.constant = style.theme == .dark ? 26 : 15
+        crownToTitleConstraint.constant = style.theme == .dark ? 26 : 16
         
         setupTexts()
         imageView.image = nil
@@ -113,6 +115,7 @@ class SCEPPaywallCatController: SCEPPaywallController {
         restoreButton.title = "Restore".localized()
         continueButton.title = "Continue".localized()
         
+        addShadow(to: crownImageView)
         addShadow(to: titleLabel)
         addShadow(to: laurelView)
         addShadow(to: featuresView)
@@ -121,8 +124,8 @@ class SCEPPaywallCatController: SCEPPaywallController {
     
     func addShadow(to view: UIView) {
         view.layer.shadowColor = UIColor.scepShade4.cgColor
-        view.layer.shadowOpacity = 0.2
-        view.layer.shadowRadius = 2
+        view.layer.shadowOpacity = 0.75
+        view.layer.shadowRadius = 4
         view.layer.shadowOffset.height = 2
     }
     

@@ -14,7 +14,7 @@ class SCEPButton: UIButton {
     override func awakeFromNib() {
         super.awakeFromNib()
         if let titleLabel {
-            titleLabel.font = SCEPKitInternal.shared.font(ofSize: titleLabel.font.pointSize, weight: titleLabel.font.weight)
+            titleLabel.font = SCEPKitInternal.shared.font(ofSize: titleLabel.font.pointSize, weight: .init(uiWeight: titleLabel.font.weight))
         }
         setTitleColor(.scepShade(with: shadeIndex), for: .normal)
         tintColor = .scepShade(with: shadeIndex)

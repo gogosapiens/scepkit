@@ -36,6 +36,18 @@ class SCEPPaywallShopController: SCEPPaywallController {
     @IBOutlet weak var restoreButton: SCEPButton!
     @IBOutlet weak var crossButton: SCEPButton!
     
+    private let popupTransitioningDelegate = PopupTransitioningDelegate()
+    
+    override var transitioningDelegate: UIViewControllerTransitioningDelegate? {
+        get { self.popupTransitioningDelegate }
+        set { }
+    }
+    
+    override var modalPresentationStyle: UIModalPresentationStyle {
+        get { .custom }
+        set { }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -63,6 +75,12 @@ class SCEPPaywallShopController: SCEPPaywallController {
                 collectionView.reloadData()
             }
         }
+    }
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        print(#function, view.frame.size, view.safeAreaInsets)
+        collectionView.setNeedsLayout()
+        collectionView.layoutIfNeeded()
     }
     
     @IBAction func termsTapped(_ sender: UIButton) {

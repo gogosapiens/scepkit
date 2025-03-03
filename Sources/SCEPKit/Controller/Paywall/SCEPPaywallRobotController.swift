@@ -106,8 +106,8 @@ class SCEPPaywallRobotController: SCEPPaywallController {
     
     func addShadow(to view: UIView) {
         view.layer.shadowColor = UIColor.scepShade4.cgColor
-        view.layer.shadowOpacity = 0.2
-        view.layer.shadowRadius = 2
+        view.layer.shadowOpacity = 0.75
+        view.layer.shadowRadius = 4
         view.layer.shadowOffset.height = 2
     }
     

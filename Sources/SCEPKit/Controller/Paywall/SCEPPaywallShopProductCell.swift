@@ -18,6 +18,9 @@ class SCEPPaywallShopProductCell: UICollectionViewCell {
         badgeLabel.text = "POPULAR".localized()
         badgeView.layer.maskedCorners = .layerMinXMaxYCorner
         badgeView.layer.cornerRadius = 8
+        let scale = UIScreen.main.bounds.width / 375
+        badgeLabel.font = SCEPKitInternal.shared.font(ofSize: 11 * scale, weight: .bold)
+        badgeLabel.textColor = .scepTextColor
         
         let style = SCEPKitInternal.shared.config.style
         contentView.layer.cornerRadius = style.design.paywallShopProductCornerRadius

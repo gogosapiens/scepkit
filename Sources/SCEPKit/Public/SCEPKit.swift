@@ -88,8 +88,8 @@ final public class SCEPKit {
         SCEPKitInternal.shared.setUserProperties(properties)
     }
     
-    public static func font(ofSize size: CGFloat, weight: UIFont.Weight) -> UIFont {
-        SCEPKitInternal.shared.font.uiFont(ofSize: size, weight: weight) ?? .systemFont(ofSize: size, weight: weight)
+    public static func font(ofSize size: CGFloat, weight: SCEPFont.Weight) -> UIFont {
+        SCEPKitInternal.shared.font(ofSize: size, weight: weight)
     }
     
     public static func remoteConfigValue<Type: Decodable>(for key: String) -> Type? {

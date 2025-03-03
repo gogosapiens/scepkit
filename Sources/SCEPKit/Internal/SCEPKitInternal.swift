@@ -503,8 +503,8 @@ class SCEPKitInternal: NSObject {
         .init(string: "https://itunes.apple.com/app/id\(config.integrations.appleAppId)?action=write-review")!
     }
     
-    func font(ofSize size: CGFloat, weight: UIFont.Weight) -> UIFont {
-        return font.uiFont(ofSize: size, weight: weight) ?? .systemFont(ofSize: size, weight: weight)
+    func font(ofSize size: CGFloat, weight: SCEPFont.Weight) -> UIFont {
+        return font.uiFont(ofSize: size, weight: weight) ?? .systemFont(ofSize: size, weight: weight.uiWeight)
     }
 }
 

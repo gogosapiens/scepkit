@@ -421,7 +421,7 @@
                 "he": { "stringUnit": { "state": "translated", "value": "מדיניות פרטיות" }}
             }
         },
-        "Rate us": {
+        "Rate Us": {
             "extractionState": "manual",
             "localizations": {
                 "ru": { "stringUnit": { "state": "translated", "value": "Оцените нас" }},

@@ -13,7 +13,7 @@ class SCEPLabel: UILabel {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        font = SCEPKitInternal.shared.font(ofSize: font.pointSize, weight: font.weight)
+        font = SCEPKitInternal.shared.font(ofSize: font.pointSize, weight: .init(uiWeight: font.weight))
         textColor = .scepShade(with: shadeIndex)
     }
 }

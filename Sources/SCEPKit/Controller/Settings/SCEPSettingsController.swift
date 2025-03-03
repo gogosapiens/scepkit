@@ -175,7 +175,7 @@ public class SCEPSettingsController: UIViewController {
         let showCredits = SCEPKitInternal.shared.hasCreditsPaywalls && !isShowingBanner
         let mainActions: [Action] = [
             showCredits ? creditsAction : nil,
-            .init(title: "Rate us".localized(), image: style.design.settingsRateImage) { controller in
+            .init(title: "Rate Us".localized(), image: style.design.settingsRateImage) { controller in
                 controller.openURL(SCEPKitInternal.shared.reviewURL)
             },
             .init(title: "Feedback".localized(), image: style.design.settingsFeedbackImage) { controller in
