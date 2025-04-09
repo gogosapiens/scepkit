@@ -8,7 +8,7 @@ public class SCEPPaywallController: UIViewController {
 
     public override func viewDidLoad() {
         super.viewDidLoad()
-        SCEPKitInternal.shared.trackEvent("[SCEPKit] paywall_shown", properties: ["placenemt": placement.id])
+        SCEPKitInternal.shared.trackEvent("[SCEPKit] paywall_shown", properties: ["placement": placement.id])
     }
     
     func showContinueButton() {}
@@ -25,7 +25,7 @@ public class SCEPPaywallController: UIViewController {
             let activityController = SCEPActivityController.instantiate(bundle: .module)
             present(activityController, animated: true)
             SCEPAdManager.shared.isPurchasing = true
-            SCEPKitInternal.shared.trackEvent("[SCEPKit] subscribe_started", properties: ["product_id": product.vendorProductId, "placenemt": placement.id])
+            SCEPKitInternal.shared.trackEvent("[SCEPKit] subscribe_started", properties: ["product_id": product.vendorProductId, "placement": placement.id])
             Adapty.makePurchase(product: product) { result in
                 activityController.dismiss(animated: true) { [weak self] in
                     guard let self else { return }
@@ -33,10 +33,10 @@ public class SCEPPaywallController: UIViewController {
                     case .success(let info):
                         logger.debug("Purchase success \(String(describing: info))")
                         close(success: true)
-                        SCEPKitInternal.shared.trackEvent("[SCEPKit] subscribed", properties: ["product_id": product.vendorProductId, "placenemt": placement.id])
+                        SCEPKitInternal.shared.trackEvent("[SCEPKit] subscribed", properties: ["product_id": product.vendorProductId, "placement": placement.id])
                     case .failure(let error):
                         logger.error("Purchase error \(error)")
-                        SCEPKitInternal.shared.trackEvent("[SCEPKit] subscribe_error", properties: ["product_id": product.vendorProductId, "placenemt": placement.id, "error": error.description])
+                        SCEPKitInternal.shared.trackEvent("[SCEPKit] subscribe_error", properties: ["product_id": product.vendorProductId, "placement": placement.id, "error": error.description])
                     }
                     SCEPAdManager.shared.isPurchasing = false
                 }
@@ -73,7 +73,7 @@ public class SCEPPaywallController: UIViewController {
     }
     
     func close(success: Bool) {
-        SCEPKitInternal.shared.trackEvent("[SCEPKit] paywall_closed", properties: ["placenemt": placement.id])
+        SCEPKitInternal.shared.trackEvent("[SCEPKit] paywall_closed", properties: ["placement": placement.id])
         if parent is SCEPOnboardingController {
             SCEPKitInternal.shared.completeOnboarding()
         } else {
