@@ -47,7 +47,6 @@ class SCEPAdManager: NSObject {
     
     func load() {
         guard canShowAds else { return }
-        guard !SCEPMonetization.shared.isPremium else { return }
         if config.interstitialId != nil {
             loadInterstitialAd()
         }
@@ -94,7 +93,6 @@ class SCEPAdManager: NSObject {
             bannerAdViews.removeAll()
             willShowAppOpen = false
         }
-        load()
     }
     
     private func loadInterstitialAd() {
@@ -124,7 +122,7 @@ class SCEPAdManager: NSObject {
             }
             self.appOpenAd = ad
             self.appOpenAd?.fullScreenContentDelegate = self
-            if UIApplication.shared.applicationState != .active {
+            if self.canShowAds, UIApplication.shared.applicationState != .active {
                 self.willShowAppOpen = true
             }
             NotificationCenter.default.post(name: Self.appOpenLoadedNotification, object: nil)
