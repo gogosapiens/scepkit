@@ -66,17 +66,25 @@ class SCEPAdManager: NSObject {
         }
     }
     
+    var shouldShowAppOpenOnBecomeActive = false
+    
     @MainActor @objc func applicationDidBecomeActive() {
-        guard !isPurchasing, applicationDidBecomeActiveIgnoreTimer == nil else { return }
+        guard shouldShowAppOpenOnBecomeActive else { return }
+        shouldShowAppOpenOnBecomeActive = false
         showAppOpenAd()
-        updateAppReadiness()
     }
     
     @MainActor @objc func applicationWillResignActive() {
-        guard !isPurchasing, applicationDidBecomeActiveIgnoreTimer == nil else { return }
-        if canShowAds, appOpenAd != nil {
-            willShowAppOpen = true
+        guard
+            !isPurchasing,
+            applicationDidBecomeActiveIgnoreTimer == nil,
+            canShowAds,
+            appOpenAd != nil
+        else {
+            return
         }
+        willShowAppOpen = true
+        shouldShowAppOpenOnBecomeActive = true
     }
     
     @MainActor @objc func applicationShown() {
@@ -127,9 +135,6 @@ class SCEPAdManager: NSObject {
             }
             self.appOpenAd = ad
             self.appOpenAd?.fullScreenContentDelegate = self
-            if self.canShowAds, UIApplication.shared.applicationState != .active {
-                self.willShowAppOpen = true
-            }
             NotificationCenter.default.post(name: Self.appOpenLoadedNotification, object: nil)
         }
     }
@@ -161,12 +166,18 @@ class SCEPAdManager: NSObject {
     }
     
     @MainActor func showAppOpenAd(from viewController: UIViewController? = nil) {
-        guard self.canShowAds, SCEPKitInternal.shared.isApplicationShown, !isShowingAppOpen else { return }
+        guard self.canShowAds, SCEPKitInternal.shared.isApplicationShown, !isShowingAppOpen else {
+            willShowAppOpen = false
+            updateAppReadiness()
+            return
+        }
         if let appOpenAd = self.appOpenAd {
             isShowingAppOpen = true
             appOpenAd.present(fromRootViewController: viewController)
         } else {
             isShowingAppOpen = false
+            willShowAppOpen = false
+            updateAppReadiness()
         }
     }
     
