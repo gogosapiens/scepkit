@@ -69,9 +69,7 @@ class SCEPAdManager: NSObject {
     @MainActor @objc func applicationDidBecomeActive() {
         guard !isPurchasing, applicationDidBecomeActiveIgnoreTimer == nil else { return }
         showAppOpenAd()
-        if SCEPKitInternal.shared.isApplicationReady {
-            NotificationCenter.default.post(SCEPKitInternal.shared.applicationDidBecomeReadyNotification)
-        }
+        updateAppReadiness()
     }
     
     @MainActor @objc func applicationWillResignActive() {
@@ -92,6 +90,13 @@ class SCEPAdManager: NSObject {
             }
             bannerAdViews.removeAll()
             willShowAppOpen = false
+            updateAppReadiness()
+        }
+    }
+    
+    private func updateAppReadiness() {
+        if SCEPKitInternal.shared.isApplicationReady {
+            NotificationCenter.default.post(SCEPKitInternal.shared.applicationDidBecomeReadyNotification)
         }
     }
     
@@ -238,9 +243,7 @@ extension SCEPAdManager: GADFullScreenContentDelegate {
             isShowingAppOpen = false
             willShowAppOpen = false
             NotificationCenter.default.post(Self.appOpenDismissedNotification)
-            if SCEPKitInternal.shared.isApplicationReady {
-                NotificationCenter.default.post(SCEPKitInternal.shared.applicationDidBecomeReadyNotification)
-            }
+            updateAppReadiness()
         }
     }
     
@@ -256,9 +259,7 @@ extension SCEPAdManager: GADFullScreenContentDelegate {
             isShowingAppOpen = false
             willShowAppOpen = false
             NotificationCenter.default.post(Self.appOpenDismissedNotification)
-            if SCEPKitInternal.shared.isApplicationReady {
-                NotificationCenter.default.post(SCEPKitInternal.shared.applicationDidBecomeReadyNotification)
-            }
+            updateAppReadiness()
         } else if ad is GADRewardedAd {
             rewardedAdCompletion?(rewardedAdDidReward)
             rewardedAdCompletion = nil
