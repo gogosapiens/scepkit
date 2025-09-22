@@ -1,4 +1,4 @@
-import GoogleMobileAds
+@preconcurrency import GoogleMobileAds
 import UIKit
 
 class SCEPAdManager: NSObject {
@@ -14,15 +14,15 @@ class SCEPAdManager: NSObject {
     var willShowAppOpen: Bool = false
     var rewardedAdCompletion: ((Bool) -> Void)?
     var rewardedAdDidReward: Bool = false
-    var shownRewardedAd: GADRewardedAd?
+    var shownRewardedAd: RewardedAd?
     var bannerAdViews: Set<SCEPBannerAdView> = []
     var isPurchasing: Bool = false
     var interstitialCompletionHandler: ((Bool) -> Void)?
     
     var applicationDidBecomeActiveIgnoreTimer: Timer?
     
-    private var interstitial: GADInterstitialAd?
-    private var appOpenAd: GADAppOpenAd?
+    private var interstitial: InterstitialAd?
+    private var appOpenAd: AppOpenAd?
     
     private override init() {
         super.init()
@@ -111,8 +111,8 @@ class SCEPAdManager: NSObject {
     private func loadInterstitialAd() {
         guard config.isEnabled else { return }
         guard interstitial == nil else { return }
-        let request = GADRequest()
-        GADInterstitialAd.load(withAdUnitID: config.interstitialId!, request: request) { ad, error in
+        let request = Request()
+        InterstitialAd.load(with: config.interstitialId!, request: request) { ad, error in
             guard let ad else {
                 logger.error("Failed to load interstitial ad with error: \(error?.localizedDescription ?? "none")")
                 return
@@ -125,8 +125,8 @@ class SCEPAdManager: NSObject {
     private func loadAppOpenAd() {
         guard config.isEnabled else { return }
         guard appOpenAd == nil else { return }
-        let request = GADRequest()
-        GADAppOpenAd.load(withAdUnitID: config.appOpenId!, request: request) { ad, error in
+        let request = Request()
+        AppOpenAd.load(with: config.appOpenId!, request: request) { ad, error in
             self.isLoadingAppOpen = false
             if let error = error {
                 logger.error("Failed to load app open ad with error: \(error.localizedDescription)")
@@ -148,7 +148,7 @@ class SCEPAdManager: NSObject {
             if Date() > lastInterstitialShowDate + interstitialInterval {
                 interstitialCompletionHandler = completion
                 Timer.scheduledTimer(withTimeInterval: 0.1, repeats: false) { [weak viewController] _ in
-                    interstitial.present(fromRootViewController: viewController)
+                    interstitial.present(from: viewController)
                 }
                 lastInterstitialShowDate = Date()
                 SCEPKitInternal.shared.trackEvent("[SCEPKit] interstitial_ad_shown", properties: ["placement": placement ?? ""])
@@ -173,7 +173,7 @@ class SCEPAdManager: NSObject {
         }
         if let appOpenAd = self.appOpenAd {
             isShowingAppOpen = true
-            appOpenAd.present(fromRootViewController: viewController)
+            appOpenAd.present(from: viewController)
         } else {
             isShowingAppOpen = false
             willShowAppOpen = false
@@ -189,9 +189,9 @@ class SCEPAdManager: NSObject {
         completion(bannerView)
     }
     
-    @MainActor func loadRewardedAd(id: String? = nil, completion: @escaping (GADRewardedAd?) -> Void) {
-        let request = GADRequest()
-        GADRewardedAd.load(withAdUnitID: id ?? config.rewardedId!, request: request) { ad, error in
+    @MainActor func loadRewardedAd(id: String? = nil, completion: @escaping (RewardedAd?) -> Void) {
+        let request = Request()
+        RewardedAd.load(with: id ?? config.rewardedId!, request: request) { ad, error in
             if let error {
                 logger.error("Failed to load rewarded ad with error: \(error.localizedDescription)")
             }
@@ -199,12 +199,12 @@ class SCEPAdManager: NSObject {
         }
     }
     
-    @MainActor func showRewardedAd(_ ad: GADRewardedAd, from viewController: UIViewController, placement: String?, completion: @escaping (Bool) -> Void) {
+    @MainActor func showRewardedAd(_ ad: RewardedAd, from viewController: UIViewController, placement: String?, completion: @escaping (Bool) -> Void) {
         rewardedAdCompletion = completion
         rewardedAdDidReward = false
         shownRewardedAd = ad
         ad.fullScreenContentDelegate = self
-        ad.present(fromRootViewController: viewController) {
+        ad.present(from: viewController) {
             self.rewardedAdDidReward = true
         }
         SCEPKitInternal.shared.trackEvent("[SCEPKit] rewarded_ad_shown", properties: ["placement": placement ?? ""])
@@ -234,21 +234,21 @@ class SCEPAdManager: NSObject {
     }
 }
 
-extension SCEPAdManager: GADFullScreenContentDelegate {
+extension SCEPAdManager: FullScreenContentDelegate {
     
-    func adWillPresentFullScreenContent(_ ad: any GADFullScreenPresentingAd) {
-        if ad is GADAppOpenAd {
+    func adWillPresentFullScreenContent(_ ad: any FullScreenPresentingAd) {
+        if ad is AppOpenAd {
             SCEPKitInternal.shared.trackEvent("[SCEPKit] app_open_ad_shown")
         }
     }
     
-    func ad(_ ad: GADFullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
-        if ad is GADInterstitialAd {
+    func ad(_ ad: FullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
+        if ad is InterstitialAd {
             interstitial = nil
             loadInterstitialAd()
             interstitialCompletionHandler?(false)
             interstitialCompletionHandler = nil
-        } else if ad is GADAppOpenAd {
+        } else if ad is AppOpenAd {
             appOpenAd = nil
             loadAppOpenAd()
             isShowingAppOpen = false
@@ -258,20 +258,20 @@ extension SCEPAdManager: GADFullScreenContentDelegate {
         }
     }
     
-    func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
-        if ad is GADInterstitialAd {
+    func adDidDismissFullScreenContent(_ ad: FullScreenPresentingAd) {
+        if ad is InterstitialAd {
             interstitial = nil
             loadInterstitialAd()
             interstitialCompletionHandler?(true)
             interstitialCompletionHandler = nil
-        } else if ad is GADAppOpenAd {
+        } else if ad is AppOpenAd {
             appOpenAd = nil
             loadAppOpenAd()
             isShowingAppOpen = false
             willShowAppOpen = false
             NotificationCenter.default.post(Self.appOpenDismissedNotification)
             updateAppReadiness()
-        } else if ad is GADRewardedAd {
+        } else if ad is RewardedAd {
             rewardedAdCompletion?(rewardedAdDidReward)
             rewardedAdCompletion = nil
             rewardedAdDidReward = false

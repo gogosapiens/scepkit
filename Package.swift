@@ -11,7 +11,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/amplitude/Amplitude-Swift", from: "1.15.0"),
-        .package(url: "https://github.com/adaptyteam/AdaptySDK-iOS", from: "3.11.0"),
+        .package(url: "https://github.com/adaptyteam/AdaptySDK-iOS", exact: "3.0.0-beta.2"),
         .package(url: "https://github.com/firebase/firebase-ios-sdk", from: "12.3.0"),
         .package(url: "https://github.com/googleads/swift-package-manager-google-mobile-ads.git", from: "12.11.0"),
         .package(url: "https://github.com/alexiscreuzot/SwiftyGif", from: "5.4.5"),

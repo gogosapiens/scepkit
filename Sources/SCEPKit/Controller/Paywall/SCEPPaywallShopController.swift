@@ -23,7 +23,7 @@ class SCEPPaywallShopController: SCEPPaywallController {
     }
     var config: Config!
     
-    var rewardedAd: GADRewardedAd?
+    var rewardedAd: RewardedAd?
     
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var imageView: UIImageView!
