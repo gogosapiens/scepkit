@@ -17,6 +17,7 @@ class SCEPPaywallRobotController: SCEPPaywallController {
         struct Meta: Codable {
             let imageURL: URL
             let crossOpacity: Double?
+            let priceMode: String?
         }
     }
     var config: Config!
@@ -179,7 +180,8 @@ extension SCEPPaywallRobotController: UITableViewDataSource {
             cell.badgeView.isHidden = false
             cell.badgeLabel.text = "BEST OFFER".localized()
             cell.leftTitleLabel.text = "{0} ACCESS".localized().insertingArguments(period.displayUnitLocalizedAdjective.uppercased())
-            cell.leftSubtitleLabel.text = "Just {0} per {1}".localized().insertingArguments(product.localizedPrice, period.displayUnitLocalizedNoun)
+            let leftSubtitleLabelText = "Just {0} per {1}".localized().insertingArguments(product.localizedPrice, period.displayUnitLocalizedNoun)
+            cell.leftSubtitleLabel.text = config.meta.priceMode == "prominent" ? leftSubtitleLabelText.uppercased() : leftSubtitleLabelText
             cell.leftSubtitleLabel.isHidden = false
             cell.rightTitleLabel.text = product.localizedPrice(for: shortPeroid)
             cell.rightSubtitleLabel.text = "per {0}".localized().insertingArguments(shortPeroid.displayUnitLocalizedNoun.lowercased())
@@ -190,8 +192,10 @@ extension SCEPPaywallRobotController: UITableViewDataSource {
             cell.badgeView.isHidden = true
             if let introductoryPeriod {
                 cell.leftTitleLabel.text = "{0}-DAY FREE TRIAL".localized().insertingArguments(introductoryPeriod.displayNumberOfUnits)
+                cell.rightSubtitleLabel.font = SCEPKitInternal.shared.font(ofSize: 16, weight: config.meta.priceMode == "prominent" ? .bold : .medium)
             } else {
                 cell.leftTitleLabel.text = "{0} ACCESS".localized().insertingArguments(period.displayUnitLocalizedAdjective.uppercased())
+                cell.rightSubtitleLabel.font = SCEPKitInternal.shared.font(ofSize: 16, weight: .medium)
             }
             cell.leftSubtitleLabel.isHidden = true
             cell.rightTitleLabel.text = product.localizedPrice(for: shortPeroid)
