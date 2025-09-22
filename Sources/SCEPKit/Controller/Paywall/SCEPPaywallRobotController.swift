@@ -201,6 +201,8 @@ extension SCEPPaywallRobotController: UITableViewDataSource {
             cell.rightTitleLabel.text = product.localizedPrice(for: shortPeroid)
             cell.rightSubtitleLabel.text = "per {0}".localized().insertingArguments(shortPeroid.displayUnitLocalizedNoun.lowercased())
             cell.rightSubtitleLabel.isHidden = false
+            
+            cell.rightSubtitleLabel.font = SCEPKitInternal.shared.font(ofSize: 20, weight: .medium)
         }
         
         return cell
