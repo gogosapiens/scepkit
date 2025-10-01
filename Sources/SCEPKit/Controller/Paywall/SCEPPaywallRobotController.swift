@@ -95,7 +95,11 @@ class SCEPPaywallRobotController: SCEPPaywallController {
         }
         
         trialLabel.text = "Enable free trial".localized()
-        cancelAnytimeLabel.text = "CANCEL ANYTIME".localized()
+        if config.meta.priceMode == "prominent" {
+            cancelAnytimeLabel.text = "AUTO-RENEWABLE".localized()
+        } else {
+            cancelAnytimeLabel.text = "CANCEL ANYTIME".localized()
+        }
         termsButton.title = "Terms".localized()
         privacyButton.title = "Privacy".localized()
         restoreButton.title = "Restore".localized()
