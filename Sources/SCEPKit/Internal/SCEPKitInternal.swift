@@ -114,13 +114,16 @@ class SCEPKitInternal: NSObject {
             AppsFlyerLib.shared().appleAppID = "id\(config.integrations.appleAppId)"
             AppsFlyerLib.shared().appsFlyerDevKey = "nMehdnn5Peag8tic4oXV9W"
             AppsFlyerLib.shared().delegate = self
+            NotificationCenter.default.addOneTimeObserver(forName: UIApplication.didBecomeActiveNotification) { _ in
+                AppsFlyerLib.shared().waitForATTUserAuthorization(timeoutInterval: 10)
+                AppsFlyerLib.shared().start()
+            }
         }
         amplitude = Amplitude(configuration: .init(apiKey: config.integrations.amplitudeApiKey))
         group.enter()
         Task {
             do {
-                let configurationBuilder = AdaptyConfiguration
-                    .builder(withAPIKey: config.integrations.adaptyApiKey) // Get from Adapty dashboard
+                let configurationBuilder = AdaptyConfiguration.builder(withAPIKey: config.integrations.adaptyApiKey)
                 let config = configurationBuilder.build()
                 try await Adapty.activate(with: config)
                 Adapty.delegate = self
