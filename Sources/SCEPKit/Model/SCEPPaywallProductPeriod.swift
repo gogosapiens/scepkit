@@ -9,16 +9,16 @@ import StoreKit
 
 struct SCEPPaywallProductPeriod: Equatable {
     
-    init(unit: SKProduct.PeriodUnit, numberOfUnits: Int) {
+    init(unit: Product.SubscriptionPeriod.Unit, numberOfUnits: Int) {
         self.unit = unit
         self.numberOfUnits = numberOfUnits
     }
     
-    init(skPeriod: SKProductSubscriptionPeriod) {
-        self.init(unit: skPeriod.unit, numberOfUnits: skPeriod.numberOfUnits)
+    init(skPeriod: Product.SubscriptionPeriod) {
+        self.init(unit: skPeriod.unit, numberOfUnits: skPeriod.value)
     }
     
-    var unit: SKProduct.PeriodUnit
+    var unit: Product.SubscriptionPeriod.Unit
     var numberOfUnits: Int
     
     var displayNumberOfUnits: Int {
@@ -29,7 +29,7 @@ struct SCEPPaywallProductPeriod: Equatable {
         }
     }
     
-    var displayUnit: SKProduct.PeriodUnit {
+    var displayUnit: Product.SubscriptionPeriod.Unit {
         if unit == .day, numberOfUnits == 7 {
             return .week
         } else {
@@ -50,7 +50,7 @@ struct SCEPPaywallProductPeriod: Equatable {
     }
 }
 
-extension SKProduct.PeriodUnit {
+extension Product.SubscriptionPeriod.Unit {
     
     var localizedNoun: String {
         switch self {

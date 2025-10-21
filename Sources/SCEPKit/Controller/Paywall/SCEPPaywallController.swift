@@ -14,7 +14,7 @@ public class SCEPPaywallController: UIViewController {
     func showContinueButton() {}
     
     func purchase(_ product: SCEPPaywallProduct) {
-        guard let product = product as? AdaptyPaywallProduct else {
+        guard let product = (product as? SCEPPaywallProductBox)?.product else {
             let alert = UIAlertController(title: "Failed to connect to AppStore", message: "Please check your internet connection and restart the app", preferredStyle: .alert)
             let ok = UIAlertAction(title: "OK", style: .cancel)
             alert.addAction(ok)
@@ -42,7 +42,9 @@ public class SCEPPaywallController: UIViewController {
                 }
             }
         } else {
-            let isTrial = product.introductoryDiscount?.paymentMode == .freeTrial
+            let hasIntroductoryOffer = product.sk2Product?.subscription?.introductoryOffer != nil
+            // just for testing (supports only trial introductory offers)
+            let isTrial = hasIntroductoryOffer
             let credits = SCEPMonetization.shared.credits(for: product.vendorProductId)
             let title = credits > 0 ? "Increment credits by \(credits)?" : "Enable \(isTrial ? "trial" : "paid") status?"
             let alert = UIAlertController(title: title, message: "Debug mode", preferredStyle: .alert)

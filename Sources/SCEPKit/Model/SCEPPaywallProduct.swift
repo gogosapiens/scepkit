@@ -8,6 +8,14 @@
 import StoreKit
 import Adapty
 
+struct SCEPPaywallProductBox {
+    let product: AdaptyPaywallProduct
+    
+    init(product: AdaptyPaywallProduct) {
+        self.product = product
+    }
+}
+
 protocol SCEPPaywallProduct {
     
     var subscriptionPeriod: SCEPPaywallProductPeriod? { get }
@@ -30,30 +38,42 @@ struct SCEPFailedPaywallProduct: SCEPPaywallProduct {
     var priceLocale: Locale = .init(identifier: "en_US")
 }
 
-extension AdaptyPaywallProduct: SCEPPaywallProduct {
+extension SCEPPaywallProductBox: SCEPPaywallProduct {
     
     var introductoryPrice: NSDecimalNumber? {
-        return skProduct.introductoryPrice?.price
+        if let decimalPrice = product.sk2Product?.subscription?.introductoryOffer?.price {
+            return NSDecimalNumber(decimal: decimalPrice)
+        } else {
+            return nil
+        }
     }
     
     var price: NSDecimalNumber {
-        return skProduct.price
+        if let decimalPrice = product.sk2Product?.price {
+            return NSDecimalNumber(decimal: decimalPrice)
+        } else {
+            return NSDecimalNumber(value: 777)
+        }
     }
     
     var subscriptionPeriod: SCEPPaywallProductPeriod? {
-        skProduct.subscriptionPeriod.map(SCEPPaywallProductPeriod.init)
+        if let period =  product.sk2Product?.subscription?.subscriptionPeriod {
+            return SCEPPaywallProductPeriod(skPeriod: period)
+        } else {
+            return nil
+        }
     }
     
     var introductoryPeriod: SCEPPaywallProductPeriod? {
-        if let introductoryPrice = skProduct.introductoryPrice {
-            return .init(skPeriod: introductoryPrice.subscriptionPeriod)
+        if let period =  product.sk2Product?.subscription?.introductoryOffer?.period {
+            return SCEPPaywallProductPeriod(skPeriod: period)
         } else {
             return nil
         }
     }
     
     var priceLocale: Locale {
-        return skProduct.priceLocale
+        return product.sk2Product?.priceFormatStyle.locale ?? .init(identifier: "en_US")
     }
 }
 
@@ -67,7 +87,7 @@ extension SCEPPaywallProduct {
         }
     }
     
-    func priceForPeriod(unit: SKProduct.PeriodUnit, numberOfUnits: Int) -> Double? {
+    func priceForPeriod(unit: Product.SubscriptionPeriod.Unit, numberOfUnits: Int) -> Double? {
         guard let subscriptionPeriod else { return nil }
         if unit == subscriptionPeriod.unit, numberOfUnits == subscriptionPeriod.numberOfUnits {
             return price.doubleValue
@@ -80,7 +100,7 @@ extension SCEPPaywallProduct {
         localizedPriceForPeriod(unit: period.unit, numberOfUnits: period.numberOfUnits)
     }
     
-    func localizedPriceForPeriod(unit: SKProduct.PeriodUnit, numberOfUnits: Int) -> String {
+    func localizedPriceForPeriod(unit: Product.SubscriptionPeriod.Unit, numberOfUnits: Int) -> String {
         if let price = priceForPeriod(unit: unit, numberOfUnits: numberOfUnits), price != 0 {
             return localize(price)
         } else {

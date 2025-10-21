@@ -10,11 +10,12 @@ let package = Package(
         .library(name: "SCEPKit", targets: ["SCEPKit"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/amplitude/Amplitude-Swift", from: "1.15.0"),
-        .package(url: "https://github.com/adaptyteam/AdaptySDK-iOS", exact: "3.0.0-beta.2"),
-        .package(url: "https://github.com/firebase/firebase-ios-sdk", from: "12.3.0"),
-        .package(url: "https://github.com/googleads/swift-package-manager-google-mobile-ads.git", from: "12.11.0"),
-        .package(url: "https://github.com/alexiscreuzot/SwiftyGif", from: "5.4.5"),
+        .package(url: "https://github.com/amplitude/Amplitude-Swift", exact: "1.15.0"),
+        .package(url: "https://github.com/adaptyteam/AdaptySDK-iOS", exact: "3.11.0"),
+        .package(url: "https://github.com/firebase/firebase-ios-sdk", exact: "12.3.0"),
+        .package(url: "https://github.com/googleads/swift-package-manager-google-mobile-ads.git", exact: "12.11.0"),
+        .package(url: "https://github.com/alexiscreuzot/SwiftyGif", exact: "5.4.5"),
+        .package(url: "https://github.com/AppsFlyerSDK/AppsFlyerFramework.git", exact: "6.17.7")
     ],
     targets: [
         .target(
@@ -29,6 +30,7 @@ let package = Package(
                 .product(name: "FirebaseCrashlytics", package: "firebase-ios-sdk"),
                 .product(name: "GoogleMobileAds", package: "swift-package-manager-google-mobile-ads"),
                 .product(name: "SwiftyGif", package: "SwiftyGif"),
+                .product(name: "AppsFlyerLib", package: "AppsFlyerFramework"),
             ],
             resources: [
                 .process("Resources")

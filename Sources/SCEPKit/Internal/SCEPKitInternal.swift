@@ -5,9 +5,11 @@ import StoreKit
 import Adapty
 import AdaptyUI
 import OSLog
-import Firebase
+import FirebaseCore
 import FirebaseRemoteConfig
+import FirebaseAnalytics
 import AmplitudeSwift
+import AppsFlyerLib
 
 let logger = Logger(subsystem: "SCEPKit", category: "SCEPKitInternal")
 
@@ -23,7 +25,7 @@ class SCEPKitInternal: NSObject {
     var onboardingWindow: UIWindow?
     var plistDict: [String: Any]!
     var adaptyPaywalls: [String: AdaptyPaywall] = [:]
-    var adaptyViewConfigurations: [String: AdaptyUI.LocalizedViewConfiguration] = [:]
+//    var adaptyViewConfigurations: [String: AdaptyUI.LocalizedViewConfiguration] = [:]
     var adaptyProducts: [String: [AdaptyPaywallProduct]] = [:]
     var amplitude: Amplitude!
     var isApplicationShown: Bool = false
@@ -97,7 +99,7 @@ class SCEPKitInternal: NSObject {
             switch status {
             case .success:
                 let keysAndValues = remoteConfig.allKeys(from: .remote).map { key in
-                    ("[SCEPKit] \(key)", remoteConfig.configValue(forKey: key).stringValue ?? "none")
+                    ("[SCEPKit] \(key)", remoteConfig.configValue(forKey: key).stringValue)
                 }
                 self.setUserProperties(.init(uniqueKeysWithValues: keysAndValues))
                 if isFirstLaunch, self.isApplicationShown {
@@ -108,21 +110,38 @@ class SCEPKitInternal: NSObject {
             }
         }
         
-        Adapty.delegate = self
+        if SCEPKitInternal.shared.environment.isUsingProductionProducts && config.legal.enableAppsFlyer == true {
+            AppsFlyerLib.shared().appleAppID = "id\(config.integrations.appleAppId)"
+            AppsFlyerLib.shared().appsFlyerDevKey = "nMehdnn5Peag8tic4oXV9W"
+            AppsFlyerLib.shared().delegate = self
+        }
+        amplitude = Amplitude(configuration: .init(apiKey: config.integrations.amplitudeApiKey))
         group.enter()
-        Adapty.activate(with: .init(withAPIKey: config.integrations.adaptyApiKey)) { error in
+        Task {
+            do {
+                let configurationBuilder = AdaptyConfiguration
+                    .builder(withAPIKey: config.integrations.adaptyApiKey) // Get from Adapty dashboard
+                let config = configurationBuilder.build()
+                try await Adapty.activate(with: config)
+                Adapty.delegate = self
+                try await Adapty.setIntegrationIdentifier(
+                    key: "amplitude_device_id",
+                    value: amplitude.getDeviceId() ?? ""
+                )
+                try await Adapty.setIntegrationIdentifier(
+                    key: "amplitude_user_id",
+                    value: amplitude.getUserId() ?? ""
+                )
+                try await Adapty.setIntegrationIdentifier(
+                    key: "firebase_app_instance_id",
+                    value: Analytics.appInstanceID() ?? ""
+                )
+                try await AdaptyUI.activate()
+            } catch {
+                print("Error activating Adapty: \(error)")
+            }
             group.leave()
         }
-        AdaptyUI.activate()
-        
-        amplitude = Amplitude(configuration: .init(apiKey: config.integrations.amplitudeApiKey))
-        
-        let builder = AdaptyProfileParameters.Builder()
-            .with(amplitudeUserId: amplitude.getUserId())
-            .with(amplitudeDeviceId: amplitude.getDeviceId())
-            .with(firebaseAppInstanceId: Analytics.appInstanceID())
-        
-        Adapty.updateProfile(params: builder.build())
                 
         window = UIWindow(frame: UIScreen.main.bounds)
         window.overrideUserInterfaceStyle = config.style.uiUserInterfaceStyle
@@ -161,31 +180,31 @@ class SCEPKitInternal: NSObject {
                     DispatchQueue.main.async {
                         self.adaptyPaywalls[placementId] = paywall
                     }
-                    if paywall.hasViewConfiguration {
-                        AdaptyUI.getViewConfiguration(forPaywall: paywall) { result in
-                            switch result {
-                            case .success(let viewConfiguration):
-                                DispatchQueue.main.async {
-                                    self.adaptyViewConfigurations[placementId] = viewConfiguration
-                                }
-                            case .failure(let error):
-                                logger.debug("Paywall load error: \(error)")
+//                    if paywall.hasViewConfiguration {
+//                        AdaptyUI.getViewConfiguration(forPaywall: paywall) { result in
+//                            switch result {
+//                            case .success(let viewConfiguration):
+//                                DispatchQueue.main.async {
+//                                    self.adaptyViewConfigurations[placementId] = viewConfiguration
+//                                }
+//                            case .failure(let error):
+//                                logger.debug("Paywall load error: \(error)")
+//                            }
+//                            group.leave()
+//                        }
+//                    } else {
+                    Adapty.getPaywallProducts(paywall: paywall) { result in
+                        switch result {
+                        case .success(let products):
+                            DispatchQueue.main.async {
+                                self.adaptyProducts[placementId] = products
                             }
-                            group.leave()
+                        case .failure(let error):
+                            logger.debug("Paywall load error: \(error)")
                         }
-                    } else {
-                        Adapty.getPaywallProducts(paywall: paywall) { result in
-                            switch result {
-                            case .success(let products):
-                                DispatchQueue.main.async {
-                                    self.adaptyProducts[placementId] = products
-                                }
-                            case .failure(let error):
-                                logger.debug("Paywall load error: \(error)")
-                            }
-                            group.leave()
-                        }
+                        group.leave()
                     }
+//                    }
                 case .failure(let error):
                     logger.debug("Paywall load error: \(error)")
                     group.leave()
@@ -291,17 +310,17 @@ class SCEPKitInternal: NSObject {
     func paywallController(config: SCEPPaywallConfig, placement: SCEPPaywallPlacement, successHandler: (() -> Void)?) -> SCEPPaywallController {
         let paywallController: SCEPPaywallController
         switch config {
-        case .adapty(let placementId):
-            if let paywall = adaptyPaywalls[placementId],
-               paywall.hasViewConfiguration,
-               let viewConfiguration = SCEPKitInternal.shared.adaptyViewConfigurations[placementId] {
-                let controller = SCEPPaywallAdaptyController.instantiate(bundle: .module)
-                controller.paywall = paywall
-                controller.viewConfiguration = viewConfiguration
-                paywallController = controller
-            } else {
-                fatalError()
-            }
+//        case .adapty(let placementId):
+//            if let paywall = adaptyPaywalls[placementId],
+//               paywall.hasViewConfiguration,
+//               let viewConfiguration = SCEPKitInternal.shared.adaptyViewConfigurations[placementId] {
+//                let controller = SCEPPaywallAdaptyController.instantiate(bundle: .module)
+//                controller.paywall = paywall
+//                controller.viewConfiguration = viewConfiguration
+//                paywallController = controller
+//            } else {
+//                fatalError()
+//            }
         case .robot(let config):
             let controller = SCEPPaywallRobotController.instantiate(bundle: .module)
             controller.config = config
@@ -523,9 +542,22 @@ extension SCEPPaywallConfig.Position {
     var product: SCEPPaywallProduct? {
         guard let productId else { return nil }
         if let product = SCEPKitInternal.shared.product(with: productId) {
-            return product
+            return SCEPPaywallProductBox(product: product)
         } else {
             return SCEPFailedPaywallProduct()
         }
+    }
+}
+
+extension SCEPKitInternal: AppsFlyerLibDelegate {
+    
+    func onConversionDataSuccess(_ conversionInfo: [AnyHashable : Any]) {
+        let uid = AppsFlyerLib.shared().getAppsFlyerUID()
+        Adapty.setIntegrationIdentifier(key: "appsflyer_id", value: uid)
+        Adapty.updateAttribution(conversionInfo, source: "appsflyer")
+    }
+    
+    func onConversionDataFail(_ error: any Error) {
+        print("AppsFlyer conversion data fail: \(error)")
     }
 }

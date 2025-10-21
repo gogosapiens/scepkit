@@ -11,14 +11,15 @@ enum SCEPPaywallConfig {
     case robot(config: SCEPPaywallRobotController.Config)
     case cat(config: SCEPPaywallCatController.Config)
     case shop(config: SCEPPaywallShopController.Config)
-    case adapty(placementId: String)
+//    case adapty(placementId: String)
     
     var adaptyPlacementId: String {
-        if case .adapty(let placementId) = self {
-            return placementId
-        } else {
-            return "custom"
-        }
+        return "custom"
+//        if case .adapty(let placementId) = self {
+//            return placementId
+//        } else {
+//            return "custom"
+//        }
     }
     
     var imageURLs: Set<URL> {
@@ -29,8 +30,8 @@ enum SCEPPaywallConfig {
             return [config.meta.imageURL]
         case .shop(let config):
             return [config.meta.imageURL]
-        case .adapty:
-            return []
+//        case .adapty:
+//            return []
         }
     }
     
@@ -98,7 +99,7 @@ extension SCEPPaywallConfig: Codable {
     }
     
     private enum BaseType: String, Codable {
-        case robot, cat, shop, adapty
+        case robot, cat, shop//, adapty
     }
     
     init(from decoder: any Decoder) throws {
@@ -110,9 +111,9 @@ extension SCEPPaywallConfig: Codable {
             self = .cat(config: try .init(from: decoder))
         case .shop:
             self = .shop(config: try .init(from: decoder))
-        case .adapty:
-            let placementId = try container.decode(String.self, forKey: .placementId)
-            self = .adapty(placementId: placementId)
+//        case .adapty:
+//            let placementId = try container.decode(String.self, forKey: .placementId)
+//            self = .adapty(placementId: placementId)
         }
     }
     
@@ -128,9 +129,9 @@ extension SCEPPaywallConfig: Codable {
         case .shop(let config):
             try container.encode(BaseType.shop, forKey: .style)
             try config.encode(to: encoder)
-        case .adapty(let placementId):
-            try container.encode(BaseType.adapty, forKey: .style)
-            try container.encode(placementId, forKey: .placementId)
+//        case .adapty(let placementId):
+//            try container.encode(BaseType.adapty, forKey: .style)
+//            try container.encode(placementId, forKey: .placementId)
         }
     }
 }

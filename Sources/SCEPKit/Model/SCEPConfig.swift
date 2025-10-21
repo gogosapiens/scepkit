@@ -22,6 +22,7 @@ struct SCEPConfig: Decodable {
         let privacyURL: URL
         let feedbackURL: URL
         let requestTracking: Bool
+        let enableAppsFlyer: Bool?
     }
     
     struct Integrations: Codable {
