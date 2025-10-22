@@ -509,6 +509,10 @@ class SCEPKitInternal: NSObject {
         }
     }
     
+    var enableAppsFlyer: Bool? {
+        return config.legal.enableAppsFlyer
+    }
+    
     var termsURL: URL {
         return config.legal.termsURL
     }
