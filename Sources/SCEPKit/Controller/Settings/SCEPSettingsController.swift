@@ -40,12 +40,12 @@ public class SCEPSettingsController: UIViewController {
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        let debugMessage = """
-            isUsingProductionProducts: \(SCEPKitInternal.shared.environment.isUsingProductionProducts)
-            enableAppsFlyer: \(SCEPKitInternal.shared.enableAppsFlyer)
-            appsFlyerDevKey: \(AppsFlyerLib.shared().appsFlyerDevKey)
-            """
-        self.showInfoAlert(title: "Debug Info", message: debugMessage)
+//        let debugMessage = """
+//            isUsingProductionProducts: \(SCEPKitInternal.shared.environment.isUsingProductionProducts)
+//            enableAppsFlyer: \(SCEPKitInternal.shared.enableAppsFlyer)
+//            appsFlyerDevKey: \(AppsFlyerLib.shared().appsFlyerDevKey)
+//            """
+//        self.showInfoAlert(title: "Debug Info", message: debugMessage)
     }
     
     @objc func premiumStatusUpdated() {

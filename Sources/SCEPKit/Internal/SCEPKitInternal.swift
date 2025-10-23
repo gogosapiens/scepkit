@@ -111,7 +111,7 @@ class SCEPKitInternal: NSObject {
         }
         
         if SCEPKitInternal.shared.environment.isUsingProductionProducts && config.legal.enableAppsFlyer == true {
-            AppsFlyerLib.shared().appleAppID = "id\(config.integrations.appleAppId)"
+            AppsFlyerLib.shared().appleAppID = config.integrations.appleAppId
             AppsFlyerLib.shared().appsFlyerDevKey = "skjGkNQxGenPV6uMu7TfKi"
             AppsFlyerLib.shared().delegate = self
             NotificationCenter.default.addOneTimeObserver(forName: UIApplication.didBecomeActiveNotification) { _ in
