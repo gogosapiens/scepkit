@@ -111,11 +111,11 @@ class SCEPKitInternal: NSObject {
         }
         
         if SCEPKitInternal.shared.environment.isUsingProductionProducts && config.legal.enableAppsFlyer == true {
-            AppsFlyerLib.shared().appleAppID = config.integrations.appleAppId
             AppsFlyerLib.shared().appsFlyerDevKey = "skjGkNQxGenPV6uMu7TfKi"
+            AppsFlyerLib.shared().appleAppID = config.integrations.appleAppId
+            AppsFlyerLib.shared().waitForATTUserAuthorization(timeoutInterval: 10)
             AppsFlyerLib.shared().delegate = self
             NotificationCenter.default.addOneTimeObserver(forName: UIApplication.didBecomeActiveNotification) { _ in
-                AppsFlyerLib.shared().waitForATTUserAuthorization(timeoutInterval: 10)
                 AppsFlyerLib.shared().start()
             }
         }
