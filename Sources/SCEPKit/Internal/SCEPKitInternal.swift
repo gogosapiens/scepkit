@@ -456,6 +456,9 @@ class SCEPKitInternal: NSObject {
         }
         amplitude.track(eventType: name, eventProperties: properties)
         Analytics.logEvent(name, parameters: properties)
+        if SCEPKitInternal.shared.environment.isUsingProductionProducts && config.legal.enableAppsFlyer == true {
+            AppsFlyerLib.shared().logEvent(name: name, values: properties)
+        }
     }
     
     func setUserProperties(_ properties: [String: Any]) {
