@@ -220,5 +220,11 @@ extension SCEPPaywallRobotController: UITableViewDelegate {
             trialSwitch.setOn(!trialSwitch.isOn, animated: true)
         }
         tableView.reloadData()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
+            guard let self else { return }
+            guard let product = products[selectedProductIndex] else { return }
+            purchase(product)
+        }
     }
 }

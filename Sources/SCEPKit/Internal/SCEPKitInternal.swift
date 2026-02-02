@@ -310,7 +310,7 @@ class SCEPKitInternal: NSObject {
         adaptyProducts["custom"]?.first(where: { $0.vendorProductId == id })
     }
     
-    func paywallController(config: SCEPPaywallConfig, placement: SCEPPaywallPlacement, successHandler: (() -> Void)?) -> SCEPPaywallController {
+    @MainActor func paywallController(config: SCEPPaywallConfig, placement: SCEPPaywallPlacement, successHandler: (() -> Void)?) -> SCEPPaywallController {
         let paywallController: SCEPPaywallController
         switch config {
 //        case .adapty(let placementId):
@@ -342,7 +342,7 @@ class SCEPKitInternal: NSObject {
         return paywallController
     }
     
-    func onboardingPaywallController() -> SCEPPaywallController? {
+    @MainActor func onboardingPaywallController() -> SCEPPaywallController? {
         guard
             let placement = config.monetization.placements[SCEPPaywallPlacement.onboarding.id],
             !placement.all.isEmpty,
@@ -398,19 +398,19 @@ class SCEPKitInternal: NSObject {
         trackEvent("[SCEPKit] onboarding_finished")
     }
     
-    func showPaywallController(from controller: UIViewController, placement: SCEPPaywallPlacement, successHandler: (() -> Void)? = nil) {
+    @MainActor func showPaywallController(from controller: UIViewController, placement: SCEPPaywallPlacement, successHandler: (() -> Void)? = nil) {
         let config = SCEPKitInternal.shared.paywallConfig(for: placement)
         let paywallController = paywallController(config: config, placement: placement, successHandler: successHandler)
         controller.present(paywallController, animated: true)
     }
     
-    func showDebugPaywallController(from controller: UIViewController, id: String, successHandler: (() -> Void)? = nil) {
+    @MainActor func showDebugPaywallController(from controller: UIViewController, id: String, successHandler: (() -> Void)? = nil) {
         let config = SCEPKitInternal.shared.config.monetization.paywalls[id]!
         let paywallController = paywallController(config: config, placement: .main, successHandler: successHandler)
         controller.present(paywallController, animated: true)
     }
     
-    func accessPremiumContent(from controller: UIViewController, placement: SCEPPaywallPlacement, handler: @escaping () -> Void) {
+    @MainActor func accessPremiumContent(from controller: UIViewController, placement: SCEPPaywallPlacement, handler: @escaping () -> Void) {
         guard hasPremiumPaywalls else {
             let alert = UIAlertController(title: "Error", message: "This app does not support premium content", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default))
@@ -424,7 +424,7 @@ class SCEPKitInternal: NSObject {
         }
     }
     
-    func accessCreditsContent(amount: Int, from controller: UIViewController, placement: SCEPPaywallPlacement, handler: @escaping (@escaping SCEPCreditsChargeHandler) -> Void) {
+    @MainActor func accessCreditsContent(amount: Int, from controller: UIViewController, placement: SCEPPaywallPlacement, handler: @escaping (@escaping SCEPCreditsChargeHandler) -> Void) {
         guard hasCreditsPaywalls else {
             let alert = UIAlertController(title: "Error", message: "This app does not support credits content", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default))

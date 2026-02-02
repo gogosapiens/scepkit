@@ -36,7 +36,7 @@ final public class SCEPKit {
         SCEPKitInternal.shared.launch(rootViewController: rootViewController)
     }
     
-    public static func showPaywallController(from controller: UIViewController, placement: String? = nil, successHandler: (() -> Void)? = nil) {
+    @MainActor public static func showPaywallController(from controller: UIViewController, placement: String? = nil, successHandler: (() -> Void)? = nil) {
         let placement = placement.map(SCEPPaywallPlacement.custom) ?? .main
         SCEPKitInternal.shared.showPaywallController(from: controller, placement: placement, successHandler: successHandler)
     }
@@ -49,12 +49,12 @@ final public class SCEPKit {
         return SCEPMonetization.shared.credits >= amount
     }
     
-    public static func accessPremiumContent(from controller: UIViewController, placement: String? = nil, handler: @escaping () -> Void) {
+    @MainActor public static func accessPremiumContent(from controller: UIViewController, placement: String? = nil, handler: @escaping () -> Void) {
         let placement = placement.map(SCEPPaywallPlacement.custom) ?? .main
         SCEPKitInternal.shared.accessPremiumContent(from: controller, placement: placement, handler: handler)
     }
     
-    public static func accessCreditsContent(amount: Int, controller: UIViewController, placement: String? = nil, handler: @escaping (@escaping SCEPCreditsChargeHandler) -> Void) {
+    @MainActor public static func accessCreditsContent(amount: Int, controller: UIViewController, placement: String? = nil, handler: @escaping (@escaping SCEPCreditsChargeHandler) -> Void) {
         let placement = placement.map(SCEPPaywallPlacement.custom) ?? .main
         SCEPKitInternal.shared.accessCreditsContent(amount: amount, from: controller, placement: placement, handler: handler)
     }

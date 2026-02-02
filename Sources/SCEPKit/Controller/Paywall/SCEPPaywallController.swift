@@ -1,6 +1,7 @@
 import UIKit
 import Adapty
 
+@MainActor
 public class SCEPPaywallController: UIViewController {
     
     var placement: SCEPPaywallPlacement!
@@ -25,19 +26,25 @@ public class SCEPPaywallController: UIViewController {
             let activityController = SCEPActivityController.instantiate(bundle: .module)
             present(activityController, animated: true)
             SCEPAdManager.shared.isPurchasing = true
-            SCEPKitInternal.shared.trackEvent("[SCEPKit] subscribe_started", properties: ["product_id": product.vendorProductId, "placement": placement.id])
+            let placementId = placement.id
+            let vendorProductId = product.vendorProductId
+            SCEPKitInternal.shared.trackEvent("[SCEPKit] subscribe_started", properties: ["product_id": vendorProductId, "placement": placementId])
             Adapty.makePurchase(product: product) { result in
-                activityController.dismiss(animated: true) { [weak self] in
-                    guard let self else { return }
-                    switch result {
-                    case .success(let info):
-                        logger.debug("Purchase success \(String(describing: info))")
-                        close(success: true)
-                        SCEPKitInternal.shared.trackEvent("[SCEPKit] subscribed", properties: ["product_id": product.vendorProductId, "placement": placement.id])
-                    case .failure(let error):
-                        logger.error("Purchase error \(error)")
-                        SCEPKitInternal.shared.trackEvent("[SCEPKit] subscribe_error", properties: ["product_id": product.vendorProductId, "placement": placement.id, "error": error.description])
+                switch result {
+                case .success(let info):
+                    Task { @MainActor in
+                        activityController.dismiss(animated: true) { [weak self] in
+                            guard let self else { return }
+                            logger.debug("Purchase success \(String(describing: info))")
+                            close(success: true)
+                            SCEPKitInternal.shared.trackEvent("[SCEPKit] subscribed", properties: ["product_id": vendorProductId, "placement": placementId])
+                            
+                            SCEPAdManager.shared.isPurchasing = false
+                        }
                     }
+                case .failure(let error):
+                    logger.error("Purchase error \(error)")
+                    SCEPKitInternal.shared.trackEvent("[SCEPKit] subscribe_error", properties: ["product_id": vendorProductId, "placement": placementId, "error": error.description, "code": "\(error.errorCode)"])
                     SCEPAdManager.shared.isPurchasing = false
                 }
             }
@@ -129,3 +136,4 @@ extension SCEPConfig.InterfaceStyle {
         }
     }
 }
+
