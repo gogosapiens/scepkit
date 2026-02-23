@@ -196,12 +196,18 @@ extension SCEPPaywallRobotController: UITableViewDataSource {
             cell.badgeView.isHidden = true
             if let introductoryPeriod {
                 cell.leftTitleLabel.text = "{0}-DAY FREE TRIAL".localized().insertingArguments(introductoryPeriod.displayNumberOfUnits)
+                if config.meta.priceMode == "prominent" {
+                    cell.leftSubtitleLabel.isHidden = false
+                    cell.leftSubtitleLabel.text = "THEN AUTO-RENEWS"
+                } else {
+                    cell.leftSubtitleLabel.isHidden = true
+                }
             } else {
                 cell.leftTitleLabel.text = "{0} ACCESS".localized().insertingArguments(period.displayUnitLocalizedAdjective.uppercased())
+                cell.leftSubtitleLabel.isHidden = true
             }
             cell.rightTitleLabel.font = SCEPKitInternal.shared.font(ofSize: 16, weight: config.meta.priceMode == "prominent" ? .bold : .medium)
             cell.rightSubtitleLabel.font = cell.rightTitleLabel.font
-            cell.leftSubtitleLabel.isHidden = true
             cell.rightTitleLabel.text = product.localizedPrice(for: shortPeroid)
             cell.rightSubtitleLabel.text = "per {0}".localized().insertingArguments(shortPeroid.displayUnitLocalizedNoun.lowercased())
             cell.rightSubtitleLabel.isHidden = false
