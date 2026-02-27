@@ -184,7 +184,7 @@ extension SCEPPaywallRobotController: UITableViewDataSource {
             cell.badgeView.isHidden = false
             cell.badgeLabel.text = "BEST OFFER".localized()
             cell.leftTitleLabel.text = "{0} ACCESS".localized().insertingArguments(period.displayUnitLocalizedAdjective.uppercased())
-            let leftSubtitleLabelText = "Just {0} per {1}".localized().insertingArguments(product.localizedPrice, period.displayUnitLocalizedNoun)
+            let leftSubtitleLabelText = "Just {0} per {1}".localized().insertingArguments(product.localizedPrice, period.displayUnitLocalizedNoun.lowercased())
             cell.leftSubtitleLabel.text = config.meta.priceMode == "prominent" ? leftSubtitleLabelText.uppercased() : leftSubtitleLabelText
             cell.leftSubtitleLabel.font = SCEPKitInternal.shared.font(ofSize: 16, weight: .bold)
             cell.leftSubtitleLabel.isHidden = false
@@ -192,7 +192,6 @@ extension SCEPPaywallRobotController: UITableViewDataSource {
             cell.rightSubtitleLabel.text = "per {0}".localized().insertingArguments(shortPeroid.displayUnitLocalizedNoun.lowercased())
             cell.rightSubtitleLabel.isHidden = false
         } else {
-            
             cell.badgeShadowView.isHidden = true
             cell.badgeView.isHidden = true
             if let introductoryPeriod {
